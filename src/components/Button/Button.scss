@@ -1,0 +1,56 @@
+.Button{
+
+}
+.DeleteCardButton{
+    padding: 0;
+    position: absolute;
+    top: 7.5px;
+    right: 27px;
+    border: 0;
+    opacity: 0.1;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(46,68,78);
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: #DA3849;
+        opacity: 1;
+    }
+}
+
+.StyledDeleteListButton{
+    border: 0;
+    padding: 0;
+    margin-right: 10px;
+    background: #F8F8F8;
+    color: rgb(46,68,78);
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0.8;
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: #DA3849;
+        opacity: 1;
+    }
+}
+
+.StyledListTitleButton{
+    flex-grow: 1;
+    padding: 10px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    background: #F8F8F8;
+    color: rgb(46,68,78);
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-top-left-radius: 3px;
+}
