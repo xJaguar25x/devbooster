@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {BoardForm, BoardList} from "../index";
 import {Typography} from "@material-ui/core/es/index";
 import uuid from 'uuid';
+import './Board.scss';
 
 export default class Board extends Component {
     state = {
@@ -33,13 +34,13 @@ export default class Board extends Component {
         ]
     };
 
-    // обработчик удаления из состояния
-    deleteCard = send_id => {
+    // обработчик удаления из состояния cards
+    deleteCard = card_id => {
         this.setState({
-            cards: this.state.cards.filter((item) => item.id !== send_id)
+            cards: this.state.cards.filter((item) => item.id !== card_id)
         });
     };
-    // обработчик добавления к состоянию
+    // обработчик добавления к состоянию cards
     addCard = item => {
         this.setState({
             cards: [
@@ -54,8 +55,53 @@ export default class Board extends Component {
         ;
         // console.log(this.state);
     };
-    // обработчик изменения в состоянии
-    changeCard = (item_value, send_id) => {
+    // обработчик изменения в состоянии cards
+    changeCard = (item_value, card_id) => {
+        this.setState({
+            cards: this.state.cards.map((item) => item.id === card_id ? {
+                ...item,
+                card_name: item_value
+            } : item)
+        });
+    };
+
+
+    // обработчик удаления из состояния Task
+    deleteTask = (card_id, task_id) => {
+
+
+        this.setState({
+            cards: this.state.cards.filter((item) => item.id !== card_id)
+        });
+    };
+    // обработчик добавления к состоянию Task
+    addTask = (card_id, task_value) => {
+        let card = this.state.cards.filter((item) => item.id === card_id );
+        console.log(card[0].tasks);
+        // listTask.push(task_value);
+        console.log(card);
+
+        // this.setState({
+        //     cards: this.state.cards.map((item) => item.id === card_id ? {
+        //         ...item,
+        //         tasks: listTask
+        //     } : item)
+        // });
+        // this.setState({
+        //     cards: [
+        //         ...this.state.cards,
+        //         {
+        //             id: uuid(),
+        //             card_name: card_id,
+        //             tasks: []
+        //         }
+        //     ]
+        // })
+        ;
+        // console.log(this.state);
+    };
+    // обработчик изменения в состоянии Task
+    changeTask = (item_value, send_id) => {
         this.setState({
             cards: this.state.cards.map((item) => item.id === send_id ? {
                 ...item,
@@ -70,26 +116,30 @@ export default class Board extends Component {
         return (
           <div className="Dashboard">
               {/*Вывод списка*/}
-              {lists.map((list, index) => (
-                <Fragment>
-                    {/*{console.log(list)}*/}
+              <div className="lists-wrapper">
+                  {lists.map((list, index) => (
+                    <Fragment>
+                        {/*{console.log(list)}*/}
 
-                    <BoardList
-                      key={list.id}
-                      list={list}
-                      onChangeCard={this.changeCard}
-                      onDeleteCard={this.deleteCard}
-                      onAddCard={this.addCard}
-                    />
-                </Fragment>
-              ))}
+                        <BoardList
+                          key={list.id}
+                          list={list}
+                          changeCard={this.changeCard}
+                          deleteCard={this.deleteCard}
+                          addCard={this.addCard}
+                          changeTask={this.changeTask}
+                          deleteTask={this.deleteTask}
+                          addTask={this.addTask}
+                        />
+                    </Fragment>
+                  ))}
 
-              {/*Форма с кнопкой*/}
-              <BoardForm
-                onAddCard={this.addCard}
-              />
+                  {/*Форма с кнопкой*/}
+                  <BoardForm
+                    onAddCard={this.addCard}
+                  />
+              </div>
           </div>
-
         )
     }
 };

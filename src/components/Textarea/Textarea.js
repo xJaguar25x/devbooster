@@ -1,22 +1,22 @@
 import React from 'react';
-import classes from './Button.module.scss';
+import classes from './Textarea.module.scss';
 
-const Button = props => {
+const Textarea = props => {
     const cls = [
-        classes.Button,
+        classes.Textarea,
         classes[props.class]
     ];
-    // console.log(props);
+    // console.log(cls);
 
     return (
-      <button
+      <textarea
         {...props}
         className={cls.join(' ')}
         disabled={props.disabled}
       >
           {props.children}
-      </button>
+      </textarea>
     );
 
 };
-export default Button;
+export default Textarea;
