@@ -9,6 +9,7 @@ import {
     Input
 } from "@material-ui/core/es/index";
 import './BoardList.scss';
+import {Button} from "../../components";
 
 export default class BoardList extends Component {
 
@@ -75,12 +76,13 @@ export default class BoardList extends Component {
                             </div>
                           ) : (
                             <div className="ListTitle">
-                                <button
+                                <Button
+                                  type="ListTitleButton"
                                   onFocus={this.openTitleEditor}
                                   onClick={this.openTitleEditor}
                                 >
                                     text={stateList.card_name}
-                                </button>
+                                </Button>
                                 <button onClick={this.deleteList} />
                             </div>
                           )}
