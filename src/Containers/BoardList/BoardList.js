@@ -53,8 +53,9 @@ export default class BoardList extends Component {
         this.setState({newCardTitle: "", newCardFormIsOpen: false});
     };
 
-    openCardEditor = card => {
-        this.setState({cardInEdit: card._id, editableCardTitle: card.title});
+    openCardEditor = task => {
+        // console.log("card = ",task.id);
+        this.setState({cardInEdit: task.id, editableCardTitle: task.task_name});
     };
 
     handleCardEditorChange = (event) => {
@@ -80,15 +81,17 @@ export default class BoardList extends Component {
     };
 
     deleteCard = cardId => {
-        const {dispatch, list, boardId} = this.props;
+        const {dispatch, list, id} = this.props;
         // dispatch(deleteCard(cardId, list._id, boardId));
+        console.log(list.id, cardId);
+        this.props.deleteTask(list.id, cardId);
     };
 
     //~~~~ Обработчик нажатия кнопки редактировать заголовок ListTitleButton ~~~~
     openTitleEditor = () => {
         this.setState({
             isListTitleInEdit: true,
-            newListTitle: this.props.list.title
+            newListTitle: this.props.list.card_name
         });
     };
     handleListTitleEditorChange = (event) => {
@@ -104,12 +107,21 @@ export default class BoardList extends Component {
     handleSubmitListTitle = () => {
         const {newListTitle} = this.state;
         const {list, boardId, dispatch} = this.props;
-        if (newListTitle === "") return;
-        // dispatch(editListTitle(newListTitle, list._id, boardId));
-        this.setState({
-            isListTitleInEdit: false,
-            newListTitle: ""
-        });
+        if (newListTitle === this.props.list.card_name) {
+            this.setState({
+                isListTitleInEdit: false
+            });
+        }
+        else {
+            // dispatch(editListTitle(newListTitle, list._id, boardId));
+            this.props.changeCard(newListTitle, this.props.list.id);
+            console.log("id =",this.props.list.id);
+            this.setState({
+                isListTitleInEdit: false,
+                newListTitle :""
+            });
+        }
+
     };
     // Обработчик вызова "Удаления списка"
     deleteList = () => {
@@ -157,7 +169,7 @@ export default class BoardList extends Component {
                           {isListTitleInEdit ? (
                             <div className={classes.ListTitleTextareaWrapper}>
                                 <Textarea
-                                  class="ListTitleTextarea"
+                                  className="ListTitleTextarea"
                                   autoFocus
                                   // useCacheForDOMMeasurements
                                   value={newListTitle}
@@ -169,14 +181,14 @@ export default class BoardList extends Component {
                           ) : (
                             <div className={classes.ListTitle}>
                                 <Button
-                                  class="ListTitleButton"
+                                  className="ListTitleButton"
                                   onFocus={this.openTitleEditor}
                                   onClick={this.openTitleEditor}
                                 >
                                     {stateList.card_name}
                                 </Button>
                                 <Button
-                                  class="DeleteCardButton"
+                                  className="DeleteCardButton"
                                   onClick={this.deleteList}
                                 >
                                     <DeleteIcon/>
@@ -205,20 +217,22 @@ export default class BoardList extends Component {
                                 {/*>*/}
                                 {/*<DeleteIcon/>*/}
                                 {/*</IconButton>*/}
-                                {cardInEdit !== task._id ? (
+                                {cardInEdit !== task.id ? (
                                   <div
+                                    key={task.id}
+                                    id={task.id}
                                     className={classes.card_title}
                                   >
                                       <span>{task.task_name}</span>
                                       <div>
                                           <Button
-                                            class="DeleteCardButton"
-                                            onClick={() => this.deleteCard(task._id)}
+                                            className="DeleteCardButton"
+                                            onClick={() => this.deleteCard(task.id)}
                                           >
                                               <DeleteIcon/>
                                           </Button>
                                           <Button
-                                            class="EditCardButton"
+                                            className="EditCardButton"
                                             onClick={() => this.openCardEditor(task)}
                                           >
                                               <EditIcon/>
@@ -229,7 +243,7 @@ export default class BoardList extends Component {
                                 ) : (
                                   <div className={classes.ListTitleTextareaWrapper}>
                                     <Textarea
-                                      class="ListTitleTextarea"
+                                      className="ListTitleTextarea"
                                       autoFocus
                                       // useCacheForDOMMeasurements
                                       value={editableCardTitle}
@@ -257,7 +271,7 @@ export default class BoardList extends Component {
                                       onSubmit={this.handleSubmitCard}
                                     >
                                         <Textarea
-                                          class="ListTitleTextarea"
+                                          className="ListTitleTextarea"
                                           autoFocus
                                           // useCacheForDOMMeasurements
                                           onChange={this.handleCardComposerChange}
@@ -265,7 +279,7 @@ export default class BoardList extends Component {
                                           value={newCardTitle}
                                         />
                                         <Button
-                                          class={"ListTitleButton", "Add"}
+                                          className={"ListTitleButton", "Add"}
                                           type="submit"
                                           disabled={newCardTitle === ""}
                                           onClick={this.handleOnClickButtonAdd}
@@ -279,7 +293,7 @@ export default class BoardList extends Component {
                           {newCardFormIsOpen || (
                             <div className={classes.ComposerWrapper}>
                                 <Button
-                                  class="CardButton"
+                                  className="CardButton"
                                   text="Add new card"
                                   onClick={this.toggleCardComposer}
                                 >

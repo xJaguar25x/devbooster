@@ -4,7 +4,7 @@ import classes from './Button.module.scss';
 const Button = props => {
     const cls = [
         classes.Button,
-        classes[props.class]
+        classes[props.className]
     ];
     // console.log(props);
 

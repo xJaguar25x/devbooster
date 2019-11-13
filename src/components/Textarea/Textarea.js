@@ -4,7 +4,7 @@ import classes from './Textarea.module.scss';
 const Textarea = props => {
     const cls = [
         classes.Textarea,
-        classes[props.class]
+        classes[props.className]
     ];
     // console.log(cls);
 

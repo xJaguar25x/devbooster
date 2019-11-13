@@ -68,46 +68,44 @@ export default class Board extends Component {
 
     // обработчик удаления из состояния Task
     deleteTask = (card_id, task_id) => {
-
+        let newState = this.state.cards;
+        let newCard = this.state.cards.find((item) => item.id === card_id);
+        const temp = newCard.tasks.filter((item) => item.id !== task_id);
+        const indexOfList = this.state.cards.findIndex((item) => item.id === card_id);
+        // console.log("indexOfList = ",indexOfList);
+        // console.log(newCard);
+        // console.log(temp);
+        newCard.tasks = temp;
+        // console.log(newCard);
+        newState[indexOfList] = newCard;
 
         this.setState({
-            cards: this.state.cards.filter((item) => item.id !== card_id)
+            cards: newState
         });
     };
     // обработчик добавления к состоянию Task
     addTask = (card_id, task_value) => {
-        let card = this.state.cards.filter((item) => item.id === card_id );
-        console.log(card[0].tasks);
-        // listTask.push(task_value);
-        console.log(card);
+        let newState = this.state.cards;
+        let editCard = this.state.cards.find((item) => item.id === card_id);
+        const indexOfList = this.state.cards.findIndex((item) => item.id === card_id);
+        editCard.tasks.push({id: uuid(), task_name: task_value});
+        newState[indexOfList] = editCard;
 
-        // this.setState({
-        //     cards: this.state.cards.map((item) => item.id === card_id ? {
-        //         ...item,
-        //         tasks: listTask
-        //     } : item)
-        // });
-        // this.setState({
-        //     cards: [
-        //         ...this.state.cards,
-        //         {
-        //             id: uuid(),
-        //             card_name: card_id,
-        //             tasks: []
-        //         }
-        //     ]
-        // })
-        ;
-        // console.log(this.state);
+        this.setState({
+            cards: newState
+        });
+
     };
     // обработчик изменения в состоянии Task
     changeTask = (item_value, send_id) => {
-        this.setState({
-            cards: this.state.cards.map((item) => item.id === send_id ? {
-                ...item,
-                card_name: item_value
-            } : item)
-        });
+        // не работает пока
+
+        // this.setState({
+        //     cards: this.state.cards.map((item) => item.id === send_id ? {
+        //         ...item,
+        //         card_name: item_value
+        //     } : item)
+        // });
     };
 
     render() {
