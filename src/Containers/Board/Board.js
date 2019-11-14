@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import {BoardForm, BoardList} from "../index";
-import {Typography} from "@material-ui/core/es/index";
 import uuid from 'uuid';
 import './Board.scss';
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 export default class Board extends Component {
     state = {
@@ -108,35 +108,76 @@ export default class Board extends Component {
         // });
     };
 
+    /* ~~~~~~~~~~~~~~~~~~ Методы для перетаскивания ~~~~~~~~~~~~~~~~~~~~~~*/
+    onDragEnd = result => {
+        //TODO : reorder our columns
+    };
+
     render() {
         const lists = this.state.cards;
+        const boardId = "1";
 
         return (
           <div className="Dashboard">
               {/*Вывод списка*/}
-              <div className="lists-wrapper">
-                  {lists.map((list, index) => (
-                    <Fragment>
-                        {/*{console.log(list)}*/}
 
-                        <BoardList
-                          key={list.id}
-                          list={list}
-                          changeCard={this.changeCard}
-                          deleteCard={this.deleteCard}
-                          addCard={this.addCard}
-                          changeTask={this.changeTask}
-                          deleteTask={this.deleteTask}
-                          addTask={this.addTask}
-                        />
-                    </Fragment>
-                  ))}
+              <DragDropContext
+                onDragEnd={this.onDragEnd}
+              >
+                  <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
+                      {droppableProvided => (
+                        <div className="lists-wrapper" ref={droppableProvided.innerRef}>
+                            {lists.map((list, index) => (
+                              <Draggable
+                                key={list.id}
+                                draggableId={list.id}
+                                index={index}
+                              >
+                                  {provided => (
+                                    <Fragment>
+                                        <div
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
+                                          data-react-beautiful-dnd-draggable="0"
+                                          data-react-beautiful-dnd-drag-handle="0"
+                                        >
+                                            {/*<List*/}
+                                            {/*list={list}*/}
+                                            {/*boardId={boardId}*/}
+                                            {/*style={{height: 'initial'}}*/}
+                                            {/*/>*/}
+                                            <BoardList
+                                              key={list.id}
+                                              list={list}
+                                              boardId={boardId}
+                                              changeCard={this.changeCard}
+                                              deleteCard={this.deleteCard}
+                                              addCard={this.addCard}
+                                              changeTask={this.changeTask}
+                                              deleteTask={this.deleteTask}
+                                              addTask={this.addTask}
+                                            />
+                                        </div>
+                                        {provided.placeholder}
+                                    </Fragment>
+                                  )}
+                              </Draggable>
+                            ))}
+                            {droppableProvided.placeholder}
+                            {/*{lists.length < 5 &&*/}
+                            {/*<ListAdder boardId={boardId} numLeft={5 - lists.length} style={{height: 'initial'}}/>*/}
+                            {/*Добавление формы создания списка с задачами*/}
+                            {/*}*/}
+                        </div>
+                      )}
+                  </Droppable>
+              </DragDropContext>
 
-                  {/*Форма с кнопкой*/}
-                  <BoardForm
-                    onAddCard={this.addCard}
-                  />
-              </div>
+              {/*Форма с кнопкой*/}
+              <BoardForm
+                onAddCard={this.addCard}
+              />
           </div>
         )
     }
