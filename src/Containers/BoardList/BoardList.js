@@ -1,7 +1,6 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import {BoardForm, CardForm, CardList, Task} from "../index";
+import {Task} from "../index";
 import classes from './BoardList.module.scss';
 import {Button, Textarea} from "../../components";
 import {ClickOutsideWrapper} from "../../hoc/";
@@ -138,108 +137,99 @@ export default class BoardList extends Component {
         } = this.state;
 
         return (
-          <div className={classes.List} key={stateList.id} id={stateList.id}>
-              <div className={classes.List_Content} key={stateList.id} id={stateList.id}>
-                  <div className={classes.List_Header}>
-                      {isListTitleInEdit ? (
-                        <div className={classes.ListTitleTextareaWrapper}>
-                                <Textarea
-                                  className="ListTitleTextarea"
-                                  autoFocus
-                                  // useCacheForDOMMeasurements
-                                  value={newListTitle}
-                                  onChange={this.handleListTitleEditorChange}
-                                  onKeyDown={this.handleListTitleKeyDown}
-                                  onBlur={this.handleSubmitListTitle}
-                                />
-                        </div>
-                      ) : (
-                        <div className={classes.ListTitle}>
-                            <Button
-                              className="ListTitleButton"
-                              onFocus={this.openTitleEditor}
-                              onClick={this.openTitleEditor}
-                            >
-                                {stateList.card_name}
-                            </Button>
-                            <Button
-                              className="DeleteCardButton"
-                              onClick={this.deleteList}
-                            >
-                                <DeleteIcon/>
-                            </Button>
-                        </div>
-                      )}
-                  </div>
-                  <Droppable droppableId={this.props.list.id}>
-                      {provided => (
-                        <Fragment>
-                            <div className="List-Cards"
-                                 ref={provided.innerRef}
-                                 {...provided.droppableProps}
-                            >
-                                {/*функцией map раскрываем список всех задачь из состояния*/}
-                                {stateList.tasks.map((task, index) => (
-                                  //Вывод компонента Задачи
-                                  <Task
-                                    task={task}
-                                    index={index}
-                                    state={this.state}
-                                  />
-                                ))}
-                                {provided.placeholder}
-                            </div>
+          <div className={classes.List_Content} key={stateList.id} id={stateList.id}>
+              {isListTitleInEdit ? (
+                <div className={classes.ListTitleTextareaWrapper}>
+                    <Textarea
+                      className="ListTitleTextarea"
+                      autoFocus
+                      useCacheForDOMMeasurements
+                      value={newListTitle}
+                      onChange={this.handleListTitleEditorChange}
+                      onKeyDown={this.handleListTitleKeyDown}
+                      onBlur={this.handleSubmitListTitle}
+                    />
+                </div>
+              ) : (
+                <div className={classes.ListTitle}>
+                    <Button
+                      className="ListTitleButton"
+                      onFocus={this.openTitleEditor}
+                      onClick={this.openTitleEditor}
+                    >
+                        {stateList.card_name}
+                    </Button>
+                    <Button
+                      className="DeleteCardButton"
+                      onClick={this.deleteList}
+                    >
+                        <DeleteIcon/>
+                    </Button>
+                </div>
+              )}
+              <Droppable droppableId={this.props.list.id}>
+                  {provided => (
+                    <div className="List-Cards"
+                         ref={provided.innerRef}
+                         {...provided.droppableProps}
+                    >
+                        {/*функцией map раскрываем список всех задачь из состояния*/}
+                        {stateList.tasks.map((task, index) => (
+                          //Вывод компонента Задачи
+                          <Task
+                            key={index}
+                            task={task}
+                            index={index}
+                            state={this.state}
+                            deleteCard={this.deleteCard}
+                            openCardEditor={this.openCardEditor}
 
+                          />
+                        ))}
+                        {provided.placeholder}
 
-                            < div className="List-Footer">
-                                {/*Форма с кнопкой*/}
-                                {/*<BoardForm*/}
-                                {/*onAddCard={this.addCard}*/}
-                                {/*/>*/}
-
-                                {newCardFormIsOpen && (
-                                  <ClickOutsideWrapper handleClickOutside={this.toggleCardComposer}>
-                                      <div className={classes.TextareaWrapper}>
-                                          <form
-                                            className={classes.CardTextareaForm}
-                                            onSubmit={this.handleSubmitCard}
-                                          >
+                        {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
+                        {newCardFormIsOpen && (
+                          <ClickOutsideWrapper handleClickOutside={this.toggleCardComposer}>
+                              <div className={classes.TextareaWrapper}>
+                                  <form
+                                    className={classes.CardTextareaForm}
+                                    onSubmit={this.handleSubmitCard}
+                                  >
                                         <Textarea
                                           className="ListTitleTextarea"
                                           autoFocus
-                                          // useCacheForDOMMeasurements
+                                          useCacheForDOMMeasurements
                                           onChange={this.handleCardComposerChange}
                                           onKeyDown={this.handleKeyDown}
                                           value={newCardTitle}
                                         />
-                                              <Button
-                                                className={"ListTitleButton", "Add"}
-                                                type="submit"
-                                                disabled={newCardTitle === ""}
-                                                onClick={this.handleOnClickButtonAdd}
-                                              >
-                                                  Add Task
-                                              </Button>
-                                          </form>
-                                      </div>
-                                  </ClickOutsideWrapper>
-                                )}
-                                {newCardFormIsOpen || (
-                                  <div className={classes.ComposerWrapper}>
                                       <Button
-                                        className="CardButton"
-                                        text="Add new card"
-                                        onClick={this.toggleCardComposer}
+                                        className={"ListTitleButton", "Add"}
+                                        type="submit"
+                                        disabled={newCardTitle === ""}
+                                        onClick={this.handleOnClickButtonAdd}
                                       >
-                                          Add new task
+                                          Add Task
                                       </Button>
-                                  </div>
-                                )}
-                            </div>
-                        </Fragment>
-                      )}
-                  </Droppable>
-              </div>
+                                  </form>
+                              </div>
+                          </ClickOutsideWrapper>
+                        )}
+                        {newCardFormIsOpen || (
+                          <div className={classes.ComposerWrapper}>
+                              <Button
+                                className="CardButton"
+                                text="Add new card"
+                                onClick={this.toggleCardComposer}
+                              >
+                                  Add new task
+                              </Button>
+                          </div>
+                        )}
+                    </div>
+                  )}
+              </Droppable>
           </div>
         )
     }

@@ -57,14 +57,14 @@ export default class Board extends Component {
     };
     // обработчик изменения в состоянии cards
     changeCard = (item_value, card_id) => {
+        let state = this.state;
         this.setState({
-            cards: this.state.cards.map((item) => item.id === card_id ? {
+            cards: state.cards.map((item) => item.id === card_id ? {
                 ...item,
                 card_name: item_value
             } : item)
         });
     };
-
 
     // обработчик удаления из состояния Task
     deleteTask = (card_id, task_id) => {
@@ -98,7 +98,7 @@ export default class Board extends Component {
     };
     // обработчик изменения в состоянии Task
     changeTask = (item_value, send_id) => {
-        // не работает пока
+        // TODO: сделать изменение задачи
 
         // this.setState({
         //     cards: this.state.cards.map((item) => item.id === send_id ? {
@@ -109,8 +109,91 @@ export default class Board extends Component {
     };
 
     /* ~~~~~~~~~~~~~~~~~~ Методы для перетаскивания ~~~~~~~~~~~~~~~~~~~~~~*/
-    onDragEnd = result => {
-        //TODO : reorder our columns
+    onDragEnd = ({draggableId, source, destination, type}) => {
+
+        if (!destination) {
+            return;
+        }
+        // если перетащили на то же место
+        if (destination.draggableId === source.draggableId && destination.index === source.index) {
+            return;
+        }
+        if (type === "COLUMN") {
+            const newState = this.state;
+            // console.log("state = ", newState);
+            // создаем копию перемещаемой колонку
+            const draggbleColumn = newState.cards.find(item => item.id === draggableId);
+            // удаляем из исходного state перемещаемую колонку
+            newState.cards.splice(source.index, 1);
+            // console.log("tasksSource after = ", tasksSource);
+            // добавляем в state перемещаемую колонку на новое место
+            newState.cards.splice(destination.index, 0, draggbleColumn);
+            // console.log("tasksDestination after = ", tasksDestination);
+            // console.log("state = ", newState.cards);
+
+            this.setState(newState);
+
+        } else {
+            const state = this.state;
+            // создаем копию списка откуда перетаскиваем
+            const listSource = this.state.cards.find(item => item.id === source.droppableId);
+            // создаем копию списка куда перетаскиваем
+            const listDestination = this.state.cards.find(item => item.id === destination.droppableId);
+            // создаем копию перемещаемой задачи
+            const draggbleCard = listSource.tasks.find(item => item.id === draggableId);
+            // создаем копию массива с задачами
+            let tasksSource = listSource.tasks;
+            // создаем копию массива с задачами
+            let tasksDestination = listDestination.tasks;
+            // console.log("listSource =", listSource);
+            // console.log("listDestination =", listDestination);
+            // console.log("draggbleCard =", draggbleCard);
+            // console.log("draggableId = ", draggableId);
+            // console.log("newTaskIds = ", newTaskIds);
+            // удаляем из исходного массива перемещаемую задачу
+            tasksSource.splice(source.index, 1);
+            // console.log("tasksSource after = ", tasksSource);
+            // добавляем в список перемещаемую задачу на новое место
+            tasksDestination.splice(destination.index, 0, draggbleCard);
+            // console.log("tasksDestination after = ", tasksDestination);
+            // работает фиксация внутри листа
+
+            // обновляем списки назначения и исходный
+            const newList = {
+                cards: state.cards.map((item) => {
+                      if (item.id === source.droppableId) return ({...item, tasks: tasksSource});
+                      else if (item.id === destination.droppableId) return ({...item, tasks: tasksDestination});
+                      else return item;
+                  }
+                )
+            };
+            // console.log("newList =", newList);
+
+            const newState = {
+                cards: [...newList.cards]
+            };
+            // console.log(newState);
+            this.setState(newState);
+        }
+        /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // const list = this.state.cards[source.droppableId];
+        // const newTaskIds = Array.from(column.taskIds);
+        // newTaskIds.splice(source.index, 1);
+        // newTaskIds.splice(destination.index, 0, draggableId);
+        //
+        // const newColumn = {
+        //   ...column,
+        //     newTaskIds: newTaskIds,
+        // };
+        //
+        // const newState = {
+        //   ...this.state,
+        //     columns: {
+        //       ...this.state.columns,
+        //         [newColumn.id]: newColumn,
+        //     },
+        // };
+        // this.setState(newState);
     };
 
     render() {
@@ -119,7 +202,6 @@ export default class Board extends Component {
 
         return (
           <div className="Dashboard">
-              {/*Вывод списка*/}
 
               <DragDropContext
                 onDragEnd={this.onDragEnd}
@@ -142,11 +224,6 @@ export default class Board extends Component {
                                           data-react-beautiful-dnd-draggable="0"
                                           data-react-beautiful-dnd-drag-handle="0"
                                         >
-                                            {/*<List*/}
-                                            {/*list={list}*/}
-                                            {/*boardId={boardId}*/}
-                                            {/*style={{height: 'initial'}}*/}
-                                            {/*/>*/}
                                             <BoardList
                                               key={list.id}
                                               list={list}
@@ -157,6 +234,7 @@ export default class Board extends Component {
                                               changeTask={this.changeTask}
                                               deleteTask={this.deleteTask}
                                               addTask={this.addTask}
+                                              style={{height: 'initial'}}
                                             />
                                         </div>
                                         {provided.placeholder}
