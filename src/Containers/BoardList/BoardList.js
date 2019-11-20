@@ -1,49 +1,17 @@
 import React, {Component} from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {Task} from "../index";
+import {Form, Task} from "../index";
 import classes from './BoardList.module.scss';
 import {Button, Textarea} from "../../components";
-import {ClickOutsideWrapper} from "../../hoc/";
 import {Droppable} from 'react-beautiful-dnd';
 
 export default class BoardList extends Component {
 
     state = {
-        newCardFormIsOpen: false,
-        newCardTitle: "",
         cardInEdit: null,
         editableCardTitle: "",
         isListTitleInEdit: false,
         newListTitle: ""
-    };
-
-    toggleCardComposer = () => {
-        this.setState({newCardFormIsOpen: !this.state.newCardFormIsOpen});
-    };
-
-    handleCardComposerChange = (event) => {
-        this.setState({newCardTitle: event.target.value});
-    };
-
-    handleKeyDown = (event) => {
-        // при нажатии Enter
-        if (event.keyCode === 13) {
-            this.handleSubmitCard(event);
-        }
-    };
-    handleOnClickButtonAdd = (event) => {
-        this.handleSubmitCard(event);
-    };
-
-    handleSubmitCard = event => {
-        event.preventDefault();
-        const {newCardTitle} = this.state;
-        const {list, boardId, dispatch} = this.props;
-        if (newCardTitle === "") return;
-        // dispatch(addCard(newCardTitle, list._id, boardId));
-        // console.log(this.props);
-        this.props.addTask(list.id, newCardTitle);
-        this.setState({newCardTitle: "", newCardFormIsOpen: false});
     };
 
     openCardEditor = task => {
@@ -121,15 +89,11 @@ export default class BoardList extends Component {
         const {list} = this.props;
         this.props.deleteCard(list.id)
     };
-
-    // ~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~
-
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     render() {
         const stateList = this.props.list;
         const {
-            newCardFormIsOpen,
-            newCardTitle,
             cardInEdit,
             editableCardTitle,
             isListTitleInEdit,
@@ -189,44 +153,14 @@ export default class BoardList extends Component {
                         {provided.placeholder}
 
                         {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
-                        {newCardFormIsOpen && (
-                          <ClickOutsideWrapper handleClickOutside={this.toggleCardComposer}>
-                              <div className={classes.TextareaWrapper}>
-                                  <form
-                                    className={classes.CardTextareaForm}
-                                    onSubmit={this.handleSubmitCard}
-                                  >
-                                        <Textarea
-                                          className="ListTitleTextarea"
-                                          autoFocus
-                                          useCacheForDOMMeasurements
-                                          onChange={this.handleCardComposerChange}
-                                          onKeyDown={this.handleKeyDown}
-                                          value={newCardTitle}
-                                        />
-                                      <Button
-                                        className={"ListTitleButton", "Add"}
-                                        type="submit"
-                                        disabled={newCardTitle === ""}
-                                        onClick={this.handleOnClickButtonAdd}
-                                      >
-                                          Add Task
-                                      </Button>
-                                  </form>
-                              </div>
-                          </ClickOutsideWrapper>
-                        )}
-                        {newCardFormIsOpen || (
-                          <div className={classes.ComposerWrapper}>
-                              <Button
-                                className="CardButton"
-                                text="Add new card"
-                                onClick={this.toggleCardComposer}
-                              >
-                                  Add new task
-                              </Button>
-                          </div>
-                        )}
+                        <Form
+                          classNameBtn="ComposerWrapper"
+                          addTask={this.props.addTask}
+                          list={this.props.list}
+                          type="addTask"
+                          btnText="Add new task"
+                          btnTextInner="Add task"
+                        />
                     </div>
                   )}
               </Droppable>

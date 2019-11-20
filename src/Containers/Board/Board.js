@@ -1,10 +1,18 @@
 import React, {Component, Fragment} from 'react';
-import {BoardForm, BoardList} from "../index";
+import {BoardList, Form} from "../index";
 import uuid from 'uuid';
 import './Board.scss';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
-export default class Board extends Component {
+import {connect} from 'react-redux';
+import {getItems} from '../../actions/itemActions';
+import PropTypes from 'prop-types';
+
+class Board extends Component {
+
+    // componentDidMount(){
+    //     this.props.getItems();
+    // }
     state = {
         cards: [
             {
@@ -33,6 +41,43 @@ export default class Board extends Component {
             }
         ]
     };
+
+    // newstate = {
+    //     tasks: [
+    //         {id: uuid(), task_name: "task1"},
+    //         {id: uuid(), task_name: "task2"},
+    //         {id: uuid(), task_name: "task4"},
+    //         {id: uuid(), task_name: "task4"},
+    //         {id: uuid(), task_name: "task3"},
+    //         {id: uuid(), task_name: "task32"}
+    //     ],
+    //     cards: [
+    //         {
+    //             id: uuid(),
+    //             card_name: "card1",
+    //             tasks: [
+    //                 tasks[0].id,
+    //                 tasks[1].id
+    //             ]
+    //         },
+    //         {
+    //             id: uuid(),
+    //             card_name: "card2",
+    //             tasks: [
+    //                 tasks[2].id
+    //             ]
+    //         },
+    //         {
+    //             id: uuid(),
+    //             card_name: "card3",
+    //             tasks: [
+    //                 tasks[3].id,
+    //                 tasks[4].id,
+    //                 tasks[5].id
+    //             ]
+    //         }
+    //     ]
+    // };
 
     // обработчик удаления из состояния cards
     deleteCard = card_id => {
@@ -109,13 +154,15 @@ export default class Board extends Component {
     };
 
     /* ~~~~~~~~~~~~~~~~~~ Методы для перетаскивания ~~~~~~~~~~~~~~~~~~~~~~*/
-    onDragEnd = ({draggableId, source, destination, type}) => {
+    onDragEnd = (event) => {
+        const {draggableId, source, destination, type} = event;
+        // console.log("event = ", event);
 
         if (!destination) {
             return;
         }
         // если перетащили на то же место
-        if (destination.draggableId === source.draggableId && destination.index === source.index) {
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
             return;
         }
         if (type === "COLUMN") {
@@ -156,7 +203,6 @@ export default class Board extends Component {
             // добавляем в список перемещаемую задачу на новое место
             tasksDestination.splice(destination.index, 0, draggbleCard);
             // console.log("tasksDestination after = ", tasksDestination);
-            // работает фиксация внутри листа
 
             // обновляем списки назначения и исходный
             const newList = {
@@ -197,7 +243,10 @@ export default class Board extends Component {
     };
 
     render() {
-        const lists = this.state.cards;
+        const cards = this.state.cards;
+        // const lists = this.props.item.cards;
+        // const { cards } = this.props.item;
+        // console.log(cards);
         const boardId = "1";
 
         return (
@@ -209,7 +258,7 @@ export default class Board extends Component {
                   <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
                       {droppableProvided => (
                         <div className="lists-wrapper" ref={droppableProvided.innerRef}>
-                            {lists.map((list, index) => (
+                            {cards.map((list, index) => (
                               <Draggable
                                 key={list.id}
                                 draggableId={list.id}
@@ -243,20 +292,29 @@ export default class Board extends Component {
                               </Draggable>
                             ))}
                             {droppableProvided.placeholder}
-                            {/*{lists.length < 5 &&*/}
-                            {/*<ListAdder boardId={boardId} numLeft={5 - lists.length} style={{height: 'initial'}}/>*/}
-                            {/*Добавление формы создания списка с задачами*/}
-                            {/*}*/}
+                            <Form
+                              classNameWrapper="CardComposerWrapper"
+                              classNameBtn="CardComposerWrapperBtn"
+                              type="addCard"
+                              addCard={this.addCard}
+                              btnText="Add new card"
+                              btnTextInner="Add card"
+                            />
                         </div>
                       )}
                   </Droppable>
               </DragDropContext>
-
-              {/*Форма с кнопкой*/}
-              <BoardForm
-                onAddCard={this.addCard}
-              />
           </div>
         )
     }
+}
+
+Board.propTypes = {
+    getItems: PropTypes.func.isRequired,
+    item: PropTypes.object.isRequired
 };
+const mapStateToProps = (state) => ({
+    item: state.item
+});
+export default connect(mapStateToProps, {getItems})(Board);
+// export default (Board);
