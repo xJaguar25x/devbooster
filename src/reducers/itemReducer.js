@@ -2,70 +2,69 @@ import uuid from 'uuid';
 import {GET_ITEMS, ADD_ITEM, DELETE_ITEM} from '../actions/types';
 
 const initialState = {
-    cards: [
+    columns: [
         {
             id: uuid(),
-            card_name: "card1",
-            tasks: [
-                {id: uuid(), task_name: "task1"},
-                {id: uuid(), task_name: "task2"}
+            column_name: "column1",
+            cards: [
+                {id: uuid(), card_name: "card1"},
+                {id: uuid(), card_name: "card2"}
             ]
         },
         {
             id: uuid(),
-            card_name: "card2",
-            tasks: [
-                {id: uuid(), task_name: "task4"}
+            column_name: "column2",
+            cards: [
+                {id: uuid(), card_name: "card3"}
             ]
         },
         {
             id: uuid(),
-            card_name: "card3",
-            tasks: [
-                {id: uuid(), task_name: "task4"},
-                {id: uuid(), task_name: "task3"},
-                {id: uuid(), task_name: "task32"}
+            column_name: "column3",
+            cards: [
+                {id: uuid(), card_name: "card2"},
+                {id: uuid(), card_name: "card5"},
+                {id: uuid(), card_name: "card6"}
             ]
         }
     ]
 
-    // tasks: [
-    //     {
-    //         id: uuid(),
-    //         task_name: "task1"
-    //     },
-    //     {id: uuid(), task_name: "task2"},
-    //     {id: uuid(), task_name: "task4"},
-    //     {id: uuid(), task_name: "task4"},
-    //     {id: uuid(), task_name: "task3"},
-    //     {id: uuid(), task_name: "task32"}
-    // ],
-    // cards: [
-    //     {
-    //         id: uuid(),
-    //         card_name: "card1",
-    //         tasks: [
-    //             this.tasks[0].id,
-    //             this.tasks[1].id
-    //         ]
-    //     },
-    //     {
-    //         id: uuid(),
-    //         card_name: "card2",
-    //         tasks: [
-    //             this.tasks[2].id
-    //         ]
-    //     },
-    //     {
-    //         id: uuid(),
-    //         card_name: "card3",
-    //         tasks: [
-    //             this.tasks[3].id,
-    //             this.tasks[4].id,
-    //             this.tasks[5].id
-    //         ]
-    //     }
-    // ]
+    // newstate = {
+    //     cards: [
+    //         {id: uuid(), card_name: "task1"},
+    //         {id: uuid(), card_name: "task2"},
+    //         {id: uuid(), card_name: "task4"},
+    //         {id: uuid(), card_name: "task4"},
+    //         {id: uuid(), card_name: "task3"},
+    //         {id: uuid(), card_name: "task32"}
+    //     ],
+    //     columns: [
+    //         {
+    //             id: uuid(),
+    //             column_name: "card1",
+    //             cards: [
+    //                 cards[0].id,
+    //                 cards[1].id
+    //             ]
+    //         },
+    //         {
+    //             id: uuid(),
+    //             column_name: "card2",
+    //             cards: [
+    //                 cards[2].id
+    //             ]
+    //         },
+    //         {
+    //             id: uuid(),
+    //             column_name: "card3",
+    //             cards: [
+    //                 cards[3].id,
+    //                 cards[4].id,
+    //                 cards[5].id
+    //             ]
+    //         }
+    //     ]
+    // };
 
 };
 

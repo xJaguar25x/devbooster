@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {Form, Task} from "../index";
-import classes from './BoardList.module.scss';
+import {Form, Card} from "../index";
+import classes from './Column.module.scss';
 import {Button, Textarea} from "../../components";
 import {Droppable} from 'react-beautiful-dnd';
 
-export default class BoardList extends Component {
+export default class Column extends Component {
 
     state = {
         cardInEdit: null,
         editableCardTitle: "",
-        isListTitleInEdit: false,
-        newListTitle: ""
+        isColumnTitleInEdit: false,
+        newColumnTitle: ""
     };
 
-    openCardEditor = task => {
+    openCardEditor = card => {
         // console.log("card = ",task.id);
-        this.setState({cardInEdit: task.id, editableCardTitle: task.task_name});
+        this.setState({cardInEdit: card.id, editableCardTitle: card.card_name});
     };
 
     handleCardEditorChange = (event) => {
@@ -34,118 +34,117 @@ export default class BoardList extends Component {
         const {editableCardTitle, cardInEdit} = this.state;
         const {list, boardId, dispatch} = this.props;
         if (editableCardTitle === "") {
-            this.deleteCard(cardInEdit);
+            this.deleteCardHandler(cardInEdit);
         } else {
             // dispatch(editCardTitle(editableCardTitle, cardInEdit, list, boardId));
         }
         this.setState({editableCardTitle: "", cardInEdit: null});
     };
 
-    deleteCard = cardId => {
-        const {dispatch, list, id} = this.props;
-        // dispatch(deleteCard(cardId, list._id, boardId));
-        console.log(list.id, cardId);
-        this.props.deleteTask(list.id, cardId);
+    deleteCardHandler = cardId => {
+        const {dispatch, column, id} = this.props;
+        // dispatch(deleteColumn(cardId, list._id, boardId));
+        // console.log(column.id, cardId);
+        this.props.deleteCard(column.id, cardId);
     };
 
-    //~~~~ Обработчик нажатия кнопки редактировать заголовок ListTitleButton ~~~~
+    //~~~~ Обработчик нажатия кнопки редактировать заголовок ColumnTitleButton ~~~~
     openTitleEditor = () => {
         this.setState({
-            isListTitleInEdit: true,
-            newListTitle: this.props.list.card_name
+            isColumnTitleInEdit: true,
+            newColumnTitle: this.props.column.column_name
         });
     };
-    handleListTitleEditorChange = (event) => {
-        this.setState({newListTitle: event.target.value});
+    handleColumnTitleEditorChange = (event) => {
+        this.setState({newColumnTitle: event.target.value});
     };
 
-    handleListTitleKeyDown = (event) => {
+    handleColumnTitleKeyDown = (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            this.handleSubmitListTitle();
+            this.handleSubmitColumnTitle();
         }
     };
-    handleSubmitListTitle = () => {
-        const {newListTitle} = this.state;
-        const {list, boardId, dispatch} = this.props;
-        if (newListTitle === this.props.list.card_name) {
+    handleSubmitColumnTitle = () => {
+        const {newColumnTitle} = this.state;
+        const {column, boardId, dispatch} = this.props;
+        if (newColumnTitle === this.props.column.column_name) {
             this.setState({
-                isListTitleInEdit: false
+                isColumnTitleInEdit: false
             });
         }
         else {
-            // dispatch(editListTitle(newListTitle, list._id, boardId));
-            this.props.changeCard(newListTitle, this.props.list.id);
-            console.log("id =", this.props.list.id);
+            // dispatch(editListTitle(newColumnTitle, list._id, boardId));
+            this.props.changeColumn(newColumnTitle, this.props.column.id);
+            console.log("id =", this.props.column.id);
             this.setState({
-                isListTitleInEdit: false,
-                newListTitle: ""
+                isColumnTitleInEdit: false,
+                newColumnTitle: ""
             });
         }
 
     };
     // Обработчик вызова "Удаления списка"
-    deleteList = () => {
-        const {list} = this.props;
-        this.props.deleteCard(list.id)
+    deleteColumnHandler = () => {
+        // console.log(this.props);
+        const {column} = this.props;
+        this.props.deleteColumn(column.id)
     };
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     render() {
-        const stateList = this.props.list;
+        const stateColumn = this.props.column;
         const {
-            cardInEdit,
-            editableCardTitle,
-            isListTitleInEdit,
-            newListTitle
+            isColumnTitleInEdit,
+            newColumnTitle
         } = this.state;
 
         return (
-          <div className={classes.List_Content} key={stateList.id} id={stateList.id}>
-              {isListTitleInEdit ? (
-                <div className={classes.ListTitleTextareaWrapper}>
+          <div className={classes.Column_Content} key={stateColumn.id} id={stateColumn.id}>
+              {isColumnTitleInEdit ? (
+                <div className={classes.ColumnTitleTextareaWrapper}>
                     <Textarea
-                      className="ListTitleTextarea"
+                      className="ColumnTitleTextarea"
                       autoFocus
-                      useCacheForDOMMeasurements
-                      value={newListTitle}
-                      onChange={this.handleListTitleEditorChange}
-                      onKeyDown={this.handleListTitleKeyDown}
-                      onBlur={this.handleSubmitListTitle}
+                      // useCacheForDOMMeasurements
+                      value={newColumnTitle}
+                      onChange={this.handleColumnTitleEditorChange}
+                      onKeyDown={this.handleColumnTitleKeyDown}
+                      onBlur={this.handleSubmitColumnTitle}
                     />
                 </div>
               ) : (
-                <div className={classes.ListTitle}>
+                <div className={classes.ColumnTitle}>
                     <Button
                       className="ListTitleButton"
                       onFocus={this.openTitleEditor}
                       onClick={this.openTitleEditor}
                     >
-                        {stateList.card_name}
+                        {stateColumn.column_name}
                     </Button>
                     <Button
                       className="DeleteCardButton"
-                      onClick={this.deleteList}
+                      onClick={this.deleteColumnHandler}
                     >
                         <DeleteIcon/>
                     </Button>
                 </div>
               )}
-              <Droppable droppableId={this.props.list.id}>
+              <Droppable droppableId={this.props.column.id}>
                   {provided => (
                     <div className="List-Cards"
                          ref={provided.innerRef}
                          {...provided.droppableProps}
                     >
                         {/*функцией map раскрываем список всех задачь из состояния*/}
-                        {stateList.tasks.map((task, index) => (
+                        {stateColumn.cards.map((card, index) => (
                           //Вывод компонента Задачи
-                          <Task
+                          <Card
                             key={index}
-                            task={task}
+                            card={card}
                             index={index}
                             state={this.state}
-                            deleteCard={this.deleteCard}
+                            deleteCard={this.deleteCardHandler}
                             openCardEditor={this.openCardEditor}
 
                           />
@@ -155,11 +154,11 @@ export default class BoardList extends Component {
                         {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
                         <Form
                           classNameBtn="ComposerWrapper"
-                          addTask={this.props.addTask}
-                          list={this.props.list}
-                          type="addTask"
-                          btnText="Add new task"
-                          btnTextInner="Add task"
+                          addCard={this.props.addCard}
+                          column={this.props.column}
+                          type="addCard"
+                          btnText="Add new card"
+                          btnTextInner="Add card"
                         />
                     </div>
                   )}

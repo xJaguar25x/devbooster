@@ -1,0 +1,29 @@
+@import '../../Containers/App/variables';
+
+.Column_Content {
+    width: 268px;
+    background: $background-grey;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin: 8px;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+
+.ColumnTitle {
+    display: flex;
+    flex-shrink: 0;
+    height: 48px;
+    align-items: center;
+    color: rgb(46, 68, 78);
+}
+
+.ColumnTitleTextareaWrapper {
+    height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+}

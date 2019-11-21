@@ -1,11 +1,11 @@
 import React, {Component, Fragment} from 'react';
-import classes from '../BoardList/BoardList.module.scss';
+import classes from '../Card/Card.module.scss';
 import {Draggable} from "react-beautiful-dnd";
 import {Button, Textarea} from "../../components";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
-export default class Task extends Component {
+export default class Card extends Component {
 
     render() {
         const stateList = this.props.state;
@@ -16,9 +16,9 @@ export default class Task extends Component {
 
         return (
           <Draggable
-            key={this.props.task.id}
+            key={this.props.card.id}
             className="task"
-            draggableId={this.props.task.id}
+            draggableId={this.props.card.id}
             index={this.props.index}
           >
               {({
@@ -28,10 +28,10 @@ export default class Task extends Component {
                     placeholder
                 }) => (
                 <Fragment>
-                    {cardInEdit !== this.props.task.id ? (
+                    {cardInEdit !== this.props.card.id ? (
                       <div
-                        key={this.props.task.id}
-                        id={this.props.task.id}
+                        key={this.props.card.id}
+                        id={this.props.card.id}
                         className={classes.card_title}
                         ref={innerRef}
                         {...draggableProps}
@@ -39,17 +39,17 @@ export default class Task extends Component {
                         data-react-beautiful-dnd-draggable="0"
                         data-react-beautiful-dnd-drag-handle="0"
                       >
-                          <span>{this.props.task.task_name}</span>
+                          <span>{this.props.card.card_name}</span>
                           <div>
                               <Button
                                 className="DeleteCardButton"
-                                onClick={() => this.props.deleteCard(this.props.task.id)}
+                                onClick={() => this.props.deleteCard(this.props.card.id)}
                               >
                                   <DeleteIcon/>
                               </Button>
                               <Button
                                 className="EditCardButton"
-                                // onClick={() => this.props.openCardEditor(this.props.task)}
+                                // onClick={() => this.props.openCardEditor(this.props.card)}
                                 // TODO: сделать изменение задачи
                               >
                                   <EditIcon/>
@@ -58,11 +58,11 @@ export default class Task extends Component {
 
                       </div>
                     ) : (
-                      <div className={classes.ListTitleTextareaWrapper}>
+                      <div className={classes.ColumnTitleTextareaWrapper}>
                         <Textarea
-                          className="ListTitleTextarea"
+                          className="ColumnTitleTextarea"
                           autoFocus
-                          useCacheForDOMMeasurements
+                          // useCacheForDOMMeasurements
                           value={editableCardTitle}
                           onChange={this.handleCardEditorChange}
                           onKeyDown={this.handleEditKeyDown}

@@ -5,33 +5,33 @@ import {ClickOutsideWrapper} from "../../hoc";
 
 export default class Form extends Component {
     state = {
-        newCardFormIsOpen: false,
-        newCardTitle: "",
+        newColumnFormIsOpen: false,
+        newColumnTitle: "",
     };
 
     // показать/скрыть форму
     toggleCardComposer = () => {
-        this.setState({newCardFormIsOpen: !this.state.newCardFormIsOpen});
+        this.setState({newColumnFormIsOpen: !this.state.newColumnFormIsOpen});
     };
     // подтвердить отправку формы
     handleSubmitCard = event => {
         event.preventDefault();
-        const {newCardTitle} = this.state;
-        const {list, boardId, dispatch} = this.props;
-        if (newCardTitle === "") return;
-        // dispatch(addCard(newCardTitle, list._id, boardId));
+        const {newColumnTitle} = this.state;
+        const {column, boardId, dispatch} = this.props;
+        if (newColumnTitle === "") return;
+        // dispatch(addColumn(newColumnTitle, column._id, boardId));
         // console.log(this.props);
-        if (!this.props.list) {
-            this.props.addCard(newCardTitle);
+        if (!this.props.column) {
+            this.props.addColumn(newColumnTitle);
         }
         else {
-            this.props.addTask(list.id, newCardTitle);
+            this.props.addCard(column.id, newColumnTitle);
         }
-        this.setState({newCardTitle: "", newCardFormIsOpen: false});
+        this.setState({newColumnTitle: "", newColumnFormIsOpen: false});
     };
     // записать новое значение в state
     handleCardComposerChange = (event) => {
-        this.setState({newCardTitle: event.target.value});
+        this.setState({newColumnTitle: event.target.value});
     };
     // при нажатии Enter вызвать обработчик отправки формы
     handleKeyDown = (event) => {
@@ -47,8 +47,8 @@ export default class Form extends Component {
 
     render() {
         const {
-            newCardTitle,
-            newCardFormIsOpen
+            newColumnTitle,
+            newColumnFormIsOpen
         } = this.state;
 
         const clsBtn = [
@@ -62,7 +62,7 @@ export default class Form extends Component {
 
         return (
           <div className={clsWrapper.join(' ')}>
-              {newCardFormIsOpen && (
+              {newColumnFormIsOpen && (
                 <ClickOutsideWrapper handleClickOutside={this.toggleCardComposer}>
                     <div className={classes.TextareaWrapper}>
                         <form
@@ -70,17 +70,17 @@ export default class Form extends Component {
                           onSubmit={this.handleSubmitCard}
                         >
                             <Textarea
-                              className="ListTitleTextarea"
+                              className="ColumnTitleTextarea"
                               autoFocus
                               // useCacheForDOMMeasurements
                               onChange={this.handleCardComposerChange}
                               onKeyDown={this.handleKeyDown}
-                              value={newCardTitle}
+                              value={newColumnTitle}
                             />
                             <Button
-                              className={"ListTitleButton", "Add"}
+                              className={"ColumnTitleButton", "Add"}
                               type="submit"
-                              disabled={newCardTitle === ""}
+                              disabled={newColumnTitle === ""}
                               onClick={this.handleOnClickButtonAdd}
                             >
                                 {this.props.btnTextInner}
@@ -89,7 +89,7 @@ export default class Form extends Component {
                     </div>
                 </ClickOutsideWrapper>
               )}
-              {/*{newCardFormIsOpen || this.props.type === "addTask" && (*/}
+              {/*{newCardFormIsOpen || this.props.type === "addCard" && (*/}
                 {/*<div className={classes.ComposerWrapper}>*/}
                     {/*<Button*/}
                       {/*className="CardButton"*/}
@@ -99,7 +99,7 @@ export default class Form extends Component {
                     {/*</Button>*/}
                 {/*</div>*/}
               {/*)}*/}
-              {/*{newCardFormIsOpen || this.props.type === "addCard" && (*/}
+              {/*{newCardFormIsOpen || this.props.type === "addColumn" && (*/}
                 {/*<div className={cls.join(' ')}>*/}
                     {/*<Button*/}
                       {/*className="CardButton"*/}
@@ -109,7 +109,7 @@ export default class Form extends Component {
                     {/*</Button>*/}
                 {/*</div>*/}
               {/*)}*/}
-              {newCardFormIsOpen || (
+              {newColumnFormIsOpen || (
                 <div className={clsBtn.join(' ')}>
                     <Button
                       className="CardButton"

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {BoardList, Form} from "../index";
+import {Column, Form} from "../index";
 import uuid from 'uuid';
 import './Board.scss';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
@@ -12,143 +12,109 @@ class Board extends Component {
 
     // componentDidMount(){
     //     this.props.getItems();
+    //     // console.log( this.props);
     // }
+
     state = {
-        cards: [
+        columns: [
             {
                 id: uuid(),
-                card_name: "card1",
-                tasks: [
-                    {id: uuid(), task_name: "task1"},
-                    {id: uuid(), task_name: "task2"}
+                column_name: "column1",
+                cards: [
+                    {id: uuid(), card_name: "card1"},
+                    {id: uuid(), card_name: "card2"}
                 ]
             },
             {
                 id: uuid(),
-                card_name: "card2",
-                tasks: [
-                    {id: uuid(), task_name: "task4"}
+                column_name: "column2",
+                cards: [
+                    {id: uuid(), card_name: "card3"}
                 ]
             },
             {
                 id: uuid(),
-                card_name: "card3",
-                tasks: [
-                    {id: uuid(), task_name: "task4"},
-                    {id: uuid(), task_name: "task3"},
-                    {id: uuid(), task_name: "task32"}
+                column_name: "column3",
+                cards: [
+                    {id: uuid(), card_name: "card2"},
+                    {id: uuid(), card_name: "card5"},
+                    {id: uuid(), card_name: "card6"}
                 ]
             }
         ]
     };
 
-    // newstate = {
-    //     tasks: [
-    //         {id: uuid(), task_name: "task1"},
-    //         {id: uuid(), task_name: "task2"},
-    //         {id: uuid(), task_name: "task4"},
-    //         {id: uuid(), task_name: "task4"},
-    //         {id: uuid(), task_name: "task3"},
-    //         {id: uuid(), task_name: "task32"}
-    //     ],
-    //     cards: [
-    //         {
-    //             id: uuid(),
-    //             card_name: "card1",
-    //             tasks: [
-    //                 tasks[0].id,
-    //                 tasks[1].id
-    //             ]
-    //         },
-    //         {
-    //             id: uuid(),
-    //             card_name: "card2",
-    //             tasks: [
-    //                 tasks[2].id
-    //             ]
-    //         },
-    //         {
-    //             id: uuid(),
-    //             card_name: "card3",
-    //             tasks: [
-    //                 tasks[3].id,
-    //                 tasks[4].id,
-    //                 tasks[5].id
-    //             ]
-    //         }
-    //     ]
-    // };
-
-    // обработчик удаления из состояния cards
-    deleteCard = card_id => {
+    // обработчик удаления из состояния columns
+    deleteColumn = column_id => {
         this.setState({
-            cards: this.state.cards.filter((item) => item.id !== card_id)
+            columns: this.state.columns.filter((item) => item.id !== column_id)
         });
     };
-    // обработчик добавления к состоянию cards
-    addCard = item => {
+    // обработчик добавления к состоянию columns
+    addColumn = item => {
         this.setState({
-            cards: [
-                ...this.state.cards,
+            columns: [
+                ...this.state.columns,
                 {
                     id: uuid(),
-                    card_name: item,
-                    tasks: []
+                    column_name: item,
+                    cards: []
                 }
             ]
         })
         ;
         // console.log(this.state);
     };
-    // обработчик изменения в состоянии cards
-    changeCard = (item_value, card_id) => {
+    // обработчик изменения в состоянии columns
+    changeColumn = (item_value, card_id) => {
         let state = this.state;
         this.setState({
-            cards: state.cards.map((item) => item.id === card_id ? {
+            columns: state.columns.map((item) => item.id === card_id ? {
                 ...item,
-                card_name: item_value
+                column_name: item_value
             } : item)
         });
     };
 
-    // обработчик удаления из состояния Task
-    deleteTask = (card_id, task_id) => {
-        let newState = this.state.cards;
-        let newCard = this.state.cards.find((item) => item.id === card_id);
-        const temp = newCard.tasks.filter((item) => item.id !== task_id);
-        const indexOfList = this.state.cards.findIndex((item) => item.id === card_id);
+    // обработчик удаления из состояния Card
+    deleteCard = (column_id, card_id) => {
+        let newState = this.state.columns;
+        let newCard = this.state.columns.find((item) => item.id === column_id);
+        const temp = newCard.cards.filter((item) => item.id !== card_id);
+        const indexOfList = this.state.columns.findIndex((item) => item.id === column_id);
         // console.log("indexOfList = ",indexOfList);
         // console.log(newCard);
         // console.log(temp);
-        newCard.tasks = temp;
+        newCard.cards = temp;
         // console.log(newCard);
         newState[indexOfList] = newCard;
 
         this.setState({
-            cards: newState
+            columns: newState
         });
     };
-    // обработчик добавления к состоянию Task
-    addTask = (card_id, task_value) => {
-        let newState = this.state.cards;
-        let editCard = this.state.cards.find((item) => item.id === card_id);
-        const indexOfList = this.state.cards.findIndex((item) => item.id === card_id);
-        editCard.tasks.push({id: uuid(), task_name: task_value});
+
+    // обработчик добавления к состоянию Card
+    addCard = (column_id, card_value) => {
+        let newState = this.state.columns;
+        let editCard = this.state.columns.find((item) => item.id === column_id);
+        const indexOfList = this.state.columns.findIndex((item) => item.id === column_id);
+        editCard.cards.push({id: uuid(), card_name: card_value});
         newState[indexOfList] = editCard;
 
         this.setState({
-            cards: newState
+            columns: newState
         });
 
     };
-    // обработчик изменения в состоянии Task
-    changeTask = (item_value, send_id) => {
+    // обработчик изменения в состоянии Card
+    changeCard = (item_value, send_id) => {
         // TODO: сделать изменение задачи
 
         // this.setState({
-        //     cards: this.state.cards.map((item) => item.id === send_id ? {
+        //     columns: this.state.columns.map((item) => item.id === send_id ? {
         //         ...item,
-        //         card_name: item_value
+        //         column_name: item_value
         //     } : item)
         // });
     };
@@ -169,29 +135,29 @@ class Board extends Component {
             const newState = this.state;
             // console.log("state = ", newState);
             // создаем копию перемещаемой колонку
-            const draggbleColumn = newState.cards.find(item => item.id === draggableId);
+            const draggbleColumn = newState.columns.find(item => item.id === draggableId);
             // удаляем из исходного state перемещаемую колонку
-            newState.cards.splice(source.index, 1);
+            newState.columns.splice(source.index, 1);
             // console.log("tasksSource after = ", tasksSource);
             // добавляем в state перемещаемую колонку на новое место
-            newState.cards.splice(destination.index, 0, draggbleColumn);
+            newState.columns.splice(destination.index, 0, draggbleColumn);
             // console.log("tasksDestination after = ", tasksDestination);
-            // console.log("state = ", newState.cards);
+            // console.log("state = ", newState.columns);
 
             this.setState(newState);
 
         } else {
             const state = this.state;
             // создаем копию списка откуда перетаскиваем
-            const listSource = this.state.cards.find(item => item.id === source.droppableId);
+            const listSource = this.state.columns.find(item => item.id === source.droppableId);
             // создаем копию списка куда перетаскиваем
-            const listDestination = this.state.cards.find(item => item.id === destination.droppableId);
+            const listDestination = this.state.columns.find(item => item.id === destination.droppableId);
             // создаем копию перемещаемой задачи
-            const draggbleCard = listSource.tasks.find(item => item.id === draggableId);
+            const draggbleCard = listSource.cards.find(item => item.id === draggableId);
             // создаем копию массива с задачами
-            let tasksSource = listSource.tasks;
+            let tasksSource = listSource.cards;
             // создаем копию массива с задачами
-            let tasksDestination = listDestination.tasks;
+            let tasksDestination = listDestination.cards;
             // console.log("listSource =", listSource);
             // console.log("listDestination =", listDestination);
             // console.log("draggbleCard =", draggbleCard);
@@ -206,9 +172,9 @@ class Board extends Component {
 
             // обновляем списки назначения и исходный
             const newList = {
-                cards: state.cards.map((item) => {
-                      if (item.id === source.droppableId) return ({...item, tasks: tasksSource});
-                      else if (item.id === destination.droppableId) return ({...item, tasks: tasksDestination});
+                columns: state.columns.map((item) => {
+                      if (item.id === source.droppableId) return ({...item, cards: tasksSource});
+                      else if (item.id === destination.droppableId) return ({...item, cards: tasksDestination});
                       else return item;
                   }
                 )
@@ -216,13 +182,13 @@ class Board extends Component {
             // console.log("newList =", newList);
 
             const newState = {
-                cards: [...newList.cards]
+                columns: [...newList.columns]
             };
             // console.log(newState);
             this.setState(newState);
         }
         /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        // const list = this.state.cards[source.droppableId];
+        // const list = this.state.columns[source.droppableId];
         // const newTaskIds = Array.from(column.taskIds);
         // newTaskIds.splice(source.index, 1);
         // newTaskIds.splice(destination.index, 0, draggableId);
@@ -243,10 +209,10 @@ class Board extends Component {
     };
 
     render() {
-        const cards = this.state.cards;
-        // const lists = this.props.item.cards;
-        // const { cards } = this.props.item;
-        // console.log(cards);
+        const columns = this.state.columns;
+        // const lists = this.props.item.columns;
+        // const { columns } = this.props.item;
+        // console.log(columns);
         const boardId = "1";
 
         return (
@@ -258,10 +224,10 @@ class Board extends Component {
                   <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
                       {droppableProvided => (
                         <div className="lists-wrapper" ref={droppableProvided.innerRef}>
-                            {cards.map((list, index) => (
+                            {columns.map((column, index) => (
                               <Draggable
-                                key={list.id}
-                                draggableId={list.id}
+                                key={column.id}
+                                draggableId={column.id}
                                 index={index}
                               >
                                   {provided => (
@@ -273,16 +239,16 @@ class Board extends Component {
                                           data-react-beautiful-dnd-draggable="0"
                                           data-react-beautiful-dnd-drag-handle="0"
                                         >
-                                            <BoardList
-                                              key={list.id}
-                                              list={list}
+                                            <Column
+                                              key={column.id}
+                                              column={column}
                                               boardId={boardId}
+                                              changeColumn={this.changeColumn}
+                                              deleteColumn={this.deleteColumn}
+                                              addColumn={this.addColumn}
                                               changeCard={this.changeCard}
                                               deleteCard={this.deleteCard}
                                               addCard={this.addCard}
-                                              changeTask={this.changeTask}
-                                              deleteTask={this.deleteTask}
-                                              addTask={this.addTask}
                                               style={{height: 'initial'}}
                                             />
                                         </div>
@@ -293,12 +259,12 @@ class Board extends Component {
                             ))}
                             {droppableProvided.placeholder}
                             <Form
-                              classNameWrapper="CardComposerWrapper"
-                              classNameBtn="CardComposerWrapperBtn"
-                              type="addCard"
-                              addCard={this.addCard}
-                              btnText="Add new card"
-                              btnTextInner="Add card"
+                              classNameWrapper="ColumnComposerWrapper"
+                              classNameBtn="ColumnComposerWrapperBtn"
+                              type="addColumn"
+                              addColumn={this.addColumn}
+                              btnText="Add new column"
+                              btnTextInner="Add column"
                             />
                         </div>
                       )}

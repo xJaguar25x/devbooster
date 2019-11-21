@@ -7,7 +7,7 @@ class App extends Component {
         lists: [
             {
                 list: 'name',
-                cards: [ {card: 'name'} ]
+                columns: [ {card: 'name'} ]
             }
         ]
     };

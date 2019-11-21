@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import onClickOutside from 'react-onclickoutside';
 
 class ClickOutsideWrapper extends Component {
