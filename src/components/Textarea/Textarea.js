@@ -12,7 +12,6 @@ const Textarea = props => {
       <textarea
         {...props}
         className={cls.join(' ')}
-        disabled={props.disabled}
       >
           {props.children}
       </textarea>

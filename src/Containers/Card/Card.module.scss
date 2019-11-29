@@ -29,3 +29,11 @@
 .card_title:focus {
     box-shadow: $brand-box-shadow-hover;
 }
+
+.CardTitleTextareaWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0 10px;
+}

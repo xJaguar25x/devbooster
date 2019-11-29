@@ -5,49 +5,23 @@ import classes from './Column.module.scss';
 import {Button, Textarea} from "../../components";
 import {Droppable} from 'react-beautiful-dnd';
 
-export default class Column extends Component {
+import {connect} from 'react-redux';
+import {deleteColumn, editColumnTitle} from '../../store/actions/itemActions';
+import PropTypes from 'prop-types';
+
+class Column extends Component {
+
+    // componentDidMount() {
+    //     this.props.getCards();
+    //     // console.log( this.props);
+    // }
 
     state = {
-        cardInEdit: null,
-        editableCardTitle: "",
         isColumnTitleInEdit: false,
         newColumnTitle: ""
     };
 
-    openCardEditor = card => {
-        // console.log("card = ",task.id);
-        this.setState({cardInEdit: card.id, editableCardTitle: card.card_name});
-    };
-
-    handleCardEditorChange = (event) => {
-        this.setState({editableCardTitle: event.target.value});
-    };
-
-    handleEditKeyDown = (event) => {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            this.handleSubmitCardEdit();
-        }
-    };
-
-    handleSubmitCardEdit = () => {
-        const {editableCardTitle, cardInEdit} = this.state;
-        const {list, boardId, dispatch} = this.props;
-        if (editableCardTitle === "") {
-            this.deleteCardHandler(cardInEdit);
-        } else {
-            // dispatch(editCardTitle(editableCardTitle, cardInEdit, list, boardId));
-        }
-        this.setState({editableCardTitle: "", cardInEdit: null});
-    };
-
-    deleteCardHandler = cardId => {
-        const {dispatch, column, id} = this.props;
-        // dispatch(deleteColumn(cardId, list._id, boardId));
-        // console.log(column.id, cardId);
-        this.props.deleteCard(column.id, cardId);
-    };
-
+    /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
     //~~~~ Обработчик нажатия кнопки редактировать заголовок ColumnTitleButton ~~~~
     openTitleEditor = () => {
         this.setState({
@@ -58,7 +32,6 @@ export default class Column extends Component {
     handleColumnTitleEditorChange = (event) => {
         this.setState({newColumnTitle: event.target.value});
     };
-
     handleColumnTitleKeyDown = (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -68,39 +41,46 @@ export default class Column extends Component {
     handleSubmitColumnTitle = () => {
         const {newColumnTitle} = this.state;
         const {column, boardId, dispatch} = this.props;
-        if (newColumnTitle === this.props.column.column_name) {
+        // console.log("column =", column);
+        if (newColumnTitle === column.column_name) {
             this.setState({
                 isColumnTitleInEdit: false
             });
         }
         else {
             // dispatch(editListTitle(newColumnTitle, list._id, boardId));
-            this.props.changeColumn(newColumnTitle, this.props.column.id);
-            console.log("id =", this.props.column.id);
+            this.changeColumn(newColumnTitle, column._id);
+            console.log("id =", column._id);
             this.setState({
                 isColumnTitleInEdit: false,
                 newColumnTitle: ""
             });
         }
+    };
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~ Методы обработки state ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    // обработчик изменения в состоянии columns
+    changeColumn = (value, column_id) => {
+        //используя общее состояние Redux
+        this.props.editColumnTitle(value, column_id);
     };
-    // Обработчик вызова "Удаления списка"
-    deleteColumnHandler = () => {
-        // console.log(this.props);
+    // обработчик удаления из состояния columns
+    handleDeleteColumn = () => {
         const {column} = this.props;
-        this.props.deleteColumn(column.id)
+        this.props.deleteColumn(column._id, this.props.column.cards);
     };
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        const stateColumn = this.props.column;
+        const {column} = this.props;
         const {
             isColumnTitleInEdit,
             newColumnTitle
         } = this.state;
 
         return (
-          <div className={classes.Column_Content} key={stateColumn.id} id={stateColumn.id}>
+          <div className={classes.Column_Content} key={column._id} id={column._id}>
               {isColumnTitleInEdit ? (
                 <div className={classes.ColumnTitleTextareaWrapper}>
                     <Textarea
@@ -120,33 +100,32 @@ export default class Column extends Component {
                       onFocus={this.openTitleEditor}
                       onClick={this.openTitleEditor}
                     >
-                        {stateColumn.column_name}
+                        {column.column_name}
                     </Button>
                     <Button
                       className="DeleteCardButton"
-                      onClick={this.deleteColumnHandler}
+                      onClick={this.handleDeleteColumn}
                     >
                         <DeleteIcon/>
                     </Button>
                 </div>
               )}
-              <Droppable droppableId={this.props.column.id}>
+              <Droppable droppableId={this.props.column._id}>
                   {provided => (
                     <div className="List-Cards"
                          ref={provided.innerRef}
                          {...provided.droppableProps}
                     >
                         {/*функцией map раскрываем список всех задачь из состояния*/}
-                        {stateColumn.cards.map((card, index) => (
+                        {column.cards.map((card, index) => (
                           //Вывод компонента Задачи
                           <Card
                             key={index}
                             card={card}
+                            column={column}
                             index={index}
-                            state={this.state}
-                            deleteCard={this.deleteCardHandler}
-                            openCardEditor={this.openCardEditor}
-
+                            // state={this.state}
+                            // openCardEditor={this.openCardEditor}
                           />
                         ))}
                         {provided.placeholder}
@@ -154,7 +133,6 @@ export default class Column extends Component {
                         {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
                         <Form
                           classNameBtn="ComposerWrapper"
-                          addCard={this.props.addCard}
                           column={this.props.column}
                           type="addCard"
                           btnText="Add new card"
@@ -166,4 +144,20 @@ export default class Column extends Component {
           </div>
         )
     }
+}
+Column.propTypes = {
+    // Проверка типов
+    // getCards: PropTypes.func.isRequired,
+    deleteColumn: PropTypes.func.isRequired,
+    cards: PropTypes.array.isRequired,
+    editColumnTitle: PropTypes.func.isRequired
 };
+const mapStateToProps = (state, ownProps) => ({
+    ownProps,
+    // get default state from reducers/index.js file
+    cards: Object.values(state.cards)
+});
+export default connect(
+  mapStateToProps,
+  {editColumnTitle, deleteColumn}
+)(Column);

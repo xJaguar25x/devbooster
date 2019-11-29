@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import classes from './Form.module.scss';
 import {Button, Textarea} from "../../components";
 import {ClickOutsideWrapper} from "../../hoc";
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {addColumn, addCard} from '../../store/actions/itemActions';
 
-export default class Form extends Component {
+class Form extends Component {
     state = {
         newColumnFormIsOpen: false,
         newColumnTitle: "",
@@ -21,11 +24,14 @@ export default class Form extends Component {
         if (newColumnTitle === "") return;
         // dispatch(addColumn(newColumnTitle, column._id, boardId));
         // console.log(this.props);
-        if (!this.props.column) {
+
+        // Если добавляем column то передаем только имя
+        if (this.props.type === "addColumn") {
             this.props.addColumn(newColumnTitle);
         }
-        else {
-            this.props.addCard(column.id, newColumnTitle);
+        else if (this.props.type === "addCard") {
+            // console.log(this.props);
+            this.props.addCard(column._id, newColumnTitle);
         }
         this.setState({newColumnTitle: "", newColumnFormIsOpen: false});
     };
@@ -90,24 +96,24 @@ export default class Form extends Component {
                 </ClickOutsideWrapper>
               )}
               {/*{newCardFormIsOpen || this.props.type === "addCard" && (*/}
-                {/*<div className={classes.ComposerWrapper}>*/}
-                    {/*<Button*/}
-                      {/*className="CardButton"*/}
-                      {/*onClick={this.toggleCardComposer}*/}
-                    {/*>*/}
-                        {/*{this.props.btnText}*/}
-                    {/*</Button>*/}
-                {/*</div>*/}
+              {/*<div className={classes.ComposerWrapper}>*/}
+              {/*<Button*/}
+              {/*className="CardButton"*/}
+              {/*onClick={this.toggleCardComposer}*/}
+              {/*>*/}
+              {/*{this.props.btnText}*/}
+              {/*</Button>*/}
+              {/*</div>*/}
               {/*)}*/}
               {/*{newCardFormIsOpen || this.props.type === "addColumn" && (*/}
-                {/*<div className={cls.join(' ')}>*/}
-                    {/*<Button*/}
-                      {/*className="CardButton"*/}
-                      {/*onClick={this.toggleCardComposer}*/}
-                    {/*>*/}
-                        {/*{this.props.btnText}*/}
-                    {/*</Button>*/}
-                {/*</div>*/}
+              {/*<div className={cls.join(' ')}>*/}
+              {/*<Button*/}
+              {/*className="CardButton"*/}
+              {/*onClick={this.toggleCardComposer}*/}
+              {/*>*/}
+              {/*{this.props.btnText}*/}
+              {/*</Button>*/}
+              {/*</div>*/}
               {/*)}*/}
               {newColumnFormIsOpen || (
                 <div className={clsBtn.join(' ')}>
@@ -122,4 +128,13 @@ export default class Form extends Component {
           </div>
         )
     }
+}
+
+Form.propTypes = {
+    addColumn: PropTypes.func.isRequired,
+    addCard: PropTypes.func.isRequired
 };
+// const mapStateToProps = (state, ownProps) => ({
+//     ownProps
+// });
+export default connect(null, {addColumn, addCard})(Form);
