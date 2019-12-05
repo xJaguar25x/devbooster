@@ -1,20 +1,39 @@
-import uuid from 'uuid';
 import {
     GET_COLUMNS,
     ADD_COLUMN,
     DELETE_COLUMN,
     EDIT_COLUMN_TITLE, ADD_CARD, DELETE_CARD, REORDER_COLUMN
 } from '../actions/types';
-import State from "./initialState";
+// import outerState from "./initialState";
 
-const initialState = State;
+// let initialState = outerState.columnsById;
 
-const columnsReducer = (state = initialState.columnsById, action) => {
+const initialState = {};
+
+
+function normalizeColumn(inputData) {
+    let outputData = {};
+    inputData.forEach(item => {
+        outputData = {
+            ...outputData,
+            [item._id]: {
+                _id: item._id,
+                column_name: item.name,
+                cards: item.card_ids
+            }
+        };
+    });
+
+    return outputData;
+}
+
+const columnsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_COLUMNS:
-            return {
-                ...state
-            };
+            const data = normalizeColumn(action.payload);
+            // console.log(data);
+            return data;
+
         case EDIT_COLUMN_TITLE: {
             const {columnTitle, columnId} = action.payload;
             console.log(state);
@@ -37,7 +56,7 @@ const columnsReducer = (state = initialState.columnsById, action) => {
                 }
             };
         }
-        // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
+      // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case ADD_CARD: {
             const {cardTitle, cardId, columnId} = action.payload;
             // console.log("cardTitle =%s cardId=%s columnId=%s", cardTitle, cardId, columnId);
@@ -54,13 +73,13 @@ const columnsReducer = (state = initialState.columnsById, action) => {
             };
         }
         case DELETE_COLUMN: {
-            const { columnId } = action.payload;
-            const { [columnId]: deletedList, ...restOfLists } = state;
+            const {columnId} = action.payload;
+            const {[columnId]: deletedList, ...restOfLists} = state;
             return restOfLists
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case DELETE_CARD: {
-            const { columnId, cardId } = action.payload;
+            const {columnId, cardId} = action.payload;
             console.log("cardId=%s columnId=%s", cardId, columnId);
             return {
                 ...state,
@@ -70,6 +89,7 @@ const columnsReducer = (state = initialState.columnsById, action) => {
                 }
             };
         }
+      // изменение порядка Cards в Columns
         case REORDER_COLUMN: {
             const {
                 sourceIndex,
@@ -87,7 +107,7 @@ const columnsReducer = (state = initialState.columnsById, action) => {
                 newCards.splice(destinationIndex, 0, removedCard);
                 return {
                     ...state,
-                    [sourceId]: { ...state[sourceId], cards: newCards }
+                    [sourceId]: {...state[sourceId], cards: newCards}
                 };
             }
 
@@ -99,8 +119,8 @@ const columnsReducer = (state = initialState.columnsById, action) => {
             destinationCards.splice(destinationIndex, 0, removedCard);
             return {
                 ...state,
-                [sourceId]: { ...state[sourceId], cards: sourceCards },
-                [destinationId]: { ...state[destinationId], cards: destinationCards }
+                [sourceId]: {...state[sourceId], cards: sourceCards},
+                [destinationId]: {...state[destinationId], cards: destinationCards}
             };
         }
         default:

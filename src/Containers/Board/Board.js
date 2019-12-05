@@ -4,15 +4,16 @@ import './Board.scss';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 import {connect} from 'react-redux';
-import {getColumns, reorderBoard, reorderColumn} from '../../store/actions/itemActions';
+import {getCards, getColumns, reorderBoard, reorderColumn} from '../../store/actions/itemActions';
 import PropTypes from 'prop-types';
 
 class Board extends Component {
 
-    // componentDidMount() {
-    //     this.props.getColumns();
-    //     // console.log( this.props);
-    // }
+    componentDidMount() {
+        this.props.getCards();
+        this.props.getColumns();
+        console.log(this.props);
+    }
 
     /* ~~~~~~~~~~~~~~~~~~ Методы для перетаскивания ~~~~~~~~~~~~~~~~~~~~~~*/
     onDragEnd = (event) => {
@@ -50,6 +51,11 @@ class Board extends Component {
             // )
 
         } else {
+            let columnById = {};
+              this.props.columns.forEach(item => (
+                columnById = {...columnById,  [item._id]: {...item}}
+            ));
+            console.log("columnById ", columnById);
             // перетаскивание Cards
             this.props.reorderColumn(
               draggableId,
@@ -58,6 +64,7 @@ class Board extends Component {
               source.index,
               destination.index
               // boardId
+              , columnById
             )
         }
     };
@@ -65,6 +72,7 @@ class Board extends Component {
     render() {
         const {columns} = this.props;
         const boardId = "1";
+        console.log(this.props);
 
         return (
           <div className="Dashboard">
@@ -101,7 +109,8 @@ class Board extends Component {
                                     </Fragment>
                                   )}
                               </Draggable>
-                            ))}
+                            ))
+                            }
                             {droppableProvided.placeholder}
                             <Form
                               classNameWrapper="ColumnComposerWrapper"
@@ -120,16 +129,19 @@ class Board extends Component {
 }
 
 Board.propTypes = {
-    // getColumns: PropTypes.func.isRequired,
+    getCards: PropTypes.func.isRequired,
+    getColumns: PropTypes.func.isRequired,
     reorderColumn: PropTypes.func.isRequired,
     reorderBoard: PropTypes.func.isRequired,
     columns: PropTypes.array.isRequired
 };
 const mapStateToProps = (state) => ({
+    cards: Object.values(state.cards),
     columns: Object.values(state.columns)
+    // columns: state.columns
 });
 export default connect(
   mapStateToProps,
-  {getColumns, reorderColumn, reorderBoard}
+  {getCards, getColumns, reorderColumn, reorderBoard}
 )(Board);
 // export default (Board);

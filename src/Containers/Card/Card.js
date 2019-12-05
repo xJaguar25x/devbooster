@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import classes from '../Card/Card.module.scss';
 import {Draggable} from "react-beautiful-dnd";
 import {Button, Textarea} from "../../components";
@@ -11,9 +11,15 @@ import PropTypes from 'prop-types';
 
 class Card extends Component {
 
+    componentDidMount() {
+        // console.log("Card.props", this.props);
+        // console.log("Card.state", this.state);
+    }
+
     state = {
         cardInEdit: null,
-        editableCardTitle: ""
+        editableCardTitle: "",
+        currentCard : this.props.cards[this.props.card]
     };
 
     /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
@@ -36,14 +42,16 @@ class Card extends Component {
 
     handleSubmitCardEdit = () => {
         const {editableCardTitle, cardInEdit} = this.state;
-        const {column, boardId, dispatch} = this.props;
         if (editableCardTitle === "") {
             // Удалять карточку если стерли имя
             this.deleteCardHandler(cardInEdit);
         } else {
             // Или обновлять ее имя, если введено новое
             console.log("22cardTitle =%s cardId=%s ", editableCardTitle, cardInEdit);
-            this.changeCard(cardInEdit, editableCardTitle);
+            let newCard = this.state.currentCard;
+            newCard = {...newCard, card_name: editableCardTitle};
+            this.changeCard(newCard);
+            // this.changeCard(cardInEdit, editableCardTitle);
             // dispatch(editCardTitle(editableCardTitle, cardInEdit, column, boardId));
         }
         this.setState({editableCardTitle: "", cardInEdit: null});
@@ -51,19 +59,23 @@ class Card extends Component {
 
     /* ~~~~~~~~~~~~~~~~~~ Методы обработки state ~~~~~~~~~~~~~~~~~~~~~~*/
     // обработчик изменения в состоянии Card
-    changeCard = (editableCardTitle, cardInEdit, column) => {
-        this.props.editCard(editableCardTitle, cardInEdit, column);
+    changeCard = (newCard) => {
+        this.props.editCard(newCard);
+        // this.props.editCard(editableCardTitle, cardInEdit);
     };
     deleteCardHandler = cardId => {
         const {dispatch, column, card} = this.props;
         // dispatch(deleteColumn(cardId, list._id, boardId));
-        // console.log("cardId=%s columnId=%s", card, column._id);
-        this.props.deleteCard(column._id, card);
+        console.log("cardId=%s columnId=%s column=", card, column._id, column);
+        this.props.deleteCard(column, card);
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
+        // console.log("Card.props", this.props);
+        // console.log("Card.state", this.state);
+
         const stateList = this.state;
         const {
             cardInEdit,
@@ -72,6 +84,7 @@ class Card extends Component {
 
         // извлекаем карточку из массива полученного от редакс с помощью переданного свойства card
         const currentCard = this.props.cards[this.props.card];
+        // console.log("currentCard ",currentCard);
 
         // TODO:
         return (

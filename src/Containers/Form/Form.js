@@ -8,36 +8,35 @@ import {addColumn, addCard} from '../../store/actions/itemActions';
 
 class Form extends Component {
     state = {
-        newColumnFormIsOpen: false,
-        newColumnTitle: "",
+        formIsOpen: false,
+        newTitle: "",
     };
 
     // показать/скрыть форму
     toggleCardComposer = () => {
-        this.setState({newColumnFormIsOpen: !this.state.newColumnFormIsOpen});
+        this.setState({formIsOpen: !this.state.formIsOpen});
     };
     // подтвердить отправку формы
     handleSubmitCard = event => {
         event.preventDefault();
-        const {newColumnTitle} = this.state;
+        const {newTitle} = this.state;
         const {column, boardId, dispatch} = this.props;
-        if (newColumnTitle === "") return;
-        // dispatch(addColumn(newColumnTitle, column._id, boardId));
+        if (newTitle === "") return;
+        // dispatch(addColumn(newTitle, column._id, boardId));
         // console.log(this.props);
 
         // Если добавляем column то передаем только имя
         if (this.props.type === "addColumn") {
-            this.props.addColumn(newColumnTitle);
+            this.props.addColumn(newTitle);
         }
         else if (this.props.type === "addCard") {
-            // console.log(this.props);
-            this.props.addCard(column._id, newColumnTitle);
+            this.props.addCard(column, newTitle);
         }
-        this.setState({newColumnTitle: "", newColumnFormIsOpen: false});
+        this.setState({newTitle: "", formIsOpen: false});
     };
     // записать новое значение в state
     handleCardComposerChange = (event) => {
-        this.setState({newColumnTitle: event.target.value});
+        this.setState({newTitle: event.target.value});
     };
     // при нажатии Enter вызвать обработчик отправки формы
     handleKeyDown = (event) => {
@@ -53,8 +52,8 @@ class Form extends Component {
 
     render() {
         const {
-            newColumnTitle,
-            newColumnFormIsOpen
+            newTitle,
+            formIsOpen
         } = this.state;
 
         const clsBtn = [
@@ -68,7 +67,7 @@ class Form extends Component {
 
         return (
           <div className={clsWrapper.join(' ')}>
-              {newColumnFormIsOpen && (
+              {formIsOpen && (
                 <ClickOutsideWrapper handleClickOutside={this.toggleCardComposer}>
                     <div className={classes.TextareaWrapper}>
                         <form
@@ -81,12 +80,12 @@ class Form extends Component {
                               // useCacheForDOMMeasurements
                               onChange={this.handleCardComposerChange}
                               onKeyDown={this.handleKeyDown}
-                              value={newColumnTitle}
+                              value={newTitle}
                             />
                             <Button
                               className={"ColumnTitleButton", "Add"}
                               type="submit"
-                              disabled={newColumnTitle === ""}
+                              disabled={newTitle === ""}
                               onClick={this.handleOnClickButtonAdd}
                             >
                                 {this.props.btnTextInner}
@@ -95,27 +94,7 @@ class Form extends Component {
                     </div>
                 </ClickOutsideWrapper>
               )}
-              {/*{newCardFormIsOpen || this.props.type === "addCard" && (*/}
-              {/*<div className={classes.ComposerWrapper}>*/}
-              {/*<Button*/}
-              {/*className="CardButton"*/}
-              {/*onClick={this.toggleCardComposer}*/}
-              {/*>*/}
-              {/*{this.props.btnText}*/}
-              {/*</Button>*/}
-              {/*</div>*/}
-              {/*)}*/}
-              {/*{newCardFormIsOpen || this.props.type === "addColumn" && (*/}
-              {/*<div className={cls.join(' ')}>*/}
-              {/*<Button*/}
-              {/*className="CardButton"*/}
-              {/*onClick={this.toggleCardComposer}*/}
-              {/*>*/}
-              {/*{this.props.btnText}*/}
-              {/*</Button>*/}
-              {/*</div>*/}
-              {/*)}*/}
-              {newColumnFormIsOpen || (
+              {formIsOpen || (
                 <div className={clsBtn.join(' ')}>
                     <Button
                       className="CardButton"

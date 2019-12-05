@@ -6,14 +6,14 @@ import {Button, Textarea} from "../../components";
 import {Droppable} from 'react-beautiful-dnd';
 
 import {connect} from 'react-redux';
-import {deleteColumn, editColumnTitle} from '../../store/actions/itemActions';
+import {deleteColumn, editColumnTitle, getCards} from '../../store/actions/itemActions';
 import PropTypes from 'prop-types';
 
 class Column extends Component {
 
     // componentDidMount() {
     //     this.props.getCards();
-    //     // console.log( this.props);
+    //     console.log( this.props);
     // }
 
     state = {
@@ -63,7 +63,8 @@ class Column extends Component {
     // обработчик изменения в состоянии columns
     changeColumn = (value, column_id) => {
         //используя общее состояние Redux
-        this.props.editColumnTitle(value, column_id);
+        const newColumn = {...this.props.column, column_name: value, cards: [...this.props.column.cards]};
+        this.props.editColumnTitle(newColumn);
     };
     // обработчик удаления из состояния columns
     handleDeleteColumn = () => {
@@ -78,6 +79,7 @@ class Column extends Component {
             isColumnTitleInEdit,
             newColumnTitle
         } = this.state;
+        // console.log("Column", column);
 
         return (
           <div className={classes.Column_Content} key={column._id} id={column._id}>
@@ -147,17 +149,18 @@ class Column extends Component {
 }
 Column.propTypes = {
     // Проверка типов
-    // getCards: PropTypes.func.isRequired,
+    getCards: PropTypes.func.isRequired,
     deleteColumn: PropTypes.func.isRequired,
     cards: PropTypes.array.isRequired,
     editColumnTitle: PropTypes.func.isRequired
 };
 const mapStateToProps = (state, ownProps) => ({
-    ownProps,
+    // ownProps,
     // get default state from reducers/index.js file
     cards: Object.values(state.cards)
+    // cards: (state.cards)
 });
 export default connect(
   mapStateToProps,
-  {editColumnTitle, deleteColumn}
+  {editColumnTitle, deleteColumn, getCards}
 )(Column);
