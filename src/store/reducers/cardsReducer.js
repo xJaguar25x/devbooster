@@ -8,7 +8,7 @@ import {
 // let initialState = State.cardsById;
 const initialState = {};
 
-function normalizeCard(inputData) {
+function convertCard(inputData) {
     let outputData = {};
     inputData.forEach(item => {
         // if (item._id){
@@ -28,13 +28,13 @@ function normalizeCard(inputData) {
 const cardsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_CARDS: {
-            const data = normalizeCard(action.payload);
+            const data = convertCard(action.payload);
             // console.log("cardsReducer ",data);
             return data;
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case ADD_CARD: {
-            const {cardTitle, cardId, columnId} = action.payload;
+            const {cardTitle, cardId} = action.payload;
             // console.log(cardTitle, cardId, columnId);
             return {
                 ...state,
@@ -79,4 +79,4 @@ const cardsReducer = (state = initialState, action) => {
 };
 
 
-export default {cardsReducer};
+export default cardsReducer;

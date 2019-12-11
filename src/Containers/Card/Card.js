@@ -64,7 +64,8 @@ class Card extends Component {
         // this.props.editCard(editableCardTitle, cardInEdit);
     };
     deleteCardHandler = cardId => {
-        const {dispatch, column, card} = this.props;
+        // const {dispatch, column, card} = this.props;
+        const {column, card} = this.props;
         // dispatch(deleteColumn(cardId, list._id, boardId));
         console.log("cardId=%s columnId=%s column=", card, column._id, column);
         this.props.deleteCard(column, card);

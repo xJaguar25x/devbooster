@@ -25,7 +25,7 @@ class Column extends Component {
     //~~~~ Обработчик нажатия кнопки редактировать заголовок ColumnTitleButton ~~~~
     openTitleEditor = () => {
         this.setState({
-            isColumnTitleInEdit: true,
+            isBoardTitleInEdit: true,
             newColumnTitle: this.props.column.column_name
         });
     };
@@ -40,11 +40,12 @@ class Column extends Component {
     };
     handleSubmitColumnTitle = () => {
         const {newColumnTitle} = this.state;
-        const {column, boardId, dispatch} = this.props;
+        // const {column, boardId, dispatch} = this.props;
+        const {column} = this.props;
         // console.log("column =", column);
         if (newColumnTitle === column.column_name) {
             this.setState({
-                isColumnTitleInEdit: false
+                isBoardTitleInEdit: false
             });
         }
         else {
@@ -52,7 +53,7 @@ class Column extends Component {
             this.changeColumn(newColumnTitle, column._id);
             console.log("id =", column._id);
             this.setState({
-                isColumnTitleInEdit: false,
+                isBoardTitleInEdit: false,
                 newColumnTitle: ""
             });
         }

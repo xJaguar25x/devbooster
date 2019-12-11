@@ -135,7 +135,9 @@ Board.propTypes = {
     reorderBoard: PropTypes.func.isRequired,
     columns: PropTypes.array.isRequired
 };
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
+    // ownProps - при переходе по ссылке на доску, необходим id доски, чтобы отобразить потомков
+    board: ownProps.match.params.boardId,
     cards: Object.values(state.cards),
     columns: Object.values(state.columns)
     // columns: state.columns

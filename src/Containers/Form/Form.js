@@ -20,7 +20,8 @@ class Form extends Component {
     handleSubmitCard = event => {
         event.preventDefault();
         const {newTitle} = this.state;
-        const {column, boardId, dispatch} = this.props;
+        // const {column, boardId, dispatch} = this.props;
+        const {column} = this.props;
         if (newTitle === "") return;
         // dispatch(addColumn(newTitle, column._id, boardId));
         // console.log(this.props);

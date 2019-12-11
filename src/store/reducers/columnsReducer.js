@@ -11,7 +11,7 @@ import {
 const initialState = {};
 
 
-function normalizeColumn(inputData) {
+function convertColumn(inputData) {
     let outputData = {};
     inputData.forEach(item => {
         outputData = {
@@ -30,7 +30,7 @@ function normalizeColumn(inputData) {
 const columnsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_COLUMNS:
-            const data = normalizeColumn(action.payload);
+            const data = convertColumn(action.payload);
             // console.log(data);
             return data;
 
@@ -58,7 +58,7 @@ const columnsReducer = (state = initialState, action) => {
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case ADD_CARD: {
-            const {cardTitle, cardId, columnId} = action.payload;
+            const { cardId, columnId } = action.payload;
             // console.log("cardTitle =%s cardId=%s columnId=%s", cardTitle, cardId, columnId);
             return {
                 ...state,
@@ -128,4 +128,4 @@ const columnsReducer = (state = initialState, action) => {
     }
 };
 
-export default {columnsReducer};
+export default columnsReducer;

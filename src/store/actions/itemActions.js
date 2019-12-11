@@ -6,24 +6,83 @@ import {
     GET_CARDS,
     ADD_CARD,
     DELETE_CARD,
-    EDIT_CARD_TITLE, REORDER_COLUMN, REORDER_BOARD
+    EDIT_CARD_TITLE, REORDER_COLUMN, REORDER_BOARD, GET_BOARDS, ADD_BOARD, DELETE_BOARD
 } from './types';
 // axios - http client используется для отправки запросов
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://api.mbdotest.online';
 
-export const getColumns = () => dispatch => {
+/* ~~~~~~~~~~~~~~~~~~ Boards ~~~~~~~~~~~~~~~~~~~~~~*/
+export const getBoards = () => dispatch => {
     axios
-      .get('/api/columns')
+      .get('/api/boards')
       .then(res => {
           dispatch({
-              type: GET_COLUMNS,
+              type: GET_BOARDS,
               payload: res.data
           })
       })
 };
+export const addBoard = (boardTitle) => dispatch => {
+    //преобразуем к виду для сервера
+    // TODO: изменить owner_id на нужный, после добавления пользователей
+    const newBoard = {"name": boardTitle, "owner_id": "5dd87b0e0453e1ca59773bc8"};
+    axios
+    // отправляем запрос на создание колонки
+      .post('/api/boards', newBoard)
+      .then((res) => {
+          console.log("res ", res);
+          const boardId = res.data._id;
+          dispatch({
+              type: ADD_BOARD,
+              payload: {boardTitle, boardId}
+          })
+      })
+      .catch((err) => {
+          console.log(err);
+      });
+};
+export const editBoardTitle = (board) => dispatch => {
+    // const boardId = board._id;
+    // const boardTitle = board.title;
+    // // console.log("cardTitle =%s cardId=%s", cardTitle, cardId);
+    // //преобразуем к виду для сервера
+    // const newColumn = {"name": boardTitle, "column_ids": [...board.column_ids]};
+    // console.log("newColumn", newColumn);
+    // axios
+    //   .put(`/api/columns/${boardId}`, newColumn)
+    //   .then((res) => {
+    //       console.log("res ", res);
+    //       dispatch({
+    //           type: EDIT_COLUMN_TITLE,
+    //           payload: {columnTitle: boardTitle, columnId: boardId}
+    //       })
+    //   })
+    //   .catch((err) => {
+    //       console.log(err);
+    //   });
+};
+export const deleteBoard = (boardId) => dispatch => {
+    console.log(" boardId=%s", boardId);
+    dispatch({
+        type: DELETE_BOARD,
+        payload: {boardId}
+    });
+    axios
+      .delete(`/api/boards/${boardId}`)
+      .then((res) => {
+          console.log("Успешно удален, res= ", res);
+          // dispatch({
+          //     type: DELETE_BOARD,
+          //     payload: {boardId}
+          // })
+      })
+      .catch((err) => {
+          console.log(err);
+      });
 
+};
 // export const reorderList = (
 //   cardId,
 //   sourceId,
@@ -53,7 +112,36 @@ export const getColumns = () => dispatch => {
 //       })
 //       .then(({ data }) => console.log(data));
 // };
+export const reorderBoard = (
+  columnId,
+  sourceId,
+  destinationId,
+  sourceIndex,
+  destinationIndex
+) => {
+    // TODO: тут нужно будет доделать при добавлении сущность board в store. Добавить в boardReducer
+    return {
+        type: REORDER_BOARD,
+        payload: {
+            sourceId,
+            destinationId,
+            sourceIndex,
+            destinationIndex
+        }
+    };
+};
 
+/* ~~~~~~~~~~~~~~~~~~ Columns ~~~~~~~~~~~~~~~~~~~~~~*/
+export const getColumns = () => dispatch => {
+    axios
+      .get('/api/columns')
+      .then(res => {
+          dispatch({
+              type: GET_COLUMNS,
+              payload: res.data
+          })
+      })
+};
 export const addColumn = (columnTitle) => dispatch => {
     //преобразуем к виду для сервера
     const newColumn = {"name": columnTitle};
@@ -192,10 +280,6 @@ export const getCards = () => dispatch => {
     axios
       .get('/api/cards')
       .then(res => {
-          // console.log(
-          //   'normalize',
-          //   normalize(res.data, schemas.columnSchema)
-          // );
           dispatch({
               type: GET_CARDS,
               payload: res.data
@@ -282,24 +366,4 @@ export const editCard = (card) => dispatch => {
       .catch((err) => {
           console.log(err);
       });
-};
-
-/* ~~~~~~~~~~~~~~~~~~ Boards ~~~~~~~~~~~~~~~~~~~~~~*/
-export const reorderBoard = (
-  columnId,
-  sourceId,
-  destinationId,
-  sourceIndex,
-  destinationIndex
-) => {
-    // TODO: тут нужно будет доделать при добавлении сущность board в store. Добавить в boardReducer
-    return {
-        type: REORDER_BOARD,
-        payload: {
-            sourceId,
-            destinationId,
-            sourceIndex,
-            destinationIndex
-        }
-    };
 };

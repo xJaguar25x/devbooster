@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route} from 'react-router-dom';
 import 'typeface-roboto';
 import './index.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -7,8 +8,16 @@ import 'font-awesome/css/font-awesome.min.css';
 import {App} from './Containers';
 import * as serviceWorker from './serviceWorker';
 
+import {Provider} from "react-redux";
+import store from "./store/store";
+
+
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+      <BrowserRouter>
+          <Route path="/" component={App} />
+      </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 
