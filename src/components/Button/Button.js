@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import classes from './Button.scss';
+import React from 'react';
+import classes from './Button.module.scss';
 
 const Button = props => {
     const cls = [
         classes.Button,
-        classes[props.type]
+        classes[props.className]
     ];
+    // console.log(props);
 
     return (
       <button
@@ -13,9 +14,9 @@ const Button = props => {
         className={cls.join(' ')}
         disabled={props.disabled}
       >
-          {/*{this.props.text}*/}
           {props.children}
       </button>
     );
 
 };
+export default Button;

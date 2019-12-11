@@ -1,0 +1,124 @@
+.Button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(46,68,78);
+    line-height: 18px;
+    border: none;
+    transition-duration: 0.085s;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size:13px;
+    margin: 0;
+    width: auto;
+    height: auto;
+    transition-timing-function: ease-in;
+    background-color: #fff;
+
+    &:hover,
+    &:focus,
+    &:active {
+        box-shadow: inset 0 0 0 2px rgba(0,0,0,0.2);
+    }
+}
+
+.DeleteCardButton{
+    //position: absolute;
+    //top: 7.5px;
+    //right: 27px;
+    //padding: 0;
+    //border-width: 0;
+    //border-style: initial;
+    //border-color: initial;
+    //border-image: initial;
+
+    opacity: 0.1;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+    color: rgb(46,68,78);
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: #DA3849;
+        opacity: 1;
+    }
+}
+
+.DeleteListButton{
+    //border: 0;
+    //padding: 0;
+    //margin-right: 10px;
+    //background: #F8F8F8;
+    //color: rgb(46,68,78);
+    //cursor: pointer;
+    //font-size: 18px;
+    //opacity: 0.8;
+    //
+    //&:hover,
+    //&:focus,
+    //&:active {
+    //    color: #DA3849;
+    //    opacity: 1;
+    //}
+}
+
+.ListTitleButton{
+    flex-grow: 1;
+    padding: 10px;
+    font-weight: 600;
+    justify-content: space-between;
+    background: #F8F8F8;
+    color: rgb(46, 68, 78);
+    font-size: 14px;
+    border-top-left-radius: 3px;
+}
+
+.EditCardButton {
+    //padding: 0;
+    //position: absolute;
+    //top: 8.5px;
+    //right: 8px;
+    opacity: 0.1;
+    font-size: 16px;
+
+    &:hover,
+    &:focus,
+    &:active {
+        opacity: 1;
+    }
+}
+
+
+.CardButton{
+    background-color: #fcd1f0;
+    background-color: rgba(9,30,66,.13);
+}
+
+.Add{
+    background-color: #5dcc2b;
+    color: #ffffff;
+}
+button:disabled.Add{
+    color: #091E42;
+    background-color: #49852e;
+}
+
+.list{
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    margin: 8px;
+    width: 268px;
+    height: 48px;
+    background-color: #fcddd1;
+}
+.board{
+    font-size: 14px;
+    width: 70px;
+    height: 34px;
+    background-color: #d1f7c4;
+}

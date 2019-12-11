@@ -1,95 +1,147 @@
 import React, {Component, Fragment} from 'react';
-import {BoardForm, BoardList} from "../index";
-import {Typography} from "@material-ui/core/es/index";
-import uuid from 'uuid';
+import {Column, Form} from "../index";
+import './Board.scss';
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
-export default class Board extends Component {
-    state = {
-        cards: [
-            {
-                id: uuid(),
-                card_name: "card1",
-                tasks: [
-                    {id: uuid(), task_name: "task1"},
-                    {id: uuid(), task_name: "task2"}
-                ]
-            },
-            {
-                id: uuid(),
-                card_name: "card2",
-                tasks: [
-                    {id: uuid(), task_name: "task4"}
-                ]
-            },
-            {
-                id: uuid(),
-                card_name: "card3",
-                tasks: [
-                    {id: uuid(), task_name: "task4"},
-                    {id: uuid(), task_name: "task3"},
-                    {id: uuid(), task_name: "task32"}
-                ]
-            }
-        ]
-    };
+import {connect} from 'react-redux';
+import {getCards, getColumns, reorderBoard, reorderColumn} from '../../store/actions/itemActions';
+import PropTypes from 'prop-types';
 
-    // обработчик удаления из состояния
-    deleteCard = send_id => {
-        this.setState({
-            cards: this.state.cards.filter((item) => item.id !== send_id)
-        });
-    };
-    // обработчик добавления к состоянию
-    addCard = item => {
-        this.setState({
-            cards: [
-                ...this.state.cards,
-                {
-                    id: uuid(),
-                    card_name: item,
-                    tasks: []
-                }
-            ]
-        })
-        ;
-        // console.log(this.state);
-    };
-    // обработчик изменения в состоянии
-    changeCard = (item_value, send_id) => {
-        this.setState({
-            cards: this.state.cards.map((item) => item.id === send_id ? {
-                ...item,
-                card_name: item_value
-            } : item)
-        });
+class Board extends Component {
+
+    componentDidMount() {
+        this.props.getCards();
+        this.props.getColumns();
+        console.log(this.props);
+    }
+
+    /* ~~~~~~~~~~~~~~~~~~ Методы для перетаскивания ~~~~~~~~~~~~~~~~~~~~~~*/
+    onDragEnd = (event) => {
+        const {draggableId, source, destination, type} = event;
+        // console.log("event = ", event);
+
+        if (!destination) {
+            return;
+        }
+        // если перетащили на то же место
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+        if (type === "COLUMN") {
+            // const newState = this.state;
+            // // console.log("state = ", newState);
+            // // создаем копию перемещаемой колонку
+            // const draggbleColumn = newState.columns.find(item => item.id === draggableId);
+            // // удаляем из исходного state перемещаемую колонку
+            // newState.columns.splice(source.index, 1);
+            // // console.log("tasksSource after = ", tasksSource);
+            // // добавляем в state перемещаемую колонку на новое место
+            // newState.columns.splice(destination.index, 0, draggbleColumn);
+            // // console.log("tasksDestination after = ", tasksDestination);
+            // // console.log("state = ", newState.columns);
+
+            // TODO: тут нужно будет доделать при добавлении сущность board в store
+            //this.setState(newState);
+            // this.props.reorderBoard(
+            //   draggableId,
+            //   source.droppableId,
+            //   destination.droppableId,
+            //   source.index,
+            //   destination.index
+            // )
+
+        } else {
+            let columnById = {};
+              this.props.columns.forEach(item => (
+                columnById = {...columnById,  [item._id]: {...item}}
+            ));
+            console.log("columnById ", columnById);
+            // перетаскивание Cards
+            this.props.reorderColumn(
+              draggableId,
+              source.droppableId,
+              destination.droppableId,
+              source.index,
+              destination.index
+              // boardId
+              , columnById
+            )
+        }
     };
 
     render() {
-        const lists = this.state.cards;
+        const {columns} = this.props;
+        const boardId = "1";
+        console.log(this.props);
 
         return (
           <div className="Dashboard">
-              {/*Вывод списка*/}
-              {lists.map((list, index) => (
-                <Fragment>
-                    {/*{console.log(list)}*/}
 
-                    <BoardList
-                      key={list.id}
-                      list={list}
-                      onChangeCard={this.changeCard}
-                      onDeleteCard={this.deleteCard}
-                      onAddCard={this.addCard}
-                    />
-                </Fragment>
-              ))}
-
-              {/*Форма с кнопкой*/}
-              <BoardForm
-                onAddCard={this.addCard}
-              />
+              <DragDropContext
+                onDragEnd={this.onDragEnd}
+              >
+                  <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
+                      {droppableProvided => (
+                        <div className="lists-wrapper" ref={droppableProvided.innerRef}>
+                            {columns.map((column, index) => (
+                              <Draggable
+                                key={column._id}
+                                draggableId={column._id}
+                                index={index}
+                              >
+                                  {provided => (
+                                    <Fragment>
+                                        <div
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
+                                          data-react-beautiful-dnd-draggable="0"
+                                          data-react-beautiful-dnd-drag-handle="0"
+                                        >
+                                            <Column
+                                              key={column._id}
+                                              column={column}
+                                              boardId={boardId}
+                                              style={{height: 'initial'}}
+                                            />
+                                        </div>
+                                        {provided.placeholder}
+                                    </Fragment>
+                                  )}
+                              </Draggable>
+                            ))
+                            }
+                            {droppableProvided.placeholder}
+                            <Form
+                              classNameWrapper="ColumnComposerWrapper"
+                              classNameBtn="ColumnComposerWrapperBtn"
+                              type="addColumn"
+                              btnText="Add new column"
+                              btnTextInner="Add column"
+                            />
+                        </div>
+                      )}
+                  </Droppable>
+              </DragDropContext>
           </div>
-
         )
     }
+}
+
+Board.propTypes = {
+    getCards: PropTypes.func.isRequired,
+    getColumns: PropTypes.func.isRequired,
+    reorderColumn: PropTypes.func.isRequired,
+    reorderBoard: PropTypes.func.isRequired,
+    columns: PropTypes.array.isRequired
 };
+const mapStateToProps = (state) => ({
+    cards: Object.values(state.cards),
+    columns: Object.values(state.columns)
+    // columns: state.columns
+});
+export default connect(
+  mapStateToProps,
+  {getCards, getColumns, reorderColumn, reorderBoard}
+)(Board);
+// export default (Board);
