@@ -14,12 +14,24 @@ import {
     DELETE_BOARD,
     GET_COLUMNS_BY_BOARD,
     GET_ALL,
-    EDIT_BOARD_TITLE
+    EDIT_BOARD_TITLE, GET_API_VERSION
 } from './types';
 // axios - http client используется для отправки запросов
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://api.mbdotest.online';
+
+/* ~~~~~~~~~~~~~~~~~~ get ver. backend API ~~~~~~~~~~~~~~~~~~~~~~*/
+export const getBackendVersion = () => dispatch => {
+    axios
+      .get('/api/version')
+      .then(res => {
+          dispatch({
+              type: GET_API_VERSION,
+              payload: res.data
+          })
+      })
+};
 
 
 /* ~~~~~~~~~~~~~~~~~~ All items ~~~~~~~~~~~~~~~~~~~~~~*/

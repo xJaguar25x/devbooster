@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Board, Home} from "../index";
+import {Board, Home, Versions} from "../index";
 import './App.scss';
 import {Link, Route} from "react-router-dom";
 import styled from "styled-components";
@@ -19,6 +19,7 @@ export default class App extends Component {
         return (
           <div className="App">
               <header className="App-header">
+                  <Versions/>
                   <StyledLink  to={`/`}>
                       <p>Devbooster</p>
                   </StyledLink>

@@ -1,3 +1,6 @@
+// get ver. backend API
+export const GET_API_VERSION = 'GET_API_VERSION';
+
 // (boards, columns, cards)
 export const GET_ALL = 'GET_ALL';
 
