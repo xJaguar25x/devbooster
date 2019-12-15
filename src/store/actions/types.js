@@ -1,9 +1,14 @@
-// export const GET_BOARDS = 'GET_BOARDS';
-// export const ADD_BOARD = 'ADD_BOARD';
-// export const DELETE_BOARD = 'DELETE_BOARD';
+// (boards, columns, cards)
+export const GET_ALL = 'GET_ALL';
+
+export const GET_BOARDS = 'GET_BOARDS';
+export const ADD_BOARD = 'ADD_BOARD';
+export const DELETE_BOARD = 'DELETE_BOARD';
+export const EDIT_BOARD_TITLE = 'EDIT_BOARD_TITLE';
 export const REORDER_BOARD = 'REORDER_BOARD';
 
 export const GET_COLUMNS = 'GET_COLUMNS';
+export const GET_COLUMNS_BY_BOARD = 'GET_COLUMNS_BY_BOARD';
 export const ADD_COLUMN = 'ADD_COLUMN';
 export const DELETE_COLUMN = 'DELETE_COLUMN';
 export const EDIT_COLUMN_TITLE = 'EDIT_COLUMN_TITLE';

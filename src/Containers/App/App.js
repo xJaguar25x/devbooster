@@ -1,23 +1,32 @@
 import React, {Component} from 'react';
-import {Board} from "../index";
+import {Board, Home} from "../index";
 import './App.scss';
+import {Link, Route} from "react-router-dom";
+import styled from "styled-components";
 
-import { Provider } from 'react-redux';
-import store from '../../store/store';
+const StyledLink = styled(Link)`
+text-decoration: none;
+color: white;
+  &:hover,
+  &:focus,
+  &:active {
+    opacity: 0.85;
+  }
+`;
 
-export default class App extends Component{
-render(){
-    return(
-      <Provider store={store}>
+export default class App extends Component {
+    render() {
+        return (
           <div className="App">
               <header className="App-header">
-                  <p>Devbooster</p>
+                  <StyledLink  to={`/`}>
+                      <p>Devbooster</p>
+                  </StyledLink>
               </header>
-              {/*заглушка, вывод вложенных компонентов*/}
-              {/*{this.props.children}*/}
-              <Board/>
+              <Route exact path="/" component={Home} />
+              <Route path="/board/:boardId" component={Board} />
+              {/*<Route exact path="/" component={Board} />*/}
           </div>
-      </Provider>
-    )
-}
+        )
+    }
 };

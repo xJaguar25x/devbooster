@@ -6,7 +6,7 @@ import {Button, Textarea} from "../../components";
 import {Droppable} from 'react-beautiful-dnd';
 
 import {connect} from 'react-redux';
-import {deleteColumn, editColumnTitle, getCards} from '../../store/actions/itemActions';
+import {deleteColumn, editColumnTitle} from '../../store/actions/itemActions';
 import PropTypes from 'prop-types';
 
 class Column extends Component {
@@ -40,7 +40,8 @@ class Column extends Component {
     };
     handleSubmitColumnTitle = () => {
         const {newColumnTitle} = this.state;
-        const {column, boardId, dispatch} = this.props;
+        // const {column, boardId, dispatch} = this.props;
+        const {column} = this.props;
         // console.log("column =", column);
         if (newColumnTitle === column.column_name) {
             this.setState({
@@ -49,7 +50,7 @@ class Column extends Component {
         }
         else {
             // dispatch(editListTitle(newColumnTitle, list._id, boardId));
-            this.changeColumn(newColumnTitle, column._id);
+            this.changeColumn(newColumnTitle);
             console.log("id =", column._id);
             this.setState({
                 isColumnTitleInEdit: false,
@@ -61,25 +62,28 @@ class Column extends Component {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~ Методы обработки state ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     // обработчик изменения в состоянии columns
-    changeColumn = (value, column_id) => {
+    changeColumn = (value) => {
         //используя общее состояние Redux
         const newColumn = {...this.props.column, column_name: value, cards: [...this.props.column.cards]};
         this.props.editColumnTitle(newColumn);
     };
     // обработчик удаления из состояния columns
     handleDeleteColumn = () => {
-        const {column} = this.props;
-        this.props.deleteColumn(column._id, this.props.column.cards);
+        const {column, boardId} = this.props;
+        const currentBoard = this.props.boards[boardId];
+        this.props.deleteColumn(currentBoard, column._id, this.props.column.cards);
     };
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        const {column} = this.props;
+        const {column, cards} = this.props;
         const {
             isColumnTitleInEdit,
             newColumnTitle
         } = this.state;
         // console.log("Column", column);
+        const card_ids = (column.cards.map(cardId => cards[cardId] ));
+        // console.log("render() ", this.props);
 
         return (
           <div className={classes.Column_Content} key={column._id} id={column._id}>
@@ -119,7 +123,7 @@ class Column extends Component {
                          {...provided.droppableProps}
                     >
                         {/*функцией map раскрываем список всех задачь из состояния*/}
-                        {column.cards.map((card, index) => (
+                        {card_ids.map((card, index) => (
                           //Вывод компонента Задачи
                           <Card
                             key={index}
@@ -149,18 +153,19 @@ class Column extends Component {
 }
 Column.propTypes = {
     // Проверка типов
-    getCards: PropTypes.func.isRequired,
     deleteColumn: PropTypes.func.isRequired,
-    cards: PropTypes.array.isRequired,
-    editColumnTitle: PropTypes.func.isRequired
+    cards: PropTypes.object.isRequired,
+    editColumnTitle: PropTypes.func.isRequired,
+    boards: PropTypes.object.isRequired
 };
 const mapStateToProps = (state, ownProps) => ({
     // ownProps,
     // get default state from reducers/index.js file
-    cards: Object.values(state.cards)
-    // cards: (state.cards)
+    // cards: Object.values(state.cardsById)
+    cards: state.cardsById,
+    boards: state.boardsById
 });
 export default connect(
   mapStateToProps,
-  {editColumnTitle, deleteColumn, getCards}
+  {editColumnTitle, deleteColumn}
 )(Column);

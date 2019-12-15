@@ -4,7 +4,7 @@ import {Button, Textarea} from "../../components";
 import {ClickOutsideWrapper} from "../../hoc";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {addColumn, addCard} from '../../store/actions/itemActions';
+import {addColumn, addCard, addBoard} from '../../store/actions/itemActions';
 
 class Form extends Component {
     state = {
@@ -20,17 +20,21 @@ class Form extends Component {
     handleSubmitCard = event => {
         event.preventDefault();
         const {newTitle} = this.state;
-        const {column, boardId, dispatch} = this.props;
+        // const {column, boardId, dispatch} = this.props;
+        const {column, board} = this.props;
         if (newTitle === "") return;
         // dispatch(addColumn(newTitle, column._id, boardId));
-        // console.log(this.props);
+        // console.log("Form props column ",column);
+        // console.log("Form props ",this.props);
 
         // Если добавляем column то передаем только имя
         if (this.props.type === "addColumn") {
-            this.props.addColumn(newTitle);
+            this.props.addColumn(board, newTitle);
         }
         else if (this.props.type === "addCard") {
             this.props.addCard(column, newTitle);
+        } else if (this.props.type === "addBoard") {
+            this.props.addBoard(newTitle);
         }
         this.setState({newTitle: "", formIsOpen: false});
     };
@@ -110,10 +114,11 @@ class Form extends Component {
 }
 
 Form.propTypes = {
+    addBoard: PropTypes.func.isRequired,
     addColumn: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired
 };
 // const mapStateToProps = (state, ownProps) => ({
 //     ownProps
 // });
-export default connect(null, {addColumn, addCard})(Form);
+export default connect(null, {addBoard, addColumn, addCard})(Form);

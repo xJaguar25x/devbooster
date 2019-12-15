@@ -54,3 +54,26 @@ const initialState = {
     }
 };
 export default initialState;
+
+// state = {
+//     boardsById: {
+//         "5dd87b6e0453e1ca59773bce": {
+//             _id: "5dd87b6e0453e1ca59773bce",
+//             column_ids: Array(1),
+//             title: "123",
+//             owner_id: "5dd87b0e0453e1ca59773bc8"
+//         },
+//         "5dd9360b8e7577104f773bcc": {
+//             _id: "5dd9360b8e7577104f773bcc",
+//             column_ids: Array(1),
+//             title: "Test board",
+//             owner_id: "5dd87b0e0453e1ca59773bc8"
+//         },
+//         "5dd9360b0453e1ca59773bd5": {
+//             _id: "5dd9360b0453e1ca59773bd5",
+//             column_ids: Array(1),
+//             title: "Test board",
+//             owner_id: "5dd87b0e0453e1ca59773bc8"
+//         }
+//     }
+// };
