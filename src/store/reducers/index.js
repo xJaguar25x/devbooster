@@ -4,7 +4,7 @@ import columnsReducer from "./columnsReducer";
 import boardsReducer from "./boardsReducer";
 
 export default combineReducers({
-    cards: cardsReducer,
-    columns: columnsReducer,
-    boards: boardsReducer
+    cardsById: cardsReducer,
+    columnsById: columnsReducer,
+    boardsById: boardsReducer
 })

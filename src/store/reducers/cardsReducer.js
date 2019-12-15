@@ -1,7 +1,7 @@
 import {
     GET_CARDS,
     ADD_CARD,
-    DELETE_CARD, DELETE_COLUMN, EDIT_CARD_TITLE
+    DELETE_CARD, DELETE_COLUMN, EDIT_CARD_TITLE, GET_ALL
 } from '../actions/types';
 // import State from "./initialState";
 
@@ -27,6 +27,11 @@ function convertCard(inputData) {
 
 const cardsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case GET_ALL: {
+            const data = convertCard(action.payload.cards);
+            // console.log("cardsReducer ",data);
+            return data;
+        }
         case GET_CARDS: {
             const data = convertCard(action.payload);
             // console.log("cardsReducer ",data);

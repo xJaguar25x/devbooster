@@ -2,7 +2,7 @@ import {
     GET_COLUMNS,
     ADD_COLUMN,
     DELETE_COLUMN,
-    EDIT_COLUMN_TITLE, ADD_CARD, DELETE_CARD, REORDER_COLUMN
+    EDIT_COLUMN_TITLE, ADD_CARD, DELETE_CARD, REORDER_COLUMN, GET_COLUMNS_BY_BOARD, GET_ALL
 } from '../actions/types';
 // import outerState from "./initialState";
 
@@ -29,11 +29,21 @@ function convertColumn(inputData) {
 
 const columnsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_COLUMNS:
+        case GET_ALL: {
+            const data = convertColumn(action.payload.columns);
+            // console.log(data);
+            return data;
+        }
+        case GET_COLUMNS: {
             const data = convertColumn(action.payload);
             // console.log(data);
             return data;
-
+        }
+        case GET_COLUMNS_BY_BOARD: {
+            const data = convertColumn(action.payload);
+            // console.log(data);
+            return data;
+        }
         case EDIT_COLUMN_TITLE: {
             const {columnTitle, columnId} = action.payload;
             console.log(state);
@@ -92,37 +102,32 @@ const columnsReducer = (state = initialState, action) => {
       // изменение порядка Cards в Columns
         case REORDER_COLUMN: {
             const {
-                sourceIndex,
-                destinationIndex,
                 sourceId,
-                destinationId
+                destinationId,
+                sourceCards,
+                destinationCards
             } = action.payload;
 
             // Reorder within the same column
             if (sourceId === destinationId) {
-                const newCards = Array.from(state[sourceId].cards);
-                // удаляем из исходного массива перемещаемую задачу
-                const [removedCard] = newCards.splice(sourceIndex, 1);
-                // добавляем в список перемещаемую задачу на новое место
-                newCards.splice(destinationIndex, 0, removedCard);
                 return {
                     ...state,
-                    [sourceId]: {...state[sourceId], cards: newCards}
+                    [sourceId]: {...state[sourceId], cards: sourceCards}
                 };
-            }
-
-            const sourceCards = Array.from(state[sourceId].cards);
-            // удаляем из исходного массива перемещаемую задачу
-            const [removedCard] = sourceCards.splice(sourceIndex, 1);
-            const destinationCards = Array.from(state[destinationId].cards);
-            // добавляем в список перемещаемую задачу на новое место
-            destinationCards.splice(destinationIndex, 0, removedCard);
-            return {
-                ...state,
-                [sourceId]: {...state[sourceId], cards: sourceCards},
-                [destinationId]: {...state[destinationId], cards: destinationCards}
+            } else {
+                return {
+                    ...state,
+                    [sourceId]: {...state[sourceId], cards: sourceCards},
+                    [destinationId]: {...state[destinationId], cards: destinationCards}
+                };
             };
+
         }
+        // case COLUMNS_LOADING:
+        //     return {
+        //         ...state,
+        //         loading: true
+        //     };
         default:
             return state;
     }

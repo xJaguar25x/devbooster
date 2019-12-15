@@ -5,9 +5,15 @@ import styled from 'styled-components';
 import classes from './Home.module.scss';
 import {Button, Textarea} from "../../components";
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
-import {addBoard, deleteBoard, editBoardTitle, getBoards} from '../../store/actions/itemActions';
+import {
+    deleteBoard,
+    editBoardTitle,
+    getAll,
+} from '../../store/actions/itemActions';
 import PropTypes from 'prop-types';
+import {Form} from "../index";
 
 
 const StyledLink = styled(Link)`
@@ -20,7 +26,7 @@ color: black;
   }
 `;
 
-const StyledForm = styled.form`
+/*const StyledForm = styled.form`
   margin: 12px 0 0 0;
   width: 100%;
   padding: 12px 0;
@@ -52,62 +58,57 @@ const StyledInput = styled.input`
   &:active {
     box-shadow: inset 0 0 0 2px rgba(0,0,0,0.3);
   }
-`;
+`;*/
 
 class Home extends Component {
 
     state = {
-        isBoardTitleInEdit: false,
-        newBoardTitle: ''
+        boardInEdit: null,
+        editableBoardTitle: "",
     };
 
     componentDidMount() {
-        this.props.getBoards();
+        // this.props.getBoards();
+        // this.props.getCards();
+        // this.props.getColumns();
+        this.props.getAll();
         // console.log(this.props);
     }
 
     /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
     //~~~~ Обработчик нажатия кнопки редактировать заголовок ColumnTitleButton ~~~~
     openTitleEditor = (board) => {
+        // console.log("board =", board);
         this.setState({
-            isBoardTitleInEdit: true,
-            newBoardTitle: board.title
+            boardInEdit: board._id,
+            editableBoardTitle: board.title
         });
     };
     handleColumnTitleEditorChange = (event) => {
-        this.setState({newBoardTitle: event.target.value});
+        this.setState({editableBoardTitle: event.target.value});
     };
-    handleColumnTitleKeyDown = (event, board) => {
+    handleColumnTitleKeyDown = (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            this.handleSubmitColumnTitle(board);
+            this.handleSubmitColumnTitle();
         }
     };
-    handleSubmitColumnTitle = (board) => {
-        const {newBoardTitle} = this.state;
-        // const {column, boardId, dispatch} = this.props;
-        // const {column} = this.props;
-        // console.log("column =", column);
-        if (newBoardTitle === board.title) {
-            this.setState({
-                isBoardTitleInEdit: false
-            });
+    handleSubmitColumnTitle = () => {
+        const {editableBoardTitle, boardInEdit} = this.state;
+        const currentBoard = this.props.boards.find(item => item._id === boardInEdit);
+        if (editableBoardTitle === "") {
+            // Удалять доску если стерли имя
+            this.deleteBoard(currentBoard._id);
+        } else if (editableBoardTitle === currentBoard.title) {
+            // ничего не делать
         }
         else {
-            // dispatch(editListTitle(newBoardTitle, list._id, boardId));
-            this.changeBoard(newBoardTitle, board);
-            console.log("id =", board._id);
-            this.setState({
-                isBoardTitleInEdit: false,
-                newBoardTitle: ""
-            });
+            // Или обновлять ее имя, если введено новое
+            const newBoard = {...currentBoard, title: editableBoardTitle};
+            this.changeBoard(editableBoardTitle, newBoard);
+            console.log("id =", newBoard);
         }
-    };
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-    /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
-    handleTitleChange = (event) => {
-        this.setState({newBoardTitle: event.target.value});
+        this.setState({editableBoardTitle: "", boardInEdit: null});
     };
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -115,33 +116,26 @@ class Home extends Component {
     // обработчик изменения в состоянии columns
     changeBoard = (value, board) => {
         //используя общее состояние Redux
-        const newBoard = {...board, title: value, column_ids: [...board.column_ids]};
+        // console.log("id =", typeof(board.column_ids));
+        const newBoard = {...board, title: value};
         this.props.editBoardTitle(newBoard);
-    };
-    addBoard = (boardTitle, event) => {
-        event.preventDefault();
-        this.setState({newBoardTitle: ''});
-        // const {dispatch} = this.props;
-        // dispatch(addBoard(boardTitle));
-        this.props.addBoard(boardTitle);
     };
     deleteBoard = boardId => {
         // const {dispatch} = this.props;
         // dispatch(deleteBoard(boardId));
         this.props.deleteBoard(boardId);
     };
-
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
         const {boards} = this.props;
         const {
-            isBoardTitleInEdit,
-            newBoardTitle
+            boardInEdit,
+            editableBoardTitle
         } = this.state;
-        // const {boards} = this.state;
-        console.log(this.props);
+        console.log("render() ", this.props);
         // console.log("boards", boards);
+
         return (
           <div className={classes.Home}>
               {/*<Helmet>*/}
@@ -150,38 +144,44 @@ class Home extends Component {
               <div className={classes.HomeTitle}>Pick a board...</div>
               <div className={classes.HomeList}>
                   {boards.map(board => (
-                    <div className={classes.HomeRow} key={`row-${board._id}`}>
-                        {/*{isBoardTitleInEdit ? (
-                          <div className={classes.ColumnTitleTextareaWrapper}>
-                    <Textarea
-                      className="ColumnTitleTextarea"
-                      autoFocus
-                      // useCacheForDOMMeasurements
-                      value={newBoardTitle}
-                      onChange={this.handleColumnTitleEditorChange}
-                      onKeyDown={(event) => this.handleColumnTitleKeyDown(event, board)}
-                      onBlur={this.handleSubmitColumnTitle}
-                    />
+                    <div className={classes.HomeBlockRow} key={`row-${board._id}`}>
+                        {boardInEdit === board._id ? (
+                          <div className={classes.HomeRow}>
+                            <Textarea
+                              className="ColumnTitleTextarea"
+                              autoFocus
+                              // useCacheForDOMMeasurements
+                              value={editableBoardTitle}
+                              onChange={this.handleColumnTitleEditorChange}
+                              onKeyDown={this.handleColumnTitleKeyDown}
+                              onBlur={this.handleSubmitColumnTitle}
+                            />
                           </div>
                         ) : (
-                          <div className={classes.ColumnTitle}>
-                              <Button
-                                className="ListTitleButton"
-                                onFocus={() => this.openTitleEditor(board)}
-                                onClick={() => this.openTitleEditor(board)}
+                          <div className={classes.HomeRow}>
+                              <StyledLink
+                                to={`board/${board._id}`}
                               >
                                   {board.title}
-                              </Button>
-                              <Button
-                                className="DeleteCardButton"
-                                onClick={this.handleDeleteColumn}
-                              >
-                                  <DeleteIcon/>
-                              </Button>
+                              </StyledLink>
+                              <div className={classes.HomeRow_BtnBlock}>
+                                  <Button
+                                    className="DeleteCardButton"
+                                    onClick={() => this.deleteBoard(board._id)}
+                                  >
+                                      <DeleteIcon/>
+                                  </Button>
+                                  <Button
+                                    className="EditCardButton"
+                                    onClick={() => this.openTitleEditor(board)}
+                                  >
+                                      <EditIcon/>
+                                  </Button>
+                              </div>
                           </div>
-                        )}*/}
+                        )}
 
-                        <StyledLink
+                        {/*<StyledLink
                           to={`board/${board._id}`}
                         >
                             {board.title}
@@ -191,13 +191,13 @@ class Home extends Component {
                           onClick={() => this.deleteBoard(board._id)}
                         >
                             <DeleteIcon/>
-                        </Button>
+                        </Button>*/}
                     </div>
                   ))}
-                  <StyledForm onSubmit={(e) => this.addBoard(newBoardTitle, e)}>
+                 {/* <StyledForm onSubmit={(e) => this.addBoard(newBoardTitle, e)}>
                       <StyledInput
                         value={newBoardTitle}
-                        onChange={this.handleTitleChange}
+                        onChange={this.handleNewTitleChange}
                         placeholder="Add a new board"
                       />
                       <Button
@@ -208,7 +208,15 @@ class Home extends Component {
                       >
                           Add
                       </Button>
-                  </StyledForm>
+                  </StyledForm>*/}
+                  <Form
+                    classNameWrapper="ColumnComposerWrapper"
+                    classNameBtn="ColumnComposerWrapperBtn"
+                    board={this.props.board}
+                    type="addBoard"
+                    btnText="Add new board"
+                    btnTextInner="Add board"
+                  />
               </div>
           </div>
         );
@@ -216,18 +224,20 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-    getBoards: PropTypes.func.isRequired,
     deleteBoard: PropTypes.func.isRequired,
-    addBoard: PropTypes.func.isRequired,
     editBoardTitle: PropTypes.func.isRequired,
-    boards: PropTypes.array.isRequired
+    boards: PropTypes.array.isRequired,
+    cards: PropTypes.array.isRequired,
+    columns: PropTypes.array.isRequired,
+    getAll: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
-    // boards: Object.values(state.boardsById)
-    boards: Object.values(state.boards)
+    boards: Object.values(state.boardsById),
+    cards: Object.values(state.cardsById),
+    columns: Object.values(state.columnsById)
 });
 
 export default connect(
   mapStateToProps,
-  {getBoards, deleteBoard, addBoard, editBoardTitle}
+  {deleteBoard, editBoardTitle, getAll}
 )(Home);

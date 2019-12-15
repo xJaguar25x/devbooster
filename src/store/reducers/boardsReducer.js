@@ -1,4 +1,12 @@
-import {ADD_BOARD, DELETE_BOARD, EDIT_BOARD_TITLE, GET_BOARDS} from "../actions/types";
+import {
+    ADD_BOARD,
+    ADD_COLUMN,
+    DELETE_BOARD,
+    DELETE_COLUMN,
+    EDIT_BOARD_TITLE,
+    GET_ALL,
+    GET_BOARDS, REORDER_BOARD
+} from "../actions/types";
 
 const initialState = {};
 
@@ -21,22 +29,27 @@ function convertBoard(inputData) {
 
 const boardsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_BOARDS:
+        case GET_ALL: {
+            const data = convertBoard(action.payload.boards);
+            // console.log(data);
+            return data;
+        }
+        case GET_BOARDS: {
             const data = convertBoard(action.payload);
             // console.log(data);
             return data;
-
-        // case EDIT_BOARD_TITLE: {
-        //     const {columnTitle, columnId} = action.payload;
-        //     console.log(state);
-        //     return {
-        //         ...state,
-        //         [columnId]: {
-        //             ...state[columnId],
-        //             column_name: columnTitle
-        //         }
-        //     };
-        // }
+        }
+        case EDIT_BOARD_TITLE: {
+            const {boardTitle, boardId} = action.payload;
+            console.log(state);
+            return {
+                ...state,
+                [boardId]: {
+                    ...state[boardId],
+                    title: boardTitle
+                }
+            };
+        }
         case ADD_BOARD: {
             const {boardTitle, boardId} = action.payload;
             return {
@@ -48,74 +61,69 @@ const boardsReducer = (state = initialState, action) => {
                 }
             };
         }
-    //   // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
-    //     case ADD_CARD: {
-    //         const { cardId, columnId } = action.payload;
-    //         // console.log("cardTitle =%s cardId=%s columnId=%s", cardTitle, cardId, columnId);
-    //         return {
-    //             ...state,
-    //             [columnId]: {
-    //                 ...state[columnId],
-    //                 cards: [
-    //                     // state[columnId].cards.concat(cardId)
-    //                     ...state[columnId].cards,
-    //                     cardId
-    //                 ]
-    //             }
-    //         };
-    //     }
+      // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
+        case ADD_COLUMN: {
+            const { boardId, columnId } = action.payload;
+            return {
+                ...state,
+                [boardId]: {
+                    ...state[boardId],
+                    column_ids: [
+                        // state[columnId].cards.concat(cardId)
+                        ...state[boardId].column_ids,
+                        columnId
+                    ]
+                }
+            };
+        }
         case DELETE_BOARD: {
             const {boardId} = action.payload;
             const {[boardId]: deletedList, ...restOfLists} = state;
             // console.log("boardId=%s boards=", boardId, restOfLists);
             return restOfLists
         }
-    //   // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
-    //     case DELETE_CARD: {
-    //         const {columnId, cardId} = action.payload;
-    //         console.log("cardId=%s columnId=%s", cardId, columnId);
-    //         return {
-    //             ...state,
-    //             [columnId]: {
-    //                 ...state[columnId],
-    //                 cards: state[columnId].cards.filter(item => item !== cardId)
-    //             }
-    //         };
-    //     }
-    //   // изменение порядка Cards в Columns
-    //     case REORDER_COLUMN: {
-    //         const {
-    //             sourceIndex,
-    //             destinationIndex,
-    //             sourceId,
-    //             destinationId
-    //         } = action.payload;
-    //
-    //         // Reorder within the same column
-    //         if (sourceId === destinationId) {
-    //             const newCards = Array.from(state[sourceId].cards);
-    //             // удаляем из исходного массива перемещаемую задачу
-    //             const [removedCard] = newCards.splice(sourceIndex, 1);
-    //             // добавляем в список перемещаемую задачу на новое место
-    //             newCards.splice(destinationIndex, 0, removedCard);
-    //             return {
-    //                 ...state,
-    //                 [sourceId]: {...state[sourceId], cards: newCards}
-    //             };
-    //         }
-    //
-    //         const sourceCards = Array.from(state[sourceId].cards);
-    //         // удаляем из исходного массива перемещаемую задачу
-    //         const [removedCard] = sourceCards.splice(sourceIndex, 1);
-    //         const destinationCards = Array.from(state[destinationId].cards);
-    //         // добавляем в список перемещаемую задачу на новое место
-    //         destinationCards.splice(destinationIndex, 0, removedCard);
-    //         return {
-    //             ...state,
-    //             [sourceId]: {...state[sourceId], cards: sourceCards},
-    //             [destinationId]: {...state[destinationId], cards: destinationCards}
-    //         };
-    //     }
+      // этот кейс повторяется в 3 редьюсерах, потому что нужно изменять данные в трех местах
+        case DELETE_COLUMN: {
+            const {boardId, columnId} = action.payload;
+            console.log("boardId=%s columnId=%s", boardId, columnId);
+            return {
+                ...state,
+                [boardId]: {
+                    ...state[boardId],
+                    column_ids: state[boardId].column_ids.filter(item => item !== columnId)
+                }
+            };
+        }
+      // изменение порядка Columns в Board
+        case REORDER_BOARD: {
+            const {
+                sourceId,
+                destinationId,
+                newColumn_ids
+            } = action.payload;
+
+            // Reorder within the same Board
+            if (sourceId === destinationId) {
+                return {
+                    ...state,
+                    [sourceId]: {...state[sourceId], column_ids: newColumn_ids}
+                };
+            } else
+            //TODO: тут перемещение между досками, скопировано из перемещения  карточек, если нужно будет, нужно будет исправить
+            {
+                // const sourceCards = Array.from(state[sourceId].cards);
+                // // удаляем из исходного массива перемещаемую задачу
+                // const [removedCard] = sourceCards.splice(sourceIndex, 1);
+                // const destinationCards = Array.from(state[destinationId].cards);
+                // // добавляем в список перемещаемую задачу на новое место
+                // destinationCards.splice(destinationIndex, 0, removedCard);
+                // return {
+                //     ...state,
+                //     [sourceId]: {...state[sourceId], cards: sourceCards},
+                //     [destinationId]: {...state[destinationId], cards: destinationCards}
+                // };
+            };
+        }
         default:
             return state;
     }
