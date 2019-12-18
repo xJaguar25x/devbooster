@@ -19,7 +19,7 @@ class Card extends Component {
     state = {
         cardInEdit: null,
         editableCardTitle: "",
-        currentCard : this.props.cards[this.props.card._id]
+        currentCard : this.props.cardsById.cards[this.props.card._id]
     };
 
     /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
@@ -84,7 +84,7 @@ class Card extends Component {
         } = stateList;
 
         // извлекаем карточку из массива полученного от редакс с помощью переданного свойства card
-        const currentCard = this.props.cards[this.props.card._id];
+        const currentCard = this.props.cardsById.cards[this.props.card._id];
         // console.log("currentCard ",currentCard);
 
         // TODO:
@@ -156,11 +156,11 @@ class Card extends Component {
 Card.propTypes = {
     deleteCard: PropTypes.func.isRequired,
     editCard: PropTypes.func.isRequired,
-    cards: PropTypes.object.isRequired
+    cardsById: PropTypes.object.isRequired
 };
 const mapStateToProps = (state, ownProps) => ({
     // ownProps,
-    cards: (state.cardsById)
+    cardsById: state.cardsById
 });
 export default connect(
   mapStateToProps,

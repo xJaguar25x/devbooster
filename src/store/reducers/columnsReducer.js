@@ -2,13 +2,16 @@ import {
     GET_COLUMNS,
     ADD_COLUMN,
     DELETE_COLUMN,
-    EDIT_COLUMN_TITLE, ADD_CARD, DELETE_CARD, REORDER_COLUMN, GET_COLUMNS_BY_BOARD, GET_ALL
+    EDIT_COLUMN_TITLE, ADD_CARD, DELETE_CARD, REORDER_COLUMN, GET_COLUMNS_BY_BOARD, GET_ALL, ITEMS_LOADING
 } from '../actions/types';
 // import outerState from "./initialState";
 
 // let initialState = outerState.columnsById;
 
-const initialState = {};
+const initialState = {
+    columns: {},
+    loading: false
+};
 
 
 function convertColumn(inputData) {
@@ -32,26 +35,41 @@ const columnsReducer = (state = initialState, action) => {
         case GET_ALL: {
             const data = convertColumn(action.payload.columns);
             // console.log(data);
-            return data;
+            return {
+                ...state,
+                columns: {...data},
+                loading: false
+            };
         }
         case GET_COLUMNS: {
             const data = convertColumn(action.payload);
             // console.log(data);
-            return data;
+            return {
+                ...state,
+                columns: {...data},
+                loading: false
+            };
         }
         case GET_COLUMNS_BY_BOARD: {
             const data = convertColumn(action.payload);
             // console.log(data);
-            return data;
+            return {
+                ...state,
+                columns: {...data},
+                loading: false
+            };
         }
         case EDIT_COLUMN_TITLE: {
             const {columnTitle, columnId} = action.payload;
-            console.log(state);
+            // console.log(state);
             return {
-                ...state,
-                [columnId]: {
-                    ...state[columnId],
-                    column_name: columnTitle
+              ...state,
+                columns: {
+                    ...state.columns,
+                    [columnId]: {
+                        ...state.columns[columnId],
+                        column_name: columnTitle
+                    }
                 }
             };
         }
@@ -59,10 +77,13 @@ const columnsReducer = (state = initialState, action) => {
             const {columnTitle, columnId} = action.payload;
             return {
                 ...state,
-                [columnId]: {
-                    _id: columnId,
-                    column_name: columnTitle,
-                    cards: []
+                columns: {
+                    ...state.columns,
+                    [columnId]: {
+                        _id: columnId,
+                        column_name: columnTitle,
+                        cards: []
+                    }
                 }
             };
         }
@@ -71,31 +92,44 @@ const columnsReducer = (state = initialState, action) => {
             const { cardId, columnId } = action.payload;
             // console.log("cardTitle =%s cardId=%s columnId=%s", cardTitle, cardId, columnId);
             return {
-                ...state,
-                [columnId]: {
-                    ...state[columnId],
-                    cards: [
-                        // state[columnId].cards.concat(cardId)
-                        ...state[columnId].cards,
-                        cardId
-                    ]
+              ...state,
+                columns: {
+                    ...state.columns,
+                    [columnId]: {
+                        ...state.columns[columnId],
+                        cards: [
+                            // state[columnId].cards.concat(cardId)
+                            ...state.columns[columnId].cards,
+                            cardId
+                        ]
+                    }
                 }
             };
         }
         case DELETE_COLUMN: {
             const {columnId} = action.payload;
-            const {[columnId]: deletedList, ...restOfLists} = state;
-            return restOfLists
+            const {[columnId]: deletedList, ...restOfLists} = state.columns;
+            const temp = {
+                ...state,
+                columns: {
+                    ...restOfLists,
+                }
+            };
+            // console.log("temp ", temp);
+            return temp;
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case DELETE_CARD: {
             const {columnId, cardId} = action.payload;
             console.log("cardId=%s columnId=%s", cardId, columnId);
             return {
-                ...state,
-                [columnId]: {
-                    ...state[columnId],
-                    cards: state[columnId].cards.filter(item => item !== cardId)
+              ...state,
+                columns: {
+                    ...state.columns,
+                    [columnId]: {
+                        ...state.columns[columnId],
+                        cards: state.columns[columnId].cards.filter(item => item !== cardId)
+                    }
                 }
             };
         }
@@ -112,22 +146,28 @@ const columnsReducer = (state = initialState, action) => {
             if (sourceId === destinationId) {
                 return {
                     ...state,
-                    [sourceId]: {...state[sourceId], cards: sourceCards}
+                    columns: {
+                        ...state.columns,
+                        [sourceId]: {...state.columns[sourceId], cards: sourceCards}
+                    }
                 };
             } else {
                 return {
                     ...state,
-                    [sourceId]: {...state[sourceId], cards: sourceCards},
-                    [destinationId]: {...state[destinationId], cards: destinationCards}
+                    columns: {
+                        ...state.columns,
+                        [sourceId]: {...state.columns[sourceId], cards: sourceCards},
+                        [destinationId]: {...state.columns[destinationId], cards: destinationCards}
+                    }
                 };
             };
 
         }
-        // case COLUMNS_LOADING:
-        //     return {
-        //         ...state,
-        //         loading: true
-        //     };
+        case ITEMS_LOADING:
+            return {
+                ...state,
+                loading: true
+            };
         default:
             return state;
     }

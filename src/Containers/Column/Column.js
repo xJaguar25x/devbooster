@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Form, Card} from "../index";
 import classes from './Column.module.scss';
@@ -70,19 +70,22 @@ class Column extends Component {
     // обработчик удаления из состояния columns
     handleDeleteColumn = () => {
         const {column, boardId} = this.props;
-        const currentBoard = this.props.boards[boardId];
+        const currentBoard = this.props.boardsById.boards[boardId];
         this.props.deleteColumn(currentBoard, column._id, this.props.column.cards);
     };
+
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        const {column, cards} = this.props;
+        const {column} = this.props;
+        const cards = (this.props.cardsById.cards);
         const {
             isColumnTitleInEdit,
             newColumnTitle
         } = this.state;
+
         // console.log("Column", column);
-        const card_ids = (column.cards.map(cardId => cards[cardId] ));
+        const card_ids = (column.cards.map(cardId => cards[cardId]));
         // console.log("render() ", this.props);
 
         return (
@@ -148,22 +151,23 @@ class Column extends Component {
                   )}
               </Droppable>
           </div>
-        )
+        );
     }
 }
+
 Column.propTypes = {
     // Проверка типов
     deleteColumn: PropTypes.func.isRequired,
-    cards: PropTypes.object.isRequired,
+    cardsById: PropTypes.object.isRequired,
     editColumnTitle: PropTypes.func.isRequired,
-    boards: PropTypes.object.isRequired
+    boardsById: PropTypes.object.isRequired
 };
 const mapStateToProps = (state, ownProps) => ({
     // ownProps,
     // get default state from reducers/index.js file
     // cards: Object.values(state.cardsById)
-    cards: state.cardsById,
-    boards: state.boardsById
+    cardsById: state.cardsById,
+    boardsById: state.boardsById
 });
 export default connect(
   mapStateToProps,

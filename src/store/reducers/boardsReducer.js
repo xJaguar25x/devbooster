@@ -5,10 +5,13 @@ import {
     DELETE_COLUMN,
     EDIT_BOARD_TITLE,
     GET_ALL,
-    GET_BOARDS, REORDER_BOARD
+    GET_BOARDS, ITEMS_LOADING, REORDER_BOARD
 } from "../actions/types";
 
-const initialState = {};
+const initialState = {
+    boards: {},
+    loading: false
+};
 
 
 function convertBoard(inputData) {
@@ -31,22 +34,33 @@ const boardsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL: {
             const data = convertBoard(action.payload.boards);
-            // console.log(data);
-            return data;
+            // console.log("action.payload.boards ", action.payload.boards);
+            return {
+                ...state,
+                boards: {...data},
+                loading: false
+            };
         }
         case GET_BOARDS: {
             const data = convertBoard(action.payload);
             // console.log(data);
-            return data;
+            return {
+                ...state,
+                boards: {...data},
+                loading: false
+            };
         }
         case EDIT_BOARD_TITLE: {
             const {boardTitle, boardId} = action.payload;
             console.log(state);
             return {
                 ...state,
-                [boardId]: {
-                    ...state[boardId],
-                    title: boardTitle
+                boards: {
+                    ...state.boards,
+                    [boardId]: {
+                        ...state.boards[boardId],
+                        title: boardTitle
+                    }
                 }
             };
         }
@@ -54,45 +68,61 @@ const boardsReducer = (state = initialState, action) => {
             const {boardTitle, boardId} = action.payload;
             return {
                 ...state,
-                [boardId]: {
-                    _id: boardId,
-                    title: boardTitle,
-                    column_ids: []
+                boards: {
+                    ...state.boards,
+                    [boardId]: {
+                        _id: boardId,
+                        title: boardTitle,
+                        column_ids: []
+                    }
                 }
             };
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case ADD_COLUMN: {
-            const { boardId, columnId } = action.payload;
+            const {boardId, columnId} = action.payload;
             return {
                 ...state,
-                [boardId]: {
-                    ...state[boardId],
-                    column_ids: [
-                        // state[columnId].cards.concat(cardId)
-                        ...state[boardId].column_ids,
-                        columnId
-                    ]
+                boards: {
+                    ...state.boards,
+                    [boardId]: {
+                        ...state.boards[boardId],
+                        column_ids: [
+                            // state[columnId].cards.concat(cardId)
+                            ...state.boards[boardId].column_ids,
+                            columnId
+                        ]
+                    }
                 }
             };
         }
         case DELETE_BOARD: {
             const {boardId} = action.payload;
-            const {[boardId]: deletedList, ...restOfLists} = state;
+            const {[boardId]: deletedList, ...restOfLists} = state.boards;
             // console.log("boardId=%s boards=", boardId, restOfLists);
-            return restOfLists
+            return {
+                ...state,
+                boards: {
+                    ...restOfLists
+                }
+            }
         }
       // этот кейс повторяется в 3 редьюсерах, потому что нужно изменять данные в трех местах
         case DELETE_COLUMN: {
             const {boardId, columnId} = action.payload;
-            console.log("boardId=%s columnId=%s", boardId, columnId);
-            return {
+            // console.log("boardId=%s columnId=%s", boardId, columnId);
+            const temp = {
                 ...state,
-                [boardId]: {
-                    ...state[boardId],
-                    column_ids: state[boardId].column_ids.filter(item => item !== columnId)
+                boards: {
+                    ...state.boards,
+                    [boardId]: {
+                        ...state.boards[boardId],
+                        column_ids: state.boards[boardId].column_ids.filter(item => item !== columnId)
+                    }
                 }
             };
+            // console.log("temp ", temp);
+            return temp;
         }
       // изменение порядка Columns в Board
         case REORDER_BOARD: {
@@ -106,7 +136,10 @@ const boardsReducer = (state = initialState, action) => {
             if (sourceId === destinationId) {
                 return {
                     ...state,
-                    [sourceId]: {...state[sourceId], column_ids: newColumn_ids}
+                    boards: {
+                        ...state.boards,
+                        [sourceId]: {...state.boards[sourceId], column_ids: newColumn_ids}
+                    }
                 };
             } else
             //TODO: тут перемещение между досками, скопировано из перемещения  карточек, если нужно будет, нужно будет исправить
@@ -122,8 +155,14 @@ const boardsReducer = (state = initialState, action) => {
                 //     [sourceId]: {...state[sourceId], cards: sourceCards},
                 //     [destinationId]: {...state[destinationId], cards: destinationCards}
                 // };
-            };
+            }
+            return;
         }
+        case ITEMS_LOADING:
+            return {
+                ...state,
+                loading: true
+            };
         default:
             return state;
     }

@@ -35,12 +35,15 @@ class Board extends Component {
             return;
         }
         if (type === "COLUMN") {
-            let boardById = {};
+            // let boardById = {};
             // преобразуем к виду для хранилища, {_id:{_id, title, column_ids}}
-            this.props.boards.forEach(item => (
-              boardById = {...boardById, [item._id]: {...item}}
-            ));
-            console.log("boardById ", boardById);
+            // this.props.boardsById.boards.forEach(item => (
+            //   boardById = {...boardById, [item._id]: {...item}}
+            // ));
+
+            const boardById = this.props.boardsById.boards;
+            // console.log("boardById ", boardById);
+
             // перетаскивание Columns
             this.props.reorderBoard(
               draggableId,
@@ -52,12 +55,15 @@ class Board extends Component {
             )
 
         } else {
-            let columnById = {};
+            // let columnById = {};
             // преобразуем к виду для хранилища, {_id:{_id, name, cards}}
-            this.props.columns.forEach(item => (
+            /*this.props.columnsById.columns.forEach(item => (
               columnById = {...columnById, [item._id]: {...item}}
-            ));
-            console.log("columnById ", columnById);
+            ));*/
+
+            const columnById = this.props.columnsById.columns;
+            // console.log("columnById ", columnById);
+
             // перетаскивание Cards
             this.props.reorderColumn(
               draggableId,
@@ -71,15 +77,19 @@ class Board extends Component {
     };
 
     renderBoard() {
-        const {columns, boardId, board} = this.props;
+        const {boardId, board} = this.props;
         // console.log("board ", board);
+        const columns = (this.props.columnsById.columns);
+        // console.log("columns ", columns);
 
         /* два варианта использования, при этом удобнее работать, при втором данные будут в виде
         массива в пропсах. Чтобы применить второй вариант нужно в mapStateToProps заменить
         columns: Object.values(state.columnsById) и
         в Board.propTypes заменить columns: PropTypes.array.isRequired */
         // const column_ids = (board.column_ids.map(columnId => columns[columnId] ));
-        const column_ids = (board.column_ids.map(columnId => columns.find(item => item._id === columnId) ));
+        // const column_ids = (board.column_ids.map(columnId => columns.find(item => item._id === columnId) ));
+
+        const column_ids = (board.column_ids.map(columnId => columns[columnId]));
         // console.log("column_ids ", column_ids);
         // console.log("render() ", this.props);
 
@@ -134,14 +144,15 @@ class Board extends Component {
                   </Droppable>
               </DragDropContext>
           </div>
-        )
+        );
     };
 
     render() {
+        // console.log("board ", this.props);
         return (
           // проверка на существование данных любой из 3 загружаемых массивов(boards, columns, cards)
           //если их нет, то отображать заглушку
-          this.props.board
+          (!this.props.boardsById.loading && this.props.board)
             ? (
               <Fragment>
                   {/*<TransitionGroup className="orders-list">*/}
@@ -161,20 +172,20 @@ class Board extends Component {
 Board.propTypes = {
     reorderColumn: PropTypes.func.isRequired,
     reorderBoard: PropTypes.func.isRequired,
-    cards: PropTypes.array.isRequired,
-    columns: PropTypes.array.isRequired,
-    boards: PropTypes.array.isRequired
+    cardsById: PropTypes.object.isRequired,
+    columnsById: PropTypes.object.isRequired,
+    boardsById: PropTypes.object.isRequired
 };
 const mapStateToProps = (state, ownProps) => {
     const {boardId} = ownProps.match.params;
     // const board = state.boardsById[boardId];
     return {
         // ownProps - при переходе по ссылке на доску, необходим id доски, чтобы отобразить потомков
-        board: state.boardsById[boardId],
+        board: state.boardsById.boards[boardId],
         boardId: ownProps.match.params.boardId,
-        boards: Object.values(state.boardsById),
-        cards: Object.values(state.cardsById),
-        columns: Object.values(state.columnsById)
+        boardsById: state.boardsById,
+        cardsById: state.cardsById,
+        columnsById: state.columnsById
         // columns: state.columnsById
         // columns: Object.values(board.column_ids.map(columnId => state.columnsById[columnId]))
     }

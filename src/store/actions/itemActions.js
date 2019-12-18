@@ -14,16 +14,34 @@ import {
     DELETE_BOARD,
     GET_COLUMNS_BY_BOARD,
     GET_ALL,
-    EDIT_BOARD_TITLE
+    EDIT_BOARD_TITLE, GET_API_VERSION
 } from './types';
 // axios - http client используется для отправки запросов
 import axios from 'axios';
+import {returnErrors, setItemsLoading} from "./systemActions";
 
 axios.defaults.baseURL = 'https://api.mbdotest.online';
+
+/* ~~~~~~~~~~~~~~~~~~ get ver. backend API ~~~~~~~~~~~~~~~~~~~~~~*/
+export const getBackendVersion = () => dispatch => {
+    axios
+      .get('/api/version')
+      .then(res => {
+          dispatch({
+              type: GET_API_VERSION,
+              payload: res.data
+          })
+      })
+      .catch((err) => {
+          console.log(err);
+          dispatch(returnErrors(err.data, err.status))
+      });
+};
 
 
 /* ~~~~~~~~~~~~~~~~~~ All items ~~~~~~~~~~~~~~~~~~~~~~*/
 export const getAll = () => dispatch => {
+    dispatch(setItemsLoading());
     axios
       .all([
           axios.get('/api/boards'),
@@ -42,12 +60,14 @@ export const getAll = () => dispatch => {
           })
       })
       .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          dispatch(returnErrors(err.data, err.status))
       });
 };
 
 /* ~~~~~~~~~~~~~~~~~~ Boards ~~~~~~~~~~~~~~~~~~~~~~*/
 export const getBoards = () => dispatch => {
+    dispatch(setItemsLoading());
     axios
       .get('/api/boards')
       .then(res => {
@@ -56,6 +76,10 @@ export const getBoards = () => dispatch => {
               payload: res.data
           })
       })
+      .catch((err) => {
+          console.log(err);
+          dispatch(returnErrors(err.data, err.status));
+      });
 };
 export const addBoard = (boardTitle) => dispatch => {
     //преобразуем к виду для сервера
@@ -74,6 +98,7 @@ export const addBoard = (boardTitle) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status))
       });
 };
 export const editBoardTitle = (board) => dispatch => {
@@ -95,6 +120,7 @@ export const editBoardTitle = (board) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
           getBoards();
       });
 };
@@ -115,6 +141,7 @@ export const deleteBoard = (boardId) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 
 };
@@ -192,6 +219,7 @@ export const reorderBoard = (
           .catch((err) => {
               console.log(err);
               // из-за переноса dispatch следует при ошибке вызывать метод getColumns(), чтобы восстановить исходные состояние
+              dispatch(returnErrors(err.data, err.status));
               getBoards();
           });
 
@@ -236,19 +264,11 @@ export const reorderBoard = (
     }
     ;
 
-    // return {
-    //     type: REORDER_BOARD,
-    //     payload: {
-    //         sourceId,
-    //         destinationId,
-    //         sourceIndex,
-    //         destinationIndex
-    //     }
-    // };
 };
 
 /* ~~~~~~~~~~~~~~~~~~ Columns ~~~~~~~~~~~~~~~~~~~~~~*/
 export const getColumns = () => dispatch => {
+    dispatch(setItemsLoading());
     axios
       .get('/api/columns')
       .then(res => {
@@ -257,6 +277,10 @@ export const getColumns = () => dispatch => {
               payload: res.data
           })
       })
+      .catch((err) => {
+          console.log(err, err.response);
+          dispatch(returnErrors(err.data, err.status));
+      });
 };
 export const getColumnsByBoard = (boardId) => dispatch => {
     axios
@@ -270,7 +294,8 @@ export const getColumnsByBoard = (boardId) => dispatch => {
       })
       .catch((err) => {
           console.log(err, err.response);
-          // if (err.response && err.response.status === 404 ){
+          dispatch(returnErrors(err.data, err.status));
+          // if (err.response && err.status === 404 ){
           //     dispatch({
           //         type: GET_COLUMNS_BY_BOARD,
           //         payload: []
@@ -298,7 +323,11 @@ export const addColumn = (board, columnTitle) => dispatch => {
               "owner_id": "5dd87b0e0453e1ca59773bc8"
           };
           // выполняем запрос на добавление созданной колонки в список доски
-          axios.put(`/api/boards/${boardId}`, newBoard);
+          axios.put(`/api/boards/${boardId}`, newBoard)
+            .catch((err) => {
+                console.log(err);
+                dispatch(returnErrors(err.data, err.status));
+            });
       })
       .then(() => {
           dispatch({
@@ -308,6 +337,7 @@ export const addColumn = (board, columnTitle) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 };
 export const editColumnTitle = (column) => dispatch => {
@@ -332,6 +362,7 @@ export const editColumnTitle = (column) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 };
 export const deleteColumn = (board, columnId, cards) => dispatch => {
@@ -364,6 +395,7 @@ export const deleteColumn = (board, columnId, cards) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 };
 export const reorderColumn = (
@@ -403,6 +435,7 @@ export const reorderColumn = (
           })
           .catch((err) => {
               console.log(err);
+              dispatch(returnErrors(err.data, err.status));
               // из-за переноса dispatch следует при ошибке вызывать метод getColumns(), чтобы восстановить исходные состояние
               getColumns();
           });
@@ -443,6 +476,7 @@ export const reorderColumn = (
           })
           .catch((err) => {
               console.log(err);
+              dispatch(returnErrors(err.data, err.status));
               // из-за переноса dispatch следует при ошибке вызывать метод getColumns(), чтобы восстановить исходные состояние
               getColumns();
           });
@@ -452,6 +486,7 @@ export const reorderColumn = (
 
 /* ~~~~~~~~~~~~~~~~~~ Cards ~~~~~~~~~~~~~~~~~~~~~~*/
 export const getCards = () => dispatch => {
+    dispatch(setItemsLoading());
     axios
       .get('/api/cards')
       .then(res => {
@@ -460,6 +495,10 @@ export const getCards = () => dispatch => {
               payload: res.data
           })
       })
+      .catch((err) => {
+          console.log(err);
+          dispatch(returnErrors(err.data, err.status));
+      });
 };
 // эта функция вызывает событие в 2 редьюсерах, потому что нужно изменять данные в двух местах
 export const addCard = (column, cardTitle) => dispatch => {
@@ -486,6 +525,7 @@ export const addCard = (column, cardTitle) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 };
 
@@ -521,6 +561,7 @@ export const deleteCard = (column, cardId) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 };
 export const editCard = (card) => dispatch => {
@@ -540,5 +581,6 @@ export const editCard = (card) => dispatch => {
       })
       .catch((err) => {
           console.log(err);
+          dispatch(returnErrors(err.data, err.status));
       });
 };
