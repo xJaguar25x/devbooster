@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
@@ -95,7 +95,8 @@ class Home extends Component {
     };
     handleSubmitColumnTitle = () => {
         const {editableBoardTitle, boardInEdit} = this.state;
-        const currentBoard = this.props.boards.find(item => item._id === boardInEdit);
+        // const currentBoard = this.props.boardsById.boards.find(item => item._id === boardInEdit);
+        const currentBoard = this.props.boardsById.boards[boardInEdit];
         if (editableBoardTitle === "") {
             // Удалять доску если стерли имя
             this.deleteBoard(currentBoard._id);
@@ -128,14 +129,37 @@ class Home extends Component {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        const {boards} = this.props;
+        console.log("render() ", this.props);
+
+        return (
+          // проверка на существование данных boards
+          // если их нет, то отображать заглушку
+          !this.props.boardsById.loading
+            ? (
+              <Fragment>
+                  {/*<TransitionGroup className="orders-list">*/}
+                  {this.renderHome()}
+                  {/*</TransitionGroup> */}
+              </Fragment>
+            )
+            : (
+              //TODO: сделать спиннер вместо этого
+              <h4>данные не получены</h4>
+            )
+
+        );
+    };
+
+    renderHome() {
+        const boards = Object.values(this.props.boardsById.boards);
+        // console.log("boards ", boards);
+
         const {
             boardInEdit,
             editableBoardTitle
         } = this.state;
-        console.log("render() ", this.props);
-        // console.log("boards", boards);
 
+        // return 1;
         return (
           <div className={classes.Home}>
               {/*<Helmet>*/}
@@ -220,21 +244,21 @@ class Home extends Component {
               </div>
           </div>
         );
-    };
+    }
 }
 
 Home.propTypes = {
     deleteBoard: PropTypes.func.isRequired,
     editBoardTitle: PropTypes.func.isRequired,
-    boards: PropTypes.array.isRequired,
-    cards: PropTypes.array.isRequired,
-    columns: PropTypes.array.isRequired,
+    boardsById: PropTypes.object.isRequired,
+    cardsById: PropTypes.object.isRequired,
+    columnsById: PropTypes.object.isRequired,
     getAll: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
-    boards: Object.values(state.boardsById),
-    cards: Object.values(state.cardsById),
-    columns: Object.values(state.columnsById)
+    boardsById: state.boardsById,
+    cardsById: state.cardsById,
+    columnsById: state.columnsById
 });
 
 export default connect(

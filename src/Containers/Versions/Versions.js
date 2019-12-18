@@ -24,16 +24,22 @@ class Versions extends Component {
     componentDidMount() {
         this.props.getBackendVersion();
     }
-    getApiVersion(){
-        const APIver = this.props.backendVersion;
-        if (APIver === undefined) {return APIver.ver;} else {return "?";}
-    }
-    render() {
 
+    getApiVersion() {
+        const APIver = this.props.backendVersion;
+        if (APIver !== undefined) {
+            return APIver;
+        } else {
+            return "?";
+        }
+    }
+
+    render() {
+        // console.log("ver ", this.props);
         return (
           <StyledDiv>
               <StyledInnerDiv>
-                  ver.= {process.env.REACT_APP_VERSION}
+                  ver.= {process.env.REACT_APP_VERSION || "0.2.0"}
               </StyledInnerDiv>
               <StyledInnerDiv>
                   backend ver.= {this.getApiVersion()}
@@ -42,8 +48,9 @@ class Versions extends Component {
         )
     }
 }
+
 const mapStateToProps = state => ({
-    backendVersion: Object.values(state.ApiVersion)
+    backendVersion: state.ApiVersion.ver
 });
 export default connect(
   mapStateToProps,

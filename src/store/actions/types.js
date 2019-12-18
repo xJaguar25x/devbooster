@@ -1,6 +1,3 @@
-// get ver. backend API
-export const GET_API_VERSION = 'GET_API_VERSION';
-
 // (boards, columns, cards)
 export const GET_ALL = 'GET_ALL';
 
@@ -22,7 +19,9 @@ export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 export const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE';
 
-// export const ITEMS_LOADING = 'ITEMS_LOADING';
-
-
-// export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+// системные
+// get ver. backend API
+export const GET_API_VERSION = 'GET_API_VERSION';
+export const GET_ERRORS = 'GET_ERRORS';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const ITEMS_LOADING = 'ITEMS_LOADING';

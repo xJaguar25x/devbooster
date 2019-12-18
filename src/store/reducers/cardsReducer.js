@@ -1,24 +1,27 @@
 import {
     GET_CARDS,
     ADD_CARD,
-    DELETE_CARD, DELETE_COLUMN, EDIT_CARD_TITLE, GET_ALL
+    DELETE_CARD, DELETE_COLUMN, EDIT_CARD_TITLE, GET_ALL, ITEMS_LOADING
 } from '../actions/types';
 // import State from "./initialState";
 
 // let initialState = State.cardsById;
-const initialState = {};
+const initialState = {
+    cards: {},
+    loading: false
+};
 
 function convertCard(inputData) {
     let outputData = {};
     inputData.forEach(item => {
         // if (item._id){
-            outputData = {
-                ...outputData,
-                [item._id]: {
-                    _id: item._id,
-                    card_name: item.name
-                }
+        outputData = {
+            ...outputData,
+            [item._id]: {
+                _id: item._id,
+                card_name: item.name
             }
+        }
         // } else return;
 
     });
@@ -30,12 +33,20 @@ const cardsReducer = (state = initialState, action) => {
         case GET_ALL: {
             const data = convertCard(action.payload.cards);
             // console.log("cardsReducer ",data);
-            return data;
+            return {
+                ...state,
+                cards: {...data},
+                loading: false
+            };
         }
         case GET_CARDS: {
             const data = convertCard(action.payload);
             // console.log("cardsReducer ",data);
-            return data;
+            return {
+                ...state,
+                cards: {...data},
+                loading: false
+            };
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case ADD_CARD: {
@@ -43,41 +54,71 @@ const cardsReducer = (state = initialState, action) => {
             // console.log(cardTitle, cardId, columnId);
             return {
                 ...state,
-                [cardId]: {
-                    _id: cardId,
-                    card_name: cardTitle
+                cards: {
+                    ...state.cards,
+                    [cardId]: {
+                        _id: cardId,
+                        card_name: cardTitle
+                    }
                 }
             };
         }
       // этот кейс повторяется в 2 редьюсерах, потому что нужно изменять данные в двух местах
         case DELETE_CARD: {
             const {cardId} = action.payload;
-            const {[cardId]: deletedCard, ...restOfCards} = state;
-            return restOfCards;
+            const {[cardId]: deletedCard, ...restOfCards} = state.cards;
+            return {
+                ...state,
+                cards: {
+                    ...restOfCards
+                }
+            };
         }
+      //TODO: хз как исправить стейт, надо проверить
         case DELETE_COLUMN: {
             const {cards: cardIds} = action.payload;
             // console.log("cards ", cardIds);
-            return Object.keys(state)
+            console.log("state.cards ", state.cards);
+
+            // Object.keys нужен, для преобразования объекта к массиву, иначе не будет работать метод filter
+            //filter фильтрует массив state.cards так, чтобы полученные cardIds с удаляемой колонки не вошли в набор
+            // далее reduce преобразует массив обратно в объект
+            const temp = Object.keys(state.cards)
               .filter(cardId => !cardIds.includes(cardId))
               .reduce(
                 (newState, cardId) => ({
                     ...newState,
-                    [cardId]: state[cardId]
+                    [cardId]: state.cards[cardId]
                 }),
                 {}
               );
+            // console.log("temp ", temp);
+
+            return {
+                ...state,
+                cards: {
+                    ...temp
+                }
+            };
         }
         case EDIT_CARD_TITLE: {
             const {cardId, cardTitle} = action.payload;
             return {
                 ...state,
-                [cardId]: {
-                    ...state[cardId],
-                    card_name: cardTitle
+                cards: {
+                    ...state.cards,
+                    [cardId]: {
+                        ...state.cards[cardId],
+                        card_name: cardTitle
+                    }
                 }
             };
         }
+        case ITEMS_LOADING:
+            return {
+                ...state,
+                loading: true
+            };
         default:
             return state;
     }
