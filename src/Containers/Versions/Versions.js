@@ -39,7 +39,7 @@ class Versions extends Component {
         return (
           <StyledDiv>
               <StyledInnerDiv>
-                  ver.= {process.env.REACT_APP_VERSION || "0.2.0"}
+                  ver.= {process.env.REACT_APP_VERSION || "0.3.0"}
               </StyledInnerDiv>
               <StyledInnerDiv>
                   backend ver.= {this.getApiVersion()}
