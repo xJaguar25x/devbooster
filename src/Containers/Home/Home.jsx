@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import classes from './Home.module.scss';
-import {Button, Textarea} from "../../components";
+import {Button, Textarea} from "../../components/index";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 

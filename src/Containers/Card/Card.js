@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import classes from '../Card/Card.module.scss';
+import classes from './Card.module.scss';
 import {Draggable} from "react-beautiful-dnd";
-import {Button, Textarea} from "../../components";
+import {Button, Textarea} from "../../components/index";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 

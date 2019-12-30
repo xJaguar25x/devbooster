@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import classes from './Form.module.scss';
-import {Button, Textarea} from "../../components";
-import {ClickOutsideWrapper} from "../../hoc";
+import {Button, Textarea} from "../../components/index";
+import {ClickOutsideWrapper} from "../../hoc/index";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {addColumn, addCard, addBoard} from '../../store/actions/itemActions';

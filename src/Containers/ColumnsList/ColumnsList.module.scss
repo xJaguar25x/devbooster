@@ -1,0 +1,226 @@
+//~~~~~~~~~~~~~~~~~~~~~ ColumnsList ~~~~~~~~~~~~~~~~~~~~~~
+.Columns {
+    height: 100%;
+    margin-top: 5px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    overflow: overlay;
+}
+
+.Columns_clear {
+    min-width: 20px;
+    height: 60px;
+    margin-left: 20px;
+    display: flex;
+}
+
+.Columns_content {
+    width: 220px;
+    min-width: 220px;
+    //height: 100%;
+    margin-left: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: #e8ecf5;
+    border: 1px solid #e8ecf5;
+    border-radius: 5px;
+
+    &:last-child {
+        margin-right: 40px;
+    }
+}
+
+.Columns_header {
+    height: 40px;
+    //padding-left: 12px;
+    //padding-top: 8px;
+    //padding-bottom: 8px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    color: #313f80;
+    font-weight: 700;
+
+    .squareBtn {
+        margin-right: 6px;
+    }
+}
+
+.Columns_header.newColumn {
+    height: 60px;
+    font-weight: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    //box-shadow: inset 0px 6px 12px 6px rgba(222,226,236,1);
+    box-shadow: inset 2px 3px 6px #dee2ec, inset -2px 3px 6px #dee2ec;
+}
+
+.Columns_title {
+    display: flex;
+    white-space: pre-wrap;
+    margin-left: 12px;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~ Cards ~~~~~~~~~~~~~~~~~~~~~~
+.Cards {
+    margin: 5px 4px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.Cards_content {
+    width: 100%;
+    min-height: 35px;
+    margin-bottom: 18px;
+    background-color: #fff;
+    //border: 1px solid #fff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px 0px rgba(183, 202, 245, 1);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.Cards_content.newCard {
+    background-color: #f2f4f8;
+}
+
+.Cards_header {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        margin: 8px;
+        margin-bottom: 0px;
+        color: #aeaeae;
+    }
+}
+.Cards_header.avatar {
+    height: 27px;
+    width: 27px;
+    //line-height: 25px;
+}
+
+.Cards_title {
+    margin: 8px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Cards_title.newCard {
+    color: #777fa5;
+}
+
+.Cards_groups {
+    border-top: 1px solid #d0d6de;
+    margin: 0 8px 12px 8px;
+    padding-top: 12px;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    div {
+        //margin-right: 7px;
+        margin-bottom: 7px;
+        padding: 6px;
+        border-radius: 7px;
+        color: #ffffff;
+    }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~ All ~~~~~~~~~~~~~~~~~~~~~~
+.avatar {
+    //text-align: center;
+    color: #000;
+    background: #B7CAF5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grayText {
+    color: #7d7c7c;
+}
+
+.squareBtn {
+    background: none;
+    color: #a4aaab;
+    border: 1px solid #a4aaab;
+    border-radius: 5px;
+    width: 21px;
+    height: 21px;
+    text-align: center;
+    line-height: 20px;
+
+    &:hover {
+        color: #000;
+        background: #fff;
+    }
+}
+.circleBtn {
+    height: 34px;
+    width: 34px;
+    color: #b9ccf6;
+    border: 1px solid #b9ccf6;
+    border-radius: 50%;
+    font-size: 34px;
+    text-align: center;
+    line-height: 27px;
+
+    span {
+        margin-left: -1px;
+    }
+    &:hover {
+        color: #000;
+        background: #fff;
+    }
+}
+
+.groups_item__blue {
+    background: #5992f0;
+}
+
+.groups_item__blue2 {
+    background: #5975f0;
+}
+
+.groups_item__blue3 {
+    background: #5d59f0;
+}
+
+.groups_item__blue4 {
+    background: #59aef0;
+}
+
+.groups_item__purple {
+    background: #9259f0;
+}
+
+.groups_item__pink {
+    background: #f059c4;
+}
+
+.groups_item__orange {
+    background: #f0b559;
+}
+
+.groups_item__gray {
+    background: #6b6a8d;
+}

@@ -25,3 +25,10 @@ export const GET_API_VERSION = 'GET_API_VERSION';
 export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const ITEMS_LOADING = 'ITEMS_LOADING';
+
+
+// authorization method types
+
+export const LOGIN = 'LOGIN';
+export const FETCH_USER_INFO = 'FETCH_USER_INFO';
+export const LOGOUT = 'LOGOUT';

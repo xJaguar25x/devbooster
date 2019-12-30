@@ -30,17 +30,6 @@
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    justify-content: center;
-
-    :first-child{
-        flex-grow: 1;
-    }
-    :last-child{
-        flex-grow: 11;
-        p{
-            margin-left: 30%;
-            text-align: left;
-        }
-
-    }
+    justify-content: space-between;
+    padding: 0 24px;
 }

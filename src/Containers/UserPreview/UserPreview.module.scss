@@ -1,0 +1,44 @@
+@import '../../Containers/App/variables';
+
+.Wrapper{
+  display: flex;
+}
+
+.AvatarWrapper{
+
+}
+
+.AvatarCircle{
+  border-radius: 50%;
+  span {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+
+.UserInfoWrapper{
+  p {
+    text-align: right !important;
+    margin: 0 !important;
+  }
+}
+
+.Username{
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.Link{
+  color: $white;
+  &:visited{
+    color: $white;
+  }
+  text-underline: none;
+  border-bottom: 1px solid $white;
+}
+
+.FullName{
+  font-size: 12px;
+  font-weight: 300;
+}

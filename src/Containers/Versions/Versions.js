@@ -4,6 +4,9 @@ import {connect} from "react-redux";
 import {getBackendVersion} from "../../store/actions/itemActions";
 
 const StyledDiv = styled.div`
+position: absolute;
+bottom: 0;
+right: 0;
 font-size: 13px;
 font-weight: bold;
 color: black;
@@ -39,7 +42,7 @@ class Versions extends Component {
         return (
           <StyledDiv>
               <StyledInnerDiv>
-                  ver.= {process.env.REACT_APP_VERSION || "0.3.0"}
+                  ver.= {process.env.REACT_APP_VERSION || "0.3.1"}
               </StyledInnerDiv>
               <StyledInnerDiv>
                   backend ver.= {this.getApiVersion()}

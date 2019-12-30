@@ -4,7 +4,7 @@ import { BrowserRouter, Route} from 'react-router-dom';
 import 'typeface-roboto';
 import './index.css';
 import 'font-awesome/css/font-awesome.min.css';
-// import App from './Containers/oldApp';
+// import {App} from './Containers';
 import {App} from './Containers';
 import * as serviceWorker from './serviceWorker';
 

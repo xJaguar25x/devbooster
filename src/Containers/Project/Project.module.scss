@@ -34,9 +34,20 @@
 .left_Name {
     height: 77px;
     padding: 24px 0 24px 0;
+
+    a {
+        font-size: 1.5em;
+        color: #ffffff;
+        text-decoration: none;
+
+        &:hover {
+            color: #ffffff;
+            text-decoration: underline solid #ffffff;
+        }
+    }
 }
 
-.left_Boards {
+/*.left_Boards {
     height: 288px;
     width: 100%;
     display: flex;
@@ -86,8 +97,9 @@
             text-decoration: underline solid #ffffff;
         }
     }
-}
+}*/
 
+/*
 .left_Members {
     height: 175px;
 }
@@ -135,6 +147,7 @@
     font-size: 24px;
     line-height: 30px;
 }
+*/
 
 //~~~~~~~~~~~~~~~~~~~~~ right_side ~~~~~~~~~~~~~~~~~~~~~~
 .right_side {
@@ -206,7 +219,7 @@
     border-bottom: 5px solid #68d2d2;
 }
 
-.Columns {
+/*.ColumnsList {
     height: 100%;
     margin-top: 5px;
     display: flex;
@@ -273,9 +286,9 @@
     display: flex;
     white-space: pre-wrap;
     margin-left: 12px;
-}
+}*/
 
-.Cards {
+/*.Cards {
     margin: 5px 4px;
     display: flex;
     flex-flow: column nowrap;
@@ -349,7 +362,7 @@
         border-radius: 7px;
         color: #ffffff;
     }
-}
+}*/
 
 //~~~~~~~~~~~~~~~~~~~~~ All ~~~~~~~~~~~~~~~~~~~~~~
 .Wrapper {
@@ -369,7 +382,7 @@
     justify-content: flex-start;
 }
 
-.avatar {
+/*.avatar {
     //text-align: center;
     color: #000;
     background: #B7CAF5;
@@ -381,24 +394,24 @@
 
 .grayText {
     color: #7d7c7c;
-}
+}*/
 
-.squareBtn {
-    background: none;
-    color: #a4aaab;
-    border: 1px solid #a4aaab;
-    border-radius: 5px;
-    width: 21px;
-    height: 21px;
-    text-align: center;
-    line-height: 20px;
-
-    &:hover {
-        color: #000;
-        background: #fff;
-    }
-}
-
+//.squareBtn {
+//    background: none;
+//    color: #a4aaab;
+//    border: 1px solid #a4aaab;
+//    border-radius: 5px;
+//    width: 21px;
+//    height: 21px;
+//    text-align: center;
+//    line-height: 20px;
+//
+//    &:hover {
+//        color: #000;
+//        background: #fff;
+//    }
+//}
+/*
 .circleBtn {
     height: 34px;
     width: 34px;
@@ -416,7 +429,8 @@
         color: #000;
         background: #fff;
     }
-}
+}*/
+/*
 
 .groups_item__blue {
     background: #5992f0;
@@ -448,4 +462,4 @@
 
 .groups_item__gray {
     background: #6b6a8d;
-}
+}*/

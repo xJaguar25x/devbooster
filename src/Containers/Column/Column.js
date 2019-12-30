@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Form, Card} from "../index";
 import classes from './Column.module.scss';
-import {Button, Textarea} from "../../components";
+import {Button, Textarea} from "../../components/index";
 import {Droppable} from 'react-beautiful-dnd';
 
 import {connect} from 'react-redux';
