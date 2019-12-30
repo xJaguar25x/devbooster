@@ -11,6 +11,7 @@ import {
     useLocation
 } from "react-router-dom";
 import {Project} from "../index";
+import {PreloaderWrapper} from "../../hoc";
 // import {PrivateRoute} from "../index";
 
 
@@ -35,38 +36,40 @@ export default class App extends Component {
 
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
-/*
-        PrivateRoute2({children, ...rest}) {
-            return (
-              <Route
-                {...rest}
-                render={
-                    ({location}) =>
-                      fakeAuth.isAuthenticated ? (
-                        children
-                      ) : (
-                        <Redirect
-                          to={{
-                              pathname: "/login",
-                              state: {from: location}
-                          }}
-                        />
-                      )
-                }
-              />
-            );
+    /*
+            PrivateRoute2({children, ...rest}) {
+                return (
+                  <Route
+                    {...rest}
+                    render={
+                        ({location}) =>
+                          fakeAuth.isAuthenticated ? (
+                            children
+                          ) : (
+                            <Redirect
+                              to={{
+                                  pathname: "/login",
+                                  state: {from: location}
+                              }}
+                            />
+                          )
+                    }
+                  />
+                );
+            }
+
+        PublicPage() {
+            return <h3>Public</h3>;
         }
 
-    PublicPage() {
-        return <h3>Public</h3>;
-    }
-
-    ProtectedPage() {
-        return <h3>Protected</h3>;
-    }*/
+        ProtectedPage() {
+            return <h3>Protected</h3>;
+        }*/
 
 
     render() {
+        const {isLoading, isError, orderList} = this.props;
+
         return (
           <Fragment>
               <div className="Old">
@@ -76,7 +79,21 @@ export default class App extends Component {
                       {/* TODO: поставить exact для пути "/" после того,
                             как добавлю список проектов в Project*/}
                       <Route exact path="/" component={Projects}/>
-                      <Route  path="/p:projectId" component={Project}/>
+                      <Route path="/p:projectId" component={Project}/>
+                     {/* <Route path="/p:projectId"
+                             render={ (props) => (
+                                 <PreloaderWrapper
+                                   isLoading={isLoading}
+                                   isError={isError}
+                                   // isEmpty={!ordersList.length}
+                                   // fetch={this.fetchOrdersList}
+                                   emptyText="You don't have any orders."
+                                 >
+                                     <Project {...props}/>
+                                 </PreloaderWrapper>
+                               )
+                             }
+                      />*/}
 
                       {/*<Route path="/board/:boardId" component={Board}/>*/}
                       {/*<Route path="/projects" component={Projects}/>*/}

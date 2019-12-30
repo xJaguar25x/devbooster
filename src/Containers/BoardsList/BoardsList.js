@@ -3,6 +3,7 @@ import classes from './BoardsList.module.scss';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import {NavLink} from "react-router-dom";
+import {PreloaderWrapper} from "../../hoc";
 
 
 class BoardsList extends Component{
@@ -11,7 +12,8 @@ class BoardsList extends Component{
     }
 
     render(){
-        const boards = Object.values(this.props.boardsById.boards);
+        const { loading, error } = this.props.boardsById;
+        const  boards = Object.values(this.props.boardsById.boards);
         console.log("BoardsList ", this.props);
 
         return(
@@ -27,18 +29,27 @@ class BoardsList extends Component{
 
               <div className={classes.left_Boards_content}>
 
-                  {boards.map(board => (
-                    <div className={classes.Boards_content_inner}>
-                        <NavLink
-                          to={`/p${this.props.projectId}/b${board._id}/`}
-                          className={classes.Link}
-                          activeClassName={classes.whiteText}
-                        >
-                            {board.title}
-                        </NavLink>
-                        <div><i className="fa fa-bell-o" aria-hidden="true"></i></div>
-                    </div>
-                  ))}
+                  <PreloaderWrapper
+                    isLoading={loading}
+                    isError={error}
+                    isEmpty={!boards.length}
+                    // fetch={this.fetchOrdersList}
+                    emptyText="You don't have any borders."
+                  >
+                      {boards.map(board => (
+                        <div className={classes.Boards_content_inner}>
+                            <NavLink
+                              to={`/p${this.props.projectId}/b${board._id}/`}
+                              className={classes.Link}
+                              activeClassName={classes.whiteText}
+                            >
+                                {board.title}
+                            </NavLink>
+                            <div><i className="fa fa-bell-o" aria-hidden="true"></i></div>
+                        </div>
+                      ))}
+                  </PreloaderWrapper>
+
 
               </div>
           </div>

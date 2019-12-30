@@ -16,15 +16,18 @@ class Project extends Component {
     render() {
         console.log("render() ", this.props);
 
-        return (
+        return(
+          this.renderProject()
+        )
+       /* return (
           // проверка на существование данных boards
           // если их нет, то отображать заглушку
           !this.props.boardsById.loading
             ? (
               <Fragment>
-                  {/*<TransitionGroup className="orders-list">*/}
+                  {/!*<TransitionGroup className="orders-list">*!/}
                   {this.renderProject()}
-                  {/*</TransitionGroup> */}
+                  {/!*</TransitionGroup> *!/}
               </Fragment>
             )
             : (
@@ -32,7 +35,7 @@ class Project extends Component {
               <h4>данные не получены</h4>
             )
 
-        );
+        );*/
     };
 
     renderProject() {
