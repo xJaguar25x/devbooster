@@ -1,5 +1,18 @@
 @import '../../Containers/App/variables';
 
+@mixin button-reset {
+    /**
+    * Сброс стилей у кнопки.
+    */
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    /* отображаем курсор в виде руки при наведении;  */
+    cursor: pointer;
+}
+
 //.Column_Content {
 //    width: 268px;
 //    background: $background-grey;
@@ -25,6 +38,7 @@
 }
 
 .Columns_header {
+    position: relative;
     height: 40px;
     //padding-left: 12px;
     //padding-top: 8px;
@@ -41,7 +55,7 @@
     }
 }
 
-.Columns_header.newColumn {
+.Columns_content.newColumn {
     height: 60px;
     font-weight: unset;
     display: flex;
@@ -57,7 +71,8 @@
     white-space: pre-wrap;
     margin-left: 12px;
 }
-.Columns_title_number{
+
+.Columns_title_number {
     margin-left: 10px;
     height: 22px;
     width: 22px;
@@ -69,7 +84,6 @@
     align-items: center;
     font-size: 12px;
 }
-
 
 //.ColumnTitle {
 //    display: flex;
@@ -86,6 +100,90 @@
     justify-content: center;
     padding: 0 10px;
 }
+
+.PopoverColumn {
+    position: absolute;
+    top: 45px;
+    left: 195px;
+    width: 240px;
+    //height: 227px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
+}
+
+.Popover_Header {
+    height: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Popover_Content {
+    width: 100%;
+}
+
+.Popover_List {
+    //width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 5px 10px;
+    padding-top: 10px;
+    border-top: 1px solid #c2c2c7;
+
+}
+
+.Popover_List_btn {
+    padding: 5px;
+    background: none;
+    border: none;
+    margin-bottom: 10px;
+    color: #777fa5;
+    cursor: pointer;
+
+    &:active {
+        transform: translateY(1px);
+        filter: saturate(150%);
+    }
+    &:hover, &:focus {
+        color: #9555af;
+        border-color: currentColor;
+        background-color: white;
+    }
+}
+
+.Popover_close_btn {
+    // используем миксин
+    @include button-reset;
+
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #777fa5;
+    border-radius: 50%;
+    background: none;
+    color: #777fa5;
+    font-size: 12px;
+
+    &:active {
+        transform: translateY(1px);
+        filter: saturate(150%);
+    }
+    &:hover, &:focus {
+        color: #9555af;
+        border-color: currentColor;
+        background-color: white;
+    }
+    //&:focus{
+    //    outline: none;
+    //}
+}
+
 
 //~~~~~~~~~~~~~~~~~~~~~ Cards ~~~~~~~~~~~~~~~~~~~~~~
 .Cards {
@@ -145,6 +243,7 @@
         background: #fff;
     }
 }
+
 .squareBtn {
     background: none;
     color: #a4aaab;

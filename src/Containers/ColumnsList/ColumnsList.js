@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import classes from './ColumnsList.module.scss';
-import {Board, Column} from "../index";
+import {Board, Column, Form} from "../index";
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 import {connect} from 'react-redux';
@@ -10,6 +10,8 @@ import {
     reorderColumn
 } from '../../store/actions/itemActions';
 import PropTypes from 'prop-types';
+import {PreloaderWrapper} from "../../hoc";
+import {Preloader} from "../../components";
 
 class ColumnsList extends Component {
 
@@ -95,13 +97,13 @@ class ColumnsList extends Component {
 
         return (
 
-              <DragDropContext
-                onDragEnd={this.onDragEnd}
-              >
-                  <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
-                      {droppableProvided => (
-                        <div className={classes.Columns} ref={droppableProvided.innerRef}>
-                           {/* <div className={classes.Columns_content}>
+          <DragDropContext
+            onDragEnd={this.onDragEnd}
+          >
+              <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
+                  {droppableProvided => (
+                    <div className={classes.Columns} ref={droppableProvided.innerRef}>
+                        {/* <div className={classes.Columns_content}>
                                 <div className={classes.Columns_header}>
                                     <div className={classes.Columns_title}>
                                         Title
@@ -157,58 +159,56 @@ class ColumnsList extends Component {
                                     </div>
                                 </div>
                             </div>*/}
-                            {column_ids.map((column, index) => (
-                              <Draggable
-                                key={column._id}
-                                draggableId={column._id}
-                                index={index}
-                              >
-                                  {provided => (
-                                    <Fragment>
-                                        <div
-                                          className={classes.Columns_content}
-                                          key={column._id} id={column._id}
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          data-react-beautiful-dnd-draggable="0"
-                                          data-react-beautiful-dnd-drag-handle="0"
-                                        >
-                                            <Column
-                                              key={column._id}
-                                              column={column}
-                                              boardId={boardId}
-                                              style={{height: 'initial'}}
-                                            />
-                                        </div>
-                                        {provided.placeholder}
-                                    </Fragment>
-                                  )}
-                              </Draggable>
-                            ))
-                            }
-                            {droppableProvided.placeholder}
-
-                            <div className={classes.Columns_content}>
-                                <div className={classes.Columns_header + " " + classes.newColumn}>
-                                    <div className={classes.circleBtn}>
-                                        <span>+</span>
-                                        {/*<i className="fa fa-plus" aria-hidden="true"></i>*/}
+                        {column_ids.map((column, index) => (
+                          <Draggable
+                            key={column._id}
+                            draggableId={column._id}
+                            index={index}
+                          >
+                              {provided => (
+                                <Fragment>
+                                    <div
+                                      className={classes.Columns_content}
+                                      key={column._id} id={column._id}
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      data-react-beautiful-dnd-draggable="0"
+                                      data-react-beautiful-dnd-drag-handle="0"
+                                    >
+                                        <Column
+                                          key={column._id}
+                                          column={column}
+                                          boardId={boardId}
+                                          style={{height: 'initial'}}
+                                        />
                                     </div>
-                                </div>
-                            </div>
-                            {/* <Form
-                              classNameWrapper="ColumnComposerWrapper"
-                              classNameBtn="ColumnComposerWrapperBtn"
-                              board={this.props.board}
-                              type="addColumn"
-                              btnText="Add new column"
-                              btnTextInner="Add column"
-                            />*/}
-                        </div>
-                      )}
-                  </Droppable>
-              </DragDropContext>
+                                    {provided.placeholder}
+                                </Fragment>
+                              )}
+                          </Draggable>
+                        ))
+                        }
+                        {droppableProvided.placeholder}
+
+                        {/*<div className={classes.Columns_content + " " + classes.newColumn}>*/}
+                        {/*<button className={classes.circleBtn + " " + classes.newColumn}>*/}
+                        {/*<span>+</span>*/}
+                        {/*/!*<i className="fa fa-plus" aria-hidden="true"></i>*!/*/}
+                        {/*</button>*/}
+                        {/*</div>*/}
+                        <Form
+                          classNameWrapper="Columns_content"
+                          classNameBtn="circleBtn"
+                          board={this.props.board}
+                          type="newColumn"
+                          btnText="+"
+                          btnTextInner="Add column"
+                        />
+                    </div>
+                  )}
+              </Droppable>
+          </DragDropContext>
         );
     };
 
@@ -305,20 +305,34 @@ class ColumnsList extends Component {
         );*/
 
         return (
-          // проверка на существование данных любой из 3 загружаемых массивов(boards, columns, cards)
-          //если их нет, то отображать заглушку
-          (!this.props.boardsById.loading && this.props.board)
-            ? (
-              <Fragment>
-                  {/*<TransitionGroup className="orders-list">*/}
-                  {this.renderBoard()}
-                  {/*</TransitionGroup> */}
-              </Fragment>
-            )
-            : (
-              //TODO: сделать спиннер вместо этого
-              <h4>данные не получены</h4>
-            )
+          <Fragment>
+              {/* // проверка на существование данных любой из 3 загружаемых массивов(boards, columns, cards)
+              //если их нет, то отображать заглушку*/}
+              {(!this.props.boardsById.loading && this.props.board)
+                ? (
+                  <Fragment>
+                      {/*<TransitionGroup className="orders-list">*/}
+                      {this.renderBoard()}
+                      {/*</TransitionGroup>*/}
+                  </Fragment>
+                )
+                : (
+                  <Preloader color="black"/>
+                )
+              }
+              {/*< PreloaderWrapper
+                isLoading={this.props.boardsById.loading}
+                isError="false"
+                isEmpty={this.props.board}
+                // fetch={this.fetchOrdersList}
+                emptyText="You don't have any columns."
+                color="gray"
+                size="200px"
+              >
+                  {this.renderBoard(this.props)}
+                  <h1>asdsada</h1>
+              </PreloaderWrapper>*/}
+          </Fragment>
 
         );
     };

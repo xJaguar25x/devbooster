@@ -1,7 +1,7 @@
 $count: 10;
 $time: 2; //in seconds
 $size: 50;
-$color: #ffffff;
+$color: gray;
 
 .holder {
     position: absolute;
@@ -24,6 +24,7 @@ $color: #ffffff;
     transform: translateX(-50%) translateY(-50%);
     animation: rotatePreloader $time + s infinite ease-in;
 }
+
 @keyframes rotatePreloader {
     0% {
         transform: translateX(-50%) translateY(-50%) rotateZ(0deg);

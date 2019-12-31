@@ -8,6 +8,7 @@ import {Droppable} from 'react-beautiful-dnd';
 import {connect} from 'react-redux';
 import {deleteColumn, editColumnTitle} from '../../store/actions/itemActions';
 import PropTypes from 'prop-types';
+import {ClickOutsideWrapper} from "../../hoc";
 
 class Column extends Component {
 
@@ -18,10 +19,16 @@ class Column extends Component {
 
     state = {
         isColumnTitleInEdit: false,
-        newColumnTitle: ""
+        newColumnTitle: "",
+        isOpenPopoverMenu: false
     };
 
     /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
+    // показать/скрыть popover
+    togglePopoverMenu = () => {
+        this.setState({isOpenPopoverMenu: !this.state.isOpenPopoverMenu});
+    };
+
     //~~~~ Обработчик нажатия кнопки редактировать заголовок ColumnTitleButton ~~~~
     openTitleEditor = () => {
         this.setState({
@@ -90,7 +97,7 @@ class Column extends Component {
 
         return (
           <Fragment>
-          {/*<div className={classes.Columns_content} key={column._id} id={column._id}>*/}
+              {/*<div className={classes.Columns_content} key={column._id} id={column._id}>*/}
               <div className={classes.Columns_header}>
                   <div className={classes.Columns_title}>
                       {column.column_name}
@@ -98,48 +105,87 @@ class Column extends Component {
                           {this.props.column.cards.length}
                       </div>
                   </div>
-                  <div className={classes.squareBtn}>
+                  <button
+                    type="button"
+                    className={classes.squareBtn}
+                    onClick={this.togglePopoverMenu}
+                  >
                       <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                  </div>
-              </div>
-              {/*<div className={classes.Cards}>*/}
-                  <Droppable droppableId={this.props.column._id}>
-                      {provided => (
-                        <div className={classes.Cards}
-                             ref={provided.innerRef}
-                             {...provided.droppableProps}
-                        >
-                            {/*функцией map раскрываем список всех задачь из состояния*/}
-                            {card_ids.map((card, index) => (
-                              //Вывод компонента Задачи
-                              <Card
-                                key={index}
-                                card={card}
-                                column={column}
-                                index={index}
-                                // state={this.state}
-                                // openCardEditor={this.openCardEditor}
-                              />
-                            ))}
-                            {provided.placeholder}
+                  </button>
+                  {this.state.isOpenPopoverMenu && (
+                  <ClickOutsideWrapper handleClickOutside={this.togglePopoverMenu}>
+                      <div className={classes.PopoverColumn}>
+                          <button
+                            type="button"
+                            className={classes.Popover_close_btn}
+                            onClick={this.togglePopoverMenu}
+                          >
+                              X
+                          </button>
+                          <div className={classes.Popover_Header}>
+                              <div>Column actions</div>
+                          </div>
+                          <div className={classes.Popover_Content}>
+                              <div className={classes.Popover_List}>
+                                  <button
+                                    type="button"
+                                    className={classes.Popover_List_btn}
+                                    onClick={this.handleDeleteColumn}
+                                  >
+                                      Delete column
+                                  </button>
 
-                            {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
-                            {/*<Form*/}
-                            {/*classNameBtn="ComposerWrapper"*/}
-                            {/*column={this.props.column}*/}
-                            {/*type="addCard"*/}
-                            {/*btnText="Add new card"*/}
-                            {/*btnTextInner="Add card"*/}
-                            {/*/>*/}
-                            <div className={classes.Cards_content + " " + classes.newCard}>
-                                <div className={classes.Cards_title + " " + classes.newCard}>Add card</div>
-                            </div>
-                        </div>
-                      )}
-                  </Droppable>
+                                  {/*this btn not worked, nothing to do*/}
+                                  <button
+                                    type="button"
+                                    className={classes.Popover_List_btn}
+                                  >
+                                      Subscribe
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </ClickOutsideWrapper>
+                  )}
+
+              </div>
+              <Droppable droppableId={this.props.column._id}>
+                  {provided => (
+                    <div className={classes.Cards}
+                         ref={provided.innerRef}
+                         {...provided.droppableProps}
+                    >
+                        {/*функцией map раскрываем список всех задачь из состояния*/}
+                        {card_ids.map((card, index) => (
+                          //Вывод компонента Задачи
+                          <Card
+                            key={index}
+                            card={card}
+                            column={column}
+                            index={index}
+                            // state={this.state}
+                            // openCardEditor={this.openCardEditor}
+                          />
+                        ))}
+                        {provided.placeholder}
+
+                        {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
+                        <Form
+                          classNameWrapper="Cards_content"
+                          classNameBtn="Cards_title"
+                          column={this.props.column}
+                          type="newCard"
+                          btnText="Add new card"
+                          btnTextInner="Add card"
+                        />
+                        {/*<div className={classes.Cards_content + " " + classes.newCard}>*/}
+                            {/*<div className={classes.Cards_title + " " + classes.newCard}>Add card</div>*/}
+                        {/*</div>*/}
+                    </div>
+                  )}
+              </Droppable>
 
               {/*</div>*/}
-          {/*</div>*/}
           </Fragment>
         );
     }

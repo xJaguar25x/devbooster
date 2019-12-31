@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import classes from './Form.module.scss';
 import {Button, Textarea} from "../../components/index";
 import {ClickOutsideWrapper} from "../../hoc/index";
@@ -28,12 +28,12 @@ class Form extends Component {
         // console.log("Form props ",this.props);
 
         // Если добавляем column то передаем только имя
-        if (this.props.type === "addColumn") {
+        if (this.props.type === "newColumn") {
             this.props.addColumn(board, newTitle);
         }
-        else if (this.props.type === "addCard") {
+        else if (this.props.type === "newCard") {
             this.props.addCard(column, newTitle);
-        } else if (this.props.type === "addBoard") {
+        } else if (this.props.type === "newBoard") {
             this.props.addBoard(newTitle);
         }
         this.setState({newTitle: "", formIsOpen: false});
@@ -61,19 +61,20 @@ class Form extends Component {
         } = this.state;
 
         const clsBtn = [
-            // classes.Form,
+            classes[this.props.type],
             classes[this.props.classNameBtn]
         ];
         const clsWrapper = [
-            classes.Form,
+            classes[this.props.type],
             classes[this.props.classNameWrapper]
         ];
 
+        console.log("clsBtn ",clsBtn);
         return (
-          <div className={clsWrapper.join(' ')}>
+          <Fragment>
               {formIsOpen && (
                 <ClickOutsideWrapper handleClickOutside={this.toggleCardComposer}>
-                    <div className={classes.TextareaWrapper}>
+                    <div className={clsWrapper.join(' ')}>
                         <form
                           className={classes.CardTextareaForm}
                           onSubmit={this.handleSubmitCard}
@@ -99,16 +100,30 @@ class Form extends Component {
                 </ClickOutsideWrapper>
               )}
               {formIsOpen || (
-                <div className={clsBtn.join(' ')}>
-                    <Button
-                      className="CardButton"
-                      onClick={this.toggleCardComposer}
-                    >
-                        {this.props.btnText}
-                    </Button>
-                </div>
+                <Fragment>
+                    {/*<div className={classes.Cards_content + " " + classes.newCard}>*/}
+                        {/*<button className={classes.Cards_title + " " + classes.newCard}>*/}
+                            {/*Add card*/}
+                        {/*</button>*/}
+                    {/*</div>*/}
+
+                    {/*<div className={classes.Columns_content + " " + classes.newColumn}>*/}
+                        {/*<button className={classes.circleBtn + " " + classes.newColumn}>*/}
+                            {/*+*/}
+                            {/*/!*<i className="fa fa-plus" aria-hidden="true"></i>*!/*/}
+                        {/*</button>*/}
+                    {/*</div>*/}
+                    <div className={clsWrapper.join(' ')}>
+                        <button
+                          className={clsBtn.join(' ')}
+                          onClick={this.toggleCardComposer}
+                        >
+                            {this.props.btnText}
+                        </button>
+                    </div>
+                </Fragment>
               )}
-          </div>
+          </Fragment>
         )
     }
 }
