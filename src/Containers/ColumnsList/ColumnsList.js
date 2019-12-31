@@ -101,7 +101,7 @@ class ColumnsList extends Component {
                   <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
                       {droppableProvided => (
                         <div className={classes.Columns} ref={droppableProvided.innerRef}>
-                            <div className={classes.Columns_content}>
+                           {/* <div className={classes.Columns_content}>
                                 <div className={classes.Columns_header}>
                                     <div className={classes.Columns_title}>
                                         Title
@@ -156,7 +156,7 @@ class ColumnsList extends Component {
                                         <div className={classes.Cards_title + " " + classes.newCard}>Add card</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*/}
                             {column_ids.map((column, index) => (
                               <Draggable
                                 key={column._id}
