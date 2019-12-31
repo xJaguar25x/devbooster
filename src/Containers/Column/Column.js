@@ -89,68 +89,58 @@ class Column extends Component {
         // console.log("render() ", this.props);
 
         return (
-          <div className={classes.Column_Content} key={column._id} id={column._id}>
-              {isColumnTitleInEdit ? (
-                <div className={classes.ColumnTitleTextareaWrapper}>
-                    <Textarea
-                      className="ColumnTitleTextarea"
-                      autoFocus
-                      // useCacheForDOMMeasurements
-                      value={newColumnTitle}
-                      onChange={this.handleColumnTitleEditorChange}
-                      onKeyDown={this.handleColumnTitleKeyDown}
-                      onBlur={this.handleSubmitColumnTitle}
-                    />
-                </div>
-              ) : (
-                <div className={classes.ColumnTitle}>
-                    <Button
-                      className="ListTitleButton"
-                      onFocus={this.openTitleEditor}
-                      onClick={this.openTitleEditor}
-                    >
-                        {column.column_name}
-                    </Button>
-                    <Button
-                      className="DeleteCardButton"
-                      onClick={this.handleDeleteColumn}
-                    >
-                        <DeleteIcon/>
-                    </Button>
-                </div>
-              )}
-              <Droppable droppableId={this.props.column._id}>
-                  {provided => (
-                    <div className="List-Cards"
-                         ref={provided.innerRef}
-                         {...provided.droppableProps}
-                    >
-                        {/*функцией map раскрываем список всех задачь из состояния*/}
-                        {card_ids.map((card, index) => (
-                          //Вывод компонента Задачи
-                          <Card
-                            key={index}
-                            card={card}
-                            column={column}
-                            index={index}
-                            // state={this.state}
-                            // openCardEditor={this.openCardEditor}
-                          />
-                        ))}
-                        {provided.placeholder}
+          <Fragment>
+          {/*<div className={classes.Columns_content} key={column._id} id={column._id}>*/}
+              <div className={classes.Columns_header}>
+                  <div className={classes.Columns_title}>
+                      {column.column_name}
+                      <div className={classes.Columns_title_number}>
+                          {this.props.column.cards.length}
+                      </div>
+                  </div>
+                  <div className={classes.squareBtn}>
+                      <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                  </div>
+              </div>
+              {/*<div className={classes.Cards}>*/}
+                  <Droppable droppableId={this.props.column._id}>
+                      {provided => (
+                        <div className={classes.Cards}
+                             ref={provided.innerRef}
+                             {...provided.droppableProps}
+                        >
+                            {/*функцией map раскрываем список всех задачь из состояния*/}
+                            {card_ids.map((card, index) => (
+                              //Вывод компонента Задачи
+                              <Card
+                                key={index}
+                                card={card}
+                                column={column}
+                                index={index}
+                                // state={this.state}
+                                // openCardEditor={this.openCardEditor}
+                              />
+                            ))}
+                            {provided.placeholder}
 
-                        {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
-                        <Form
-                          classNameBtn="ComposerWrapper"
-                          column={this.props.column}
-                          type="addCard"
-                          btnText="Add new card"
-                          btnTextInner="Add card"
-                        />
-                    </div>
-                  )}
-              </Droppable>
-          </div>
+                            {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
+                            {/*<Form*/}
+                            {/*classNameBtn="ComposerWrapper"*/}
+                            {/*column={this.props.column}*/}
+                            {/*type="addCard"*/}
+                            {/*btnText="Add new card"*/}
+                            {/*btnTextInner="Add card"*/}
+                            {/*/>*/}
+                            <div className={classes.Cards_content + " " + classes.newCard}>
+                                <div className={classes.Cards_title + " " + classes.newCard}>Add card</div>
+                            </div>
+                        </div>
+                      )}
+                  </Droppable>
+
+              {/*</div>*/}
+          {/*</div>*/}
+          </Fragment>
         );
     }
 }

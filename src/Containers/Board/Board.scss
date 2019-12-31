@@ -1,221 +1,51 @@
-.Dashboard{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: calc(100vh - 111px);
-    overflow-x: auto;
-    overflow-y: auto;
+//.Dashboard{
+//    display: flex;
+//    flex-direction: column;
+//    align-items: center;
+//    height: calc(100vh - 111px);
+//    overflow-x: auto;
+//    overflow-y: auto;
+//
+//    @media (max-width: 1436px) {
+//        align-items: self-start;
+//        //align-items: ${props => props.numLists > 3 && 'self-start'};
+//    }
+//
+//    @media (max-width: 1152px) {
+//        align-items: self-start;
+//        //align-items: ${props => props.numLists > 2 && 'self-start'};
+//    }
+//
+//    @media (max-width: 868px) {
+//        align-items: self-start;
+//        //align-items: ${props => props.numLists > 1 && 'self-start'};
+//    }
+//
+//    @media (max-width: 768px) {
+//        align-items: center;
+//        height: 100%;
+//    }
+//}
 
-    @media (max-width: 1436px) {
-        align-items: self-start;
-        //align-items: ${props => props.numLists > 3 && 'self-start'};
-    }
+//.lists-wrapper {
+//    display: flex;
+//    align-items: flex-start;
+//    padding: 8px;
+//}
+//.BoardTitle{
+//    margin-top: 1rem;
+//    padding: 0.5rem;
+//    font-size: 1.5rem;
+//    font-weight: 500;
+//    color: white;
+//
+//    @media (max-width: 768px) {
+//        font-size: 1.25rem;
+//    }
+//}
 
-    @media (max-width: 1152px) {
-        align-items: self-start;
-        //align-items: ${props => props.numLists > 2 && 'self-start'};
-    }
-
-    @media (max-width: 868px) {
-        align-items: self-start;
-        //align-items: ${props => props.numLists > 1 && 'self-start'};
-    }
-
-    @media (max-width: 768px) {
-        align-items: center;
-        height: 100%;
-    }
-}
-
-.lists-wrapper {
-    display: flex;
-    align-items: flex-start;
-    padding: 8px;
-}
-.BoardTitle{
-    margin-top: 1rem;
-    padding: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: white;
-
-    @media (max-width: 768px) {
-        font-size: 1.25rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .lists-wrapper {
-        flex-direction: column;
-    }
-}
-/*
-.board {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-evenly;
-    align-items: flex-start;
-}
-
-.List {
-    width: 272px;
-    margin: 0 4px;
-    height: 100%;
-    box-sizing: border-box;
-    display: inline-block;
-    vertical-align: top;
-    white-space: nowrap;
-
-}
-
-.List-Content {
-    background-color: #ebecf0;
-    border-radius: 3px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-    position: relative;
-    white-space: normal;
-}
-
-.Columns {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: flex-start;
-    align-items: center;
-    min-width: 100px;
-    max-height: 100%;
-    border-radius: 3px;
-    background: #ebecf0;
-
-    width: 272px;
-    margin: 0 4px;
-    height: 100%;
-    box-sizing: border-box;
-}
-
-.List-Header {
-    flex: 0 0 auto;
-    padding: 10px 8px;
-    position: relative;
-    min-height: 20px;
-
-    p {
-        background: transparent;
-        border-radius: 3px;
-        box-shadow: none;
-        font-weight: 600;
-        margin: -4px 0;
-        height: 20px;
-        min-height: 20px;
-        padding: 4px 8px;
-        resize: none;
-        max-height: 256px;
-        overflow: hidden;
-        overflow-wrap: break-word;
-
-        color: #172b4d;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
-        font-size: 14px;
-        line-height: 20px;
-        text-align: left;
-    }
-
-    a {
-        color: #fff;
-        padding: 6px 8px;
-        transition: color 85ms ease-in;
-        text-decoration: none;
-    }
-}
-
-.List-Cards {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin: 0 4px;
-    padding: 0 4px;
-    z-index: 1;
-    min-height: 0;
-
-    .Cards {
-        background-color: #fff;
-        border-radius: 3px;
-        box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
-        cursor: pointer;
-        display: block;
-        margin-bottom: 8px;
-        max-width: 300px;
-        min-height: 20px;
-        position: relative;
-        text-decoration: none;
-        z-index: 0;
-
-        button {
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            color: #5e6c84;
-        }
-
-        button:hover {
-            color: #091e42;
-            background-color: rgba(9, 30, 66, .08);
-            text-decoration: none;
-        }
-        button:active, button:hover {
-            outline: 0;
-        }
-
-        .list-card-labels {
-            overflow: hidden;
-            padding: 6px 8px 2px;
-            position: relative;
-            z-index: 10;
-        }
-    }
-}
-
-.List-Footer {
-    min-height: 38px;
-    max-height: 38px;
-    display: flex;
-    justify-content: space-between;
-
-    .open-card-composer {
-        border-radius: 3px;
-        color: #5e6c84;
-        //display: block;
-        //flex: 0 0 auto;
-        padding: 4px 8px;
-        text-decoration: none;
-        user-select: none;
-
-        flex-grow: 1;
-        //margin: 2px 0 8px 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-
-    }
-
-    .open-card-composer:active {
-        background-color: rgba(9, 30, 66, .13);
-    }
-
-    &:active, &:hover {
-        outline: 0;
-    }
-
-    .open-card-composer:hover {
-        background-color: rgba(9, 30, 66, .08);
-        color: #172b4d;
-        text-decoration: underline;
-    }
-}
-*/
+//@media (max-width: 768px) {
+//    .lists-wrapper {
+//        flex-direction: column;
+//    }
+//}

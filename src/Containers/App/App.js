@@ -68,7 +68,7 @@ export default class App extends Component {
 
 
     render() {
-        const {isLoading, isError, orderList} = this.props;
+        // const {isLoading, isError, orderList} = this.props;
 
         return (
           <Fragment>
@@ -80,6 +80,7 @@ export default class App extends Component {
                             как добавлю список проектов в Project*/}
                       <Route exact path="/" component={Projects}/>
                       <Route path="/p:projectId" component={Project}/>
+
                      {/* <Route path="/p:projectId"
                              render={ (props) => (
                                  <PreloaderWrapper
@@ -94,9 +95,6 @@ export default class App extends Component {
                                )
                              }
                       />*/}
-
-                      {/*<Route path="/board/:boardId" component={Board}/>*/}
-                      {/*<Route path="/projects" component={Projects}/>*/}
                   </div>
               </div>
 

@@ -74,6 +74,7 @@ class Project extends Component {
                                   <a href="#" className={classes.menu_inner}>Reports</a>
                               </div>
                               <div className={classes.menu_right}>
+                                  <div>UserName</div>
                                   <div className={classes.menu_right + " " + classes.avatar}>ava</div>
                               </div>
                           </div>
@@ -97,7 +98,7 @@ Project.propTypes = {
     cardsById: PropTypes.object.isRequired,
     columnsById: PropTypes.object.isRequired,
     getAll: PropTypes.func.isRequired,
-    projectId: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
 };
 const mapStateToProps = (state, ownProps) => ({
     boardsById: state.boardsById,

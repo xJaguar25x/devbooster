@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Column, Form} from "../index";
-import './Board.scss';
+import classes from './Board.module.scss';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 import {connect} from 'react-redux';
@@ -94,14 +94,12 @@ class Board extends Component {
         // console.log("render() ", this.props);
 
         return (
-          <div className="Dashboard">
-              <div className="BoardTitle">{board.title}</div>
               <DragDropContext
                 onDragEnd={this.onDragEnd}
               >
                   <Droppable droppableId={boardId} type="COLUMN" direction="horizontal">
                       {droppableProvided => (
-                        <div className="lists-wrapper" ref={droppableProvided.innerRef}>
+                        <div ref={droppableProvided.innerRef}>
                             {column_ids.map((column, index) => (
                               <Draggable
                                 key={column._id}
@@ -131,19 +129,27 @@ class Board extends Component {
                             ))
                             }
                             {droppableProvided.placeholder}
-                            <Form
+
+                            <div className={classes.Columns_content}>
+                                <div className={classes.Columns_header + " " + classes.newColumn}>
+                                    <div className={classes.circleBtn}>
+                                        <span>+</span>
+                                        {/*<i className="fa fa-plus" aria-hidden="true"></i>*/}
+                                    </div>
+                                </div>
+                            </div>
+                           {/* <Form
                               classNameWrapper="ColumnComposerWrapper"
                               classNameBtn="ColumnComposerWrapperBtn"
                               board={this.props.board}
                               type="addColumn"
                               btnText="Add new column"
                               btnTextInner="Add column"
-                            />
+                            />*/}
                         </div>
                       )}
                   </Droppable>
               </DragDropContext>
-          </div>
         );
     };
 

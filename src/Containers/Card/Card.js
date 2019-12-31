@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import classes from './Card.module.scss';
 import {Draggable} from "react-beautiful-dnd";
 import {Button, Textarea} from "../../components/index";
@@ -19,7 +19,7 @@ class Card extends Component {
     state = {
         cardInEdit: null,
         editableCardTitle: "",
-        currentCard : this.props.cardsById.cards[this.props.card._id]
+        currentCard: this.props.cardsById.cards[this.props.card._id]
     };
 
     /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
@@ -91,60 +91,40 @@ class Card extends Component {
         return (
           <Draggable
             key={currentCard._id}
-            className="task"
+            // className="task"
             draggableId={currentCard._id}
             index={this.props.index}
           >
               {providedCard => (
                 <div
-                  // TODO: исправить ошибку Invariant failed: providedCard.innerRef has not been providedCard with a HTMLElement. аботает, если сюда перенести свойства. Но тогда плохо работает перетаскивание
-                  //                   ref={providedCard.innerRef}
-                  //               {...providedCard.draggableProps}
-                  //             {...providedCard.dragHandleProps}
-                  //           data-react-beautiful-dnd-draggable="0"
-                  //         data-react-beautiful-dnd-drag-handle="0"
+                  className={classes.Cards_content}
+                  ref={providedCard.innerRef}
+                  {...providedCard.draggableProps}
+                  {...providedCard.dragHandleProps}
+                  data-react-beautiful-dnd-draggable="0"
+                  data-react-beautiful-dnd-drag-handle="0"
                 >
-                    {cardInEdit !== currentCard._id ? (
-                      <div
-                        // key={currentCard._id}
-                        // id={currentCard._id}
-                        className={classes.card_title}
-                        ref={providedCard.innerRef}
-                        {...providedCard.draggableProps}
-                        {...providedCard.dragHandleProps}
-                        // data-react-beautiful-dnd-draggable="0"
-                        // data-react-beautiful-dnd-drag-handle="0"
-                      >
-                          <span>{currentCard.card_name}</span>
-                          <div>
-                              <Button
-                                className="DeleteCardButton"
-                                onClick={() => this.deleteCardHandler(currentCard)}
-                              >
-                                  <DeleteIcon/>
-                              </Button>
-                              <Button
-                                className="EditCardButton"
-                                onClick={() => this.openCardEditor(currentCard)}
-                              >
-                                  <EditIcon/>
-                              </Button>
-                          </div>
-
-                      </div>
-                    ) : (
-                      <div className={classes.CardTitleTextareaWrapper}>
-                        <Textarea
-                          className="CardTitleTextarea"
-                          autoFocus
-                          // useCacheForDOMMeasurements
-                          value={editableCardTitle}
-                          onChange={this.handleCardEditorChange}
-                          onKeyDown={this.handleEditKeyDown}
-                          onBlur={this.handleSubmitCardEdit}
-                        />
-                      </div>
-                    )}
+                    <Fragment>
+                    {/*<div className={classes.Cards_content}>*/}
+                        <div className={classes.Cards_header}>
+                            <div>21 dec</div>
+                            <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
+                        </div>
+                        <div className={classes.Cards_title}>
+                            {currentCard.card_name}
+                        </div>
+                       {/* <div className={classes.Cards_groups}>
+                            <div className={classes.groups_item__blue}>Sketching</div>
+                            <div className={classes.groups_item__blue2}>Illustrating</div>
+                            <div className={classes.groups_item__blue3}>3D</div>
+                            <div className={classes.groups_item__blue4}>Low Poly</div>
+                            <div className={classes.groups_item__purple}>Web Design</div>
+                            <div className={classes.groups_item__pink}>Visual</div>
+                            <div className={classes.groups_item__orange}>Matte-painting</div>
+                            <div className={classes.groups_item__gray}>+ 3 more</div>
+                        </div>*/}
+                    {/*</div>*/}
+                    </Fragment>
                     {providedCard.placeholder}
                 </div>
               )}

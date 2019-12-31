@@ -1,0 +1,65 @@
+.Columns_content {
+    width: 220px;
+    min-width: 220px;
+    //height: 100%;
+    margin-left: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: #e8ecf5;
+    border: 1px solid #e8ecf5;
+    border-radius: 5px;
+
+    &:last-child {
+        margin-right: 40px;
+    }
+}
+
+.Columns_header {
+    height: 40px;
+    //padding-left: 12px;
+    //padding-top: 8px;
+    //padding-bottom: 8px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    color: #313f80;
+    font-weight: 700;
+
+    .squareBtn {
+        margin-right: 6px;
+    }
+}
+
+.Columns_header.newColumn {
+    height: 60px;
+    font-weight: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    //box-shadow: inset 0px 6px 12px 6px rgba(222,226,236,1);
+    box-shadow: inset 2px 3px 6px #dee2ec, inset -2px 3px 6px #dee2ec;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~ All ~~~~~~~~~~~~~~~~~~~~~~
+.circleBtn {
+    height: 34px;
+    width: 34px;
+    color: #b9ccf6;
+    border: 1px solid #b9ccf6;
+    border-radius: 50%;
+    font-size: 34px;
+    text-align: center;
+    line-height: 27px;
+
+    span {
+        margin-left: -1px;
+    }
+    &:hover {
+        color: #000;
+        background: #fff;
+    }
+}

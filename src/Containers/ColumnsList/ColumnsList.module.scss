@@ -7,7 +7,13 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    overflow: overlay;
+    //overflow: overlay;
+    overflow-x: auto;
+    overflow-y: auto;
+
+    .Columns_content:last-child {
+        margin-right: 40px;
+    }
 }
 
 .Columns_clear {
@@ -28,10 +34,6 @@
     background-color: #e8ecf5;
     border: 1px solid #e8ecf5;
     border-radius: 5px;
-
-    &:last-child {
-        margin-right: 40px;
-    }
 }
 
 .Columns_header {
