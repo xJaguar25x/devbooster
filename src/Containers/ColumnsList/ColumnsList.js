@@ -199,7 +199,7 @@ class ColumnsList extends Component {
                         {/*</div>*/}
                         <Form
                           classNameWrapper="Columns_content"
-                          classNameBtn="circleBtn"
+                          classNameBtn="AddColumnBtnCircle"
                           board={this.props.board}
                           type="newColumn"
                           btnText="+"

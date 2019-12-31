@@ -61,15 +61,14 @@ class Form extends Component {
         } = this.state;
 
         const clsBtn = [
-            classes[this.props.type],
-            classes[this.props.classNameBtn]
+          this.props.classNameBtn
         ];
         const clsWrapper = [
             classes[this.props.type],
             classes[this.props.classNameWrapper]
         ];
 
-        console.log("clsBtn ",clsBtn);
+        // console.log("clsBtn ",clsBtn);
         return (
           <Fragment>
               {formIsOpen && (
@@ -101,25 +100,13 @@ class Form extends Component {
               )}
               {formIsOpen || (
                 <Fragment>
-                    {/*<div className={classes.Cards_content + " " + classes.newCard}>*/}
-                        {/*<button className={classes.Cards_title + " " + classes.newCard}>*/}
-                            {/*Add card*/}
-                        {/*</button>*/}
-                    {/*</div>*/}
-
-                    {/*<div className={classes.Columns_content + " " + classes.newColumn}>*/}
-                        {/*<button className={classes.circleBtn + " " + classes.newColumn}>*/}
-                            {/*+*/}
-                            {/*/!*<i className="fa fa-plus" aria-hidden="true"></i>*!/*/}
-                        {/*</button>*/}
-                    {/*</div>*/}
                     <div className={clsWrapper.join(' ')}>
-                        <button
+                        <Button
                           className={clsBtn.join(' ')}
                           onClick={this.toggleCardComposer}
                         >
                             {this.props.btnText}
-                        </button>
+                        </Button>
                     </div>
                 </Fragment>
               )}

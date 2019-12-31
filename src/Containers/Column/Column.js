@@ -172,7 +172,7 @@ class Column extends Component {
                         {/*~~~~~~~~~~ Footer ~~~~~~~~~~~*/}
                         <Form
                           classNameWrapper="Cards_content"
-                          classNameBtn="Cards_title"
+                          classNameBtn="AddCardBtn"
                           column={this.props.column}
                           type="newCard"
                           btnText="Add new card"

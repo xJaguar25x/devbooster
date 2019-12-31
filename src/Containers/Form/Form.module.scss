@@ -74,24 +74,6 @@
     //box-shadow: inset 0px 6px 12px 6px rgba(222,226,236,1);
     box-shadow: inset 2px 3px 6px #dee2ec, inset -2px 3px 6px #dee2ec;
 }
-.circleBtn {
-    height: 34px;
-    width: 34px;
-    color: #b9ccf6;
-    border: 1px solid #b9ccf6;
-    border-radius: 50%;
-    font-size: 34px;
-    text-align: center;
-    line-height: 27px;
-
-    span {
-        margin-left: -1px;
-    }
-    &:hover {
-        color: #000;
-        background: #fff;
-    }
-}
 
 //~~~~~~~~~~~~~~~~~~~~~ Cards ~~~~~~~~~~~~~~~~~~~~~~
 .Cards_content {
@@ -110,20 +92,4 @@
 }
 .Cards_content.newCard {
     background-color: #f2f4f8;
-}
-.Cards_title {
-    /* margin: 8px; */
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: center;
-    border: none;
-    background: none;
-    padding: 10px;
-    margin: 0;
-    width: 100%;
-}
-
-.Cards_title.newCard {
-    color: #777fa5;
 }

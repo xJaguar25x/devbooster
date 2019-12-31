@@ -6,7 +6,7 @@ const Button = props => {
         classes.Button,
         classes[props.className]
     ];
-    // console.log(props);
+    // console.log("props ",props);
 
     return (
       <button

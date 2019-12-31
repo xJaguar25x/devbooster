@@ -24,122 +24,137 @@
     }
 }
 
-.DeleteCardButton {
-    //position: absolute;
-    //top: 7.5px;
-    //right: 27px;
-    //padding: 0;
-    //border-width: 0;
-    //border-style: initial;
-    //border-color: initial;
-    //border-image: initial;
+//.DeleteCardButton {
+//    opacity: 0.1;
+//    font-size: 16px;
+//    justify-content: center;
+//    align-items: center;
+//    color: rgb(46, 68, 78);
+//
+//    &:hover,
+//    &:focus,
+//    &:active {
+//        color: #DA3849;
+//        opacity: 1;
+//    }
+//}
 
-    opacity: 0.1;
-    font-size: 16px;
-    justify-content: center;
-    align-items: center;
-    color: rgb(46, 68, 78);
+//.DeleteListButton {
+//}
+//
+//.ListTitleButton {
+//    flex-grow: 1;
+//    padding: 10px;
+//    font-weight: 600;
+//    justify-content: space-between;
+//    background: #F8F8F8;
+//    color: rgb(46, 68, 78);
+//    font-size: 14px;
+//    border-top-left-radius: 3px;
+//}
 
-    &:hover,
-    &:focus,
-    &:active {
-        color: #DA3849;
-        opacity: 1;
-    }
-}
+//.EditCardButton {
+//    opacity: 0.1;
+//    font-size: 16px;
+//
+//    &:hover,
+//    &:focus,
+//    &:active {
+//        opacity: 1;
+//    }
+//}
 
-.DeleteListButton {
-    //border: 0;
-    //padding: 0;
-    //margin-right: 10px;
-    //background: #F8F8F8;
-    //color: rgb(46,68,78);
-    //cursor: pointer;
-    //font-size: 18px;
-    //opacity: 0.8;
-    //
-    //&:hover,
-    //&:focus,
-    //&:active {
-    //    color: #DA3849;
-    //    opacity: 1;
-    //}
-}
-
-.ListTitleButton {
-    flex-grow: 1;
-    padding: 10px;
-    font-weight: 600;
-    justify-content: space-between;
-    background: #F8F8F8;
-    color: rgb(46, 68, 78);
-    font-size: 14px;
-    border-top-left-radius: 3px;
-}
-
-.EditCardButton {
-    //padding: 0;
-    //position: absolute;
-    //top: 8.5px;
-    //right: 8px;
-    opacity: 0.1;
-    font-size: 16px;
-
-    &:hover,
-    &:focus,
-    &:active {
-        opacity: 1;
-    }
-}
-
-.CardButton {
-    background-color: #fcd1f0;
-    background-color: rgba(9, 30, 66, .13);
-}
+//.CardButton {
+//    background-color: #fcd1f0;
+//    background-color: rgba(9, 30, 66, .13);
+//}
 
 .Add {
-    background-color: #5dcc2b;
-    color: #ffffff;
+    background-color: #68d2d2;
+    color: #091E42;
 }
 
 button:disabled.Add {
-    color: #091E42;
-    background-color: #49852e;
+    color: #ffffff;
+    background-color: #b7caf5;
 }
 
-.list {
-    border-radius: 5px;
-    font-weight: 600;
-    font-size: 14px;
-    margin: 8px;
-    width: 268px;
-    height: 48px;
-    background-color: #fcddd1;
-}
+//.list {
+//    border-radius: 5px;
+//    font-weight: 600;
+//    font-size: 14px;
+//    margin: 8px;
+//    width: 268px;
+//    height: 48px;
+//    background-color: #fcddd1;
+//}
+//
+//.board {
+//    font-size: 14px;
+//    width: 70px;
+//    height: 34px;
+//    background-color: #d1f7c4;
+//}
 
-.board {
-    font-size: 14px;
-    width: 70px;
-    height: 34px;
-    background-color: #d1f7c4;
-}
+//.DeleteBoardButton {
+//    border: 0;
+//    padding: 0;
+//    display: flex;
+//    flex-direction: column;
+//    justify-content: center;
+//    background: transparent;
+//    color: rgb(46, 68, 78);
+//    cursor: pointer;
+//    font-size: 16px;
+//    opacity: 0.8;
+//
+//    &:hover,
+//    &:focus,
+//    &:active {
+//        color: #DA3849;
+//        opacity: 1;
+//    }
+//}
 
-.DeleteBoardButton {
-    border: 0;
-    padding: 0;
+/*~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~*/
+
+.AddCardBtn {
+    //margin: 8px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: transparent;
-    color: rgb(46, 68, 78);
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    background: none;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
     cursor: pointer;
-    font-size: 16px;
-    opacity: 0.8;
+    color: #777fa5;
 
-    &:hover,
-    &:focus,
-    &:active {
-        color: #DA3849;
-        opacity: 1;
+    &:hover {
+        color: #000;
+        background: #fff;
+    }
+}
+
+.AddColumnBtnCircle {
+    height: 34px;
+    width: 34px;
+    color: #b9ccf6;
+    border: 1px solid #b9ccf6;
+    border-radius: 50%;
+    font-size: 34px;
+    text-align: center;
+    line-height: 27px;
+    cursor: pointer;
+
+    span {
+        margin-left: -1px;
+    }
+    &:hover {
+        color: #000;
+        background: #fff;
     }
 }
