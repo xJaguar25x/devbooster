@@ -180,6 +180,7 @@ class ColumnsList extends Component {
                                           key={column._id}
                                           column={column}
                                           boardId={boardId}
+                                          projectId={this.props.match.params.projectId}
                                           style={{height: 'initial'}}
                                         />
                                     </div>

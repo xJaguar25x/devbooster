@@ -42,6 +42,7 @@ class BoardsList extends Component{
                               to={`/p${this.props.projectId}/b${board._id}/`}
                               className={classes.Link}
                               activeClassName={classes.whiteText}
+                              // props={this.props.projectId}
                             >
                                 {board.title}
                             </NavLink>
@@ -63,7 +64,7 @@ BoardsList.propTypes = {
     // editBoardTitle: PropTypes.func.isRequired,
     boardsById: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps )=> ({
     boardsById: state.boardsById
 });
 

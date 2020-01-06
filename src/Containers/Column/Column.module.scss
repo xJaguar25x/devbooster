@@ -39,7 +39,9 @@
 
 .Columns_header {
     position: relative;
-    height: 40px;
+    height: 100%;
+    max-height: 100%;
+    min-height: 40px;
     //padding-left: 12px;
     //padding-top: 8px;
     //padding-bottom: 8px;
@@ -69,11 +71,12 @@
 .Columns_title {
     display: flex;
     white-space: pre-wrap;
-    margin-left: 12px;
+    //margin-left: 12px;
+    align-items: center;
 }
 
 .Columns_title_number {
-    margin-left: 10px;
+    //margin-left: 10px;
     height: 22px;
     width: 22px;
     color: #666c73;
@@ -93,6 +96,23 @@
 //    color: rgb(46, 68, 78);
 //}
 
+.ColumnTitleButton {
+    flex-grow: 1;
+    padding: 10px 10px 10px 12px;
+    //min-width: 50px;
+    max-width: 145px;
+    font-weight: 700;
+    //justify-content: space-between;
+    background: #F8F8F8;
+    color: #313F80;
+    font-size: 16px;
+    //border-top-left-radius: 3px;
+    background: none;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    cursor: pointer;
+}
+
 .ColumnTitleTextareaWrapper {
     height: 48px;
     display: flex;
@@ -103,6 +123,7 @@
 
 .PopoverColumn {
     position: absolute;
+    z-index: 10;
     top: 45px;
     left: 195px;
     width: 240px;
@@ -135,6 +156,7 @@
     border-top: 1px solid #c2c2c7;
 
 }
+/*
 
 .Popover_List_btn {
     padding: 5px;
@@ -183,6 +205,7 @@
     //    outline: none;
     //}
 }
+*/
 
 
 //~~~~~~~~~~~~~~~~~~~~~ Cards ~~~~~~~~~~~~~~~~~~~~~~
@@ -224,38 +247,38 @@
     color: #777fa5;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~ All ~~~~~~~~~~~~~~~~~~~~~~
-.circleBtn {
-    height: 34px;
-    width: 34px;
-    color: #b9ccf6;
-    border: 1px solid #b9ccf6;
-    border-radius: 50%;
-    font-size: 34px;
-    text-align: center;
-    line-height: 27px;
-
-    span {
-        margin-left: -1px;
-    }
-    &:hover {
-        color: #000;
-        background: #fff;
-    }
-}
-
-.squareBtn {
-    background: none;
-    color: #a4aaab;
-    border: 1px solid #a4aaab;
-    border-radius: 5px;
-    width: 21px;
-    height: 21px;
-    text-align: center;
-    line-height: 20px;
-
-    &:hover {
-        color: #000;
-        background: #fff;
-    }
-}
+////~~~~~~~~~~~~~~~~~~~~~ All ~~~~~~~~~~~~~~~~~~~~~~
+//.circleBtn {
+//    height: 34px;
+//    width: 34px;
+//    color: #b9ccf6;
+//    border: 1px solid #b9ccf6;
+//    border-radius: 50%;
+//    font-size: 34px;
+//    text-align: center;
+//    line-height: 27px;
+//
+//    span {
+//        margin-left: -1px;
+//    }
+//    &:hover {
+//        color: #000;
+//        background: #fff;
+//    }
+//}
+//
+//.squareBtn {
+//    background: none;
+//    color: #a4aaab;
+//    border: 1px solid #a4aaab;
+//    border-radius: 5px;
+//    width: 21px;
+//    height: 21px;
+//    text-align: center;
+//    line-height: 20px;
+//
+//    &:hover {
+//        color: #000;
+//        background: #fff;
+//    }
+//}

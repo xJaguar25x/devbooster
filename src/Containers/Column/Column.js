@@ -93,59 +93,79 @@ class Column extends Component {
 
         // console.log("Column", column);
         const card_ids = (column.cards.map(cardId => cards[cardId]));
-        // console.log("render() ", this.props);
+        console.log("Columns props ", this.props);
 
         return (
           <Fragment>
               {/*<div className={classes.Columns_content} key={column._id} id={column._id}>*/}
               <div className={classes.Columns_header}>
                   <div className={classes.Columns_title}>
-                      {column.column_name}
+                      {isColumnTitleInEdit ? (
+                        <Textarea
+                          className="ColumnTitleTextarea"
+                          autoFocus
+                          // useCacheForDOMMeasurements
+                          value={newColumnTitle}
+                          onChange={this.handleColumnTitleEditorChange}
+                          onKeyDown={this.handleColumnTitleKeyDown}
+                          onBlur={this.handleSubmitColumnTitle}
+                        />
+                      ) : (
+                        <span
+                          className={classes.ColumnTitleButton}
+                          onFocus={this.openTitleEditor}
+                          onClick={this.openTitleEditor}
+                        >
+                            {column.column_name}
+                        </span>
+
+                      )}
                       <div className={classes.Columns_title_number}>
                           {this.props.column.cards.length}
                       </div>
                   </div>
-                  <button
+                  <Button
                     type="button"
-                    className={classes.squareBtn}
+                    className="squareBtn"
                     onClick={this.togglePopoverMenu}
                   >
                       <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                  </button>
+                  </Button>
                   {this.state.isOpenPopoverMenu && (
-                  <ClickOutsideWrapper handleClickOutside={this.togglePopoverMenu}>
-                      <div className={classes.PopoverColumn}>
-                          <button
-                            type="button"
-                            className={classes.Popover_close_btn}
-                            onClick={this.togglePopoverMenu}
-                          >
-                              X
-                          </button>
-                          <div className={classes.Popover_Header}>
-                              <div>Column actions</div>
-                          </div>
-                          <div className={classes.Popover_Content}>
-                              <div className={classes.Popover_List}>
-                                  <button
-                                    type="button"
-                                    className={classes.Popover_List_btn}
-                                    onClick={this.handleDeleteColumn}
-                                  >
-                                      Delete column
-                                  </button>
+                    <ClickOutsideWrapper handleClickOutside={this.togglePopoverMenu}>
+                        <div className={classes.PopoverColumn} >
+                            <Button
+                              type="button"
+                              className="Popover_close_btn"
+                              onClick={this.togglePopoverMenu}
+                            >
+                                X
+                            </Button>
+                            <div className={classes.Popover_Header}>
+                                <div>Column actions</div>
+                            </div>
+                            <div className={classes.Popover_Content}>
+                                <div className={classes.Popover_List}>
+                                    <Button
+                                      type="button"
+                                      className="Popover_List_btn"
+                                      onClick={this.handleDeleteColumn}
+                                    >
+                                        Delete column
+                                    </Button>
 
-                                  {/*this btn not worked, nothing to do*/}
-                                  <button
-                                    type="button"
-                                    className={classes.Popover_List_btn}
-                                  >
-                                      Subscribe
-                                  </button>
-                              </div>
-                          </div>
-                      </div>
-                  </ClickOutsideWrapper>
+                                    {/*this btn not worked, nothing to do*/}
+                                    <Button
+                                      type="button"
+                                      disabled="true"
+                                      className="Popover_List_btn"
+                                    >
+                                        Subscribe
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </ClickOutsideWrapper>
                   )}
 
               </div>
@@ -163,6 +183,8 @@ class Column extends Component {
                             card={card}
                             column={column}
                             index={index}
+                            boardId={this.props.boardId}
+                            projectId={this.props.projectId}
                             // state={this.state}
                             // openCardEditor={this.openCardEditor}
                           />
@@ -179,7 +201,7 @@ class Column extends Component {
                           btnTextInner="Add card"
                         />
                         {/*<div className={classes.Cards_content + " " + classes.newCard}>*/}
-                            {/*<div className={classes.Cards_title + " " + classes.newCard}>Add card</div>*/}
+                        {/*<div className={classes.Cards_title + " " + classes.newCard}>Add card</div>*/}
                         {/*</div>*/}
                     </div>
                   )}

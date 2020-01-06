@@ -1,3 +1,16 @@
+@mixin button-reset {
+    /**
+    * Сброс стилей у кнопки.
+    */
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    /* отображаем курсор в виде руки при наведении;  */
+    cursor: pointer;
+}
+
 .Button {
     display: flex;
     justify-content: center;
@@ -44,13 +57,16 @@
 //
 //.ListTitleButton {
 //    flex-grow: 1;
-//    padding: 10px;
-//    font-weight: 600;
+//    padding: 10px 10px 10px 12px;
+//    min-width: 50px;
+//    max-width: 150px;
+//    font-weight: 700;
 //    justify-content: space-between;
 //    background: #F8F8F8;
-//    color: rgb(46, 68, 78);
-//    font-size: 14px;
+//    color: #313F80;
+//    font-size: 16px;
 //    border-top-left-radius: 3px;
+//    background: none;
 //}
 
 //.EditCardButton {
@@ -77,6 +93,10 @@
 button:disabled.Add {
     color: #ffffff;
     background-color: #b7caf5;
+}
+
+button:disabled {
+    text-decoration: line-through;
 }
 
 //.list {
@@ -153,6 +173,90 @@ button:disabled.Add {
     span {
         margin-left: -1px;
     }
+    &:hover {
+        color: #000;
+        background: #fff;
+    }
+}
+
+.Popover_List_btn {
+    padding: 5px;
+    background: none;
+    border: none;
+    margin-bottom: 10px;
+    color: #777fa5;
+    cursor: pointer;
+
+    &:active {
+        transform: translateY(1px);
+        filter: saturate(150%);
+    }
+    &:hover, &:focus {
+        color: #9555af;
+        border-color: currentColor;
+        background-color: white;
+    }
+}
+
+.Popover_close_btn {
+    // используем миксин
+    @include button-reset;
+
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #777fa5;
+    border-radius: 50%;
+    background: none;
+    color: #777fa5;
+    font-size: 12px;
+
+    &:active {
+        transform: translateY(1px);
+        filter: saturate(150%);
+    }
+    &:hover, &:focus {
+        color: #9555af;
+        border-color: currentColor;
+        background-color: white;
+    }
+    //&:focus{
+    //    outline: none;
+    //}
+}
+
+.circleBtn {
+    height: 34px;
+    width: 34px;
+    color: #b9ccf6;
+    border: 1px solid #b9ccf6;
+    border-radius: 50%;
+    font-size: 34px;
+    text-align: center;
+    line-height: 27px;
+
+    span {
+        margin-left: -1px;
+    }
+    &:hover {
+        color: #000;
+        background: #fff;
+    }
+}
+
+.squareBtn {
+    background: none;
+    color: #a4aaab;
+    border: 1px solid #a4aaab;
+    border-radius: 5px;
+    width: 21px;
+    height: 21px;
+    text-align: center;
+    line-height: 20px;
+    margin-right: 6px;
+
     &:hover {
         color: #000;
         background: #fff;
