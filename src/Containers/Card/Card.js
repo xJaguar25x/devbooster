@@ -109,7 +109,7 @@ class Card extends Component {
                     {cardInEdit !== currentCard._id ? (
                       <NavLink
                         to={`/p${this.props.projectId}/b${this.props.boardId}/c${currentCard._id}`}
-                        // onClick={() => this.openCardEditor(currentCard)}
+                        className={classes.CardLink}
                       >
                           {/*<div className={classes.Cards_content}>*/}
                           <div className={classes.Cards_header}>

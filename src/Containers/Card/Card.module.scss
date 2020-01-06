@@ -39,6 +39,13 @@
     margin: 0 10px;
 }*/
 
+.CardLink {
+    text-decoration: none;
+    &:visited, &:active {
+        color: inherit;
+    }
+}
+
 .Cards_content {
     width: 100%;
     min-height: 35px;
@@ -66,12 +73,12 @@
         color: #aeaeae;
     }
 }
+
 .Cards_header.avatar {
     height: 27px;
     width: 27px;
     //line-height: 25px;
 }
-
 
 .Cards_title {
     margin: 8px;
