@@ -17,5 +17,8 @@ export { default as Board} from "./Board/Board";
 export { default as Column} from "./Column/Column";
 export { default as Card} from "./Card/Card";
 export { default as Form} from "./Form/Form";
+export { default as CardPopup } from "./CardPopup/CardPopup";
+
+
 export { default as LoginForm} from "./LoginForm/LoginForm";
 export { default as UserPreview } from "./UserPreview/UserPreview";

@@ -8,6 +8,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import {deleteCard, editCard} from "../../store/actions/itemActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
+import {Layout} from "../../hoc";
+import {NavLink} from "react-router-dom";
 
 class Card extends Component {
 
@@ -74,7 +76,7 @@ class Card extends Component {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        // console.log("Card.props", this.props);
+        console.log("Card.props", this.props);
         // console.log("Card.state", this.state);
 
         const stateList = this.state;
@@ -104,16 +106,20 @@ class Card extends Component {
                   data-react-beautiful-dnd-draggable="0"
                   data-react-beautiful-dnd-drag-handle="0"
                 >
-                    <Fragment>
-                    {/*<div className={classes.Cards_content}>*/}
-                        <div className={classes.Cards_header}>
-                            <div>21 dec</div>
-                            <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
-                        </div>
-                        <div className={classes.Cards_title}>
-                            {currentCard.card_name}
-                        </div>
-                       {/* <div className={classes.Cards_groups}>
+                    {cardInEdit !== currentCard._id ? (
+                      <NavLink
+                        to={`/p${this.props.projectId}/b${this.props.boardId}/c${currentCard._id}`}
+                        // onClick={() => this.openCardEditor(currentCard)}
+                      >
+                          {/*<div className={classes.Cards_content}>*/}
+                          <div className={classes.Cards_header}>
+                              <div>21 dec</div>
+                              <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
+                          </div>
+                          <div className={classes.Cards_title}>
+                              {currentCard.card_name}
+                          </div>
+                          {/* <div className={classes.Cards_groups}>
                             <div className={classes.groups_item__blue}>Sketching</div>
                             <div className={classes.groups_item__blue2}>Illustrating</div>
                             <div className={classes.groups_item__blue3}>3D</div>
@@ -123,8 +129,25 @@ class Card extends Component {
                             <div className={classes.groups_item__orange}>Matte-painting</div>
                             <div className={classes.groups_item__gray}>+ 3 more</div>
                         </div>*/}
-                    {/*</div>*/}
-                    </Fragment>
+                          {/*</div>*/}
+                      </NavLink>
+                    ) : (
+                      <Layout>
+                          {/* <div className={classes.CardTitleTextareaWrapper}>
+                        <Textarea
+                          className="CardTitleTextarea"
+                          autoFocus
+                          // useCacheForDOMMeasurements
+                          value={editableCardTitle}
+                          onChange={this.handleCardEditorChange}
+                          onKeyDown={this.handleEditKeyDown}
+                          onBlur={this.handleSubmitCardEdit}
+                        />
+                      </div>*/}
+
+                      </Layout>
+                    ) }
+
                     {providedCard.placeholder}
                 </div>
               )}
@@ -139,7 +162,7 @@ Card.propTypes = {
     cardsById: PropTypes.object.isRequired
 };
 const mapStateToProps = (state, ownProps) => ({
-    // ownProps,
+    ownProps,
     cardsById: state.cardsById
 });
 export default connect(

@@ -3,7 +3,7 @@ import onClickOutside from 'react-onclickoutside';
 
 class ClickOutsideWrapper extends Component {
     handleClickOutside = () => this.props.handleClickOutside();
-    render = () => this.props.children;
+    render = () => this.props.children ;
 }
 
 export default onClickOutside(ClickOutsideWrapper);

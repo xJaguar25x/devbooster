@@ -4,7 +4,7 @@ import {deleteBoard, editBoardTitle, getAll} from "../../store/actions/itemActio
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import {Link, Switch, Route} from "react-router-dom";
-import {BoardsList, ColumnsList, MembersList, ProjectsList} from "../index";
+import {BoardsList, CardPopup, ColumnsList, MembersList, ProjectsList} from "../index";
 
 
 class Project extends Component {
@@ -80,7 +80,8 @@ class Project extends Component {
                           </div>
 
                           {/*<Switch>*/}
-                          <Route exact path="/p:projectId/b:boardId" component={ColumnsList}/>
+                          <Route  path="/p:projectId/b:boardId" component={ColumnsList}/>
+                          <Route  path="/p:projectId/b:boardId/c:cardId" component={CardPopup}/>
                           {/*</Switch>*/}
                       </div>
                   </div>

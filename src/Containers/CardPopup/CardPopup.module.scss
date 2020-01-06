@@ -1,0 +1,40 @@
+$widthPopup: 250px;
+$heightPopup: 400px;
+
+.CardPopup {
+    // при использовании без Layout - компонента
+    //position: absolute;
+    //top: calc( (100vh - #{$heightPopup} ) / 2);
+    //left: calc( (100vw - #{$widthPopup} ) / 2);
+    //width: 100%;
+    //height: 100%;
+
+    width: $widthPopup;
+    height: $heightPopup;
+    border: 1px solid #7d7c7c;
+    border-radius: 5px;
+    background: #ffffff;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.CardPopup_Header {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.CardPopup_Content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+}
