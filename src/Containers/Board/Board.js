@@ -158,6 +158,7 @@ class Board extends Component {
         return (
           // проверка на существование данных любой из 3 загружаемых массивов(boards, columns, cards)
           //если их нет, то отображать заглушку
+          //TODO: проверить логику показа, возможно не правильная, посмотреть как сделал в CardPopup
           (!this.props.boardsById.loading && this.props.board)
             ? (
               <Fragment>

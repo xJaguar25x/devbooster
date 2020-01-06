@@ -20,7 +20,7 @@ class ColumnsList extends Component {
         // this.props.getColumnsByBoard(this.props.boardId);
         // this.props.getColumns();
         // this.props.getBoards();
-        this.props.getAll();
+        // this.props.getAll();
         // console.log("componentDidMount() ", this.props);
     }
 
@@ -284,7 +284,7 @@ class ColumnsList extends Component {
     }
 
     render() {
-        console.log("ColumnsList() ", this.props);
+        // console.log("ColumnsList() ", this.props);
 
         /*return (
           // проверка на существование данных boards

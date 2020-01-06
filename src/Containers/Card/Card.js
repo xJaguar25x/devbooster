@@ -76,7 +76,7 @@ class Card extends Component {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        console.log("Card.props", this.props);
+        // console.log("Card.props", this.props);
         // console.log("Card.state", this.state);
 
         const stateList = this.state;
@@ -89,11 +89,10 @@ class Card extends Component {
         const currentCard = this.props.cardsById.cards[this.props.card._id];
         // console.log("currentCard ",currentCard);
 
-        // TODO:
+
         return (
           <Draggable
             key={currentCard._id}
-            // className="task"
             draggableId={currentCard._id}
             index={this.props.index}
           >
@@ -106,20 +105,18 @@ class Card extends Component {
                   data-react-beautiful-dnd-draggable="0"
                   data-react-beautiful-dnd-drag-handle="0"
                 >
-                    {cardInEdit !== currentCard._id ? (
-                      <NavLink
-                        to={`/p${this.props.projectId}/b${this.props.boardId}/c${currentCard._id}`}
-                        className={classes.CardLink}
-                      >
-                          {/*<div className={classes.Cards_content}>*/}
-                          <div className={classes.Cards_header}>
-                              <div>21 dec</div>
-                              <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
-                          </div>
-                          <div className={classes.Cards_title}>
-                              {currentCard.card_name}
-                          </div>
-                          {/* <div className={classes.Cards_groups}>
+                    <NavLink
+                      to={`/p${this.props.projectId}/b${this.props.boardId}/c${currentCard._id}`}
+                      className={classes.CardLink}
+                    >
+                        <div className={classes.Cards_header}>
+                            <div>21 dec</div>
+                            <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
+                        </div>
+                        <div className={classes.Cards_title}>
+                            {currentCard.card_name}
+                        </div>
+                        {/* <div className={classes.Cards_groups}>
                             <div className={classes.groups_item__blue}>Sketching</div>
                             <div className={classes.groups_item__blue2}>Illustrating</div>
                             <div className={classes.groups_item__blue3}>3D</div>
@@ -129,24 +126,7 @@ class Card extends Component {
                             <div className={classes.groups_item__orange}>Matte-painting</div>
                             <div className={classes.groups_item__gray}>+ 3 more</div>
                         </div>*/}
-                          {/*</div>*/}
-                      </NavLink>
-                    ) : (
-                      <Layout>
-                          {/* <div className={classes.CardTitleTextareaWrapper}>
-                        <Textarea
-                          className="CardTitleTextarea"
-                          autoFocus
-                          // useCacheForDOMMeasurements
-                          value={editableCardTitle}
-                          onChange={this.handleCardEditorChange}
-                          onKeyDown={this.handleEditKeyDown}
-                          onBlur={this.handleSubmitCardEdit}
-                        />
-                      </div>*/}
-
-                      </Layout>
-                    ) }
+                    </NavLink>
 
                     {providedCard.placeholder}
                 </div>

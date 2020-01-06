@@ -14,7 +14,7 @@ class BoardsList extends Component{
     render(){
         const { loading, error } = this.props.boardsById;
         const  boards = Object.values(this.props.boardsById.boards);
-        console.log("BoardsList ", this.props);
+        // console.log("BoardsList ", this.props);
 
         return(
           <div className={classes.left_Boards}>
@@ -37,7 +37,7 @@ class BoardsList extends Component{
                     emptyText="You don't have any borders."
                   >
                       {boards.map(board => (
-                        <div className={classes.Boards_content_inner}>
+                        <div className={classes.Boards_content_inner} key={board._id}>
                             <NavLink
                               to={`/p${this.props.projectId}/b${board._id}/`}
                               className={classes.Link}

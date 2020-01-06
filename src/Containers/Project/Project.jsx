@@ -14,7 +14,7 @@ class Project extends Component {
     }
 
     render() {
-        console.log("render() ", this.props);
+        // console.log("render() ", this.props);
 
         return(
           this.renderProject()

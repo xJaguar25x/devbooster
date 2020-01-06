@@ -93,7 +93,7 @@ class Column extends Component {
 
         // console.log("Column", column);
         const card_ids = (column.cards.map(cardId => cards[cardId]));
-        console.log("Columns props ", this.props);
+        // console.log("Columns props ", this.props);
 
         return (
           <Fragment>
