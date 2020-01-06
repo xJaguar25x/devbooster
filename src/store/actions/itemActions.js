@@ -145,35 +145,7 @@ export const deleteBoard = (boardId) => dispatch => {
       });
 
 };
-// export const reorderList = (
-//   cardId,
-//   sourceId,
-//   destinationId,
-//   sourceIndex,
-//   destinationIndex,
-//   boardId
-// ) => dispatch => {
-//     dispatch({
-//         type: "REORDER_LIST",
-//         payload: {
-//             sourceId,
-//             destinationId,
-//             sourceIndex,
-//             destinationIndex
-//         }
-//     });
-//
-//     axios
-//       .put("/api/reorder-list", {
-//           cardId,
-//           sourceId,
-//           destinationId,
-//           sourceIndex,
-//           destinationIndex,
-//           boardId
-//       })
-//       .then(({ data }) => console.log(data));
-// };
+
 export const reorderBoard = (
   columnId,
   sourceId,

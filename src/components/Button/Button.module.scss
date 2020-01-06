@@ -227,6 +227,32 @@ button:disabled {
     //}
 }
 
+.Card_Action_Btn {
+    background-color: rgba(9, 30, 66, .04);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 32px;
+    margin-top: 8px;
+    padding: 6px 12px;
+
+
+    &:active {
+        transform: translateY(1px);
+        filter: saturate(150%);
+    }
+    &:hover{
+        border-color: currentColor;
+        background-color: white;
+    }
+    &:focus {
+        color: #9555af;
+        border-color: currentColor;
+        background-color: white;
+    }
+
+}
+
 .circleBtn {
     height: 34px;
     width: 34px;

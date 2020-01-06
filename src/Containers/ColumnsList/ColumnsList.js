@@ -192,12 +192,12 @@ class ColumnsList extends Component {
                         }
                         {droppableProvided.placeholder}
 
-                        {/*<div className={classes.Columns_content + " " + classes.newColumn}>*/}
-                        {/*<button className={classes.circleBtn + " " + classes.newColumn}>*/}
-                        {/*<span>+</span>*/}
-                        {/*/!*<i className="fa fa-plus" aria-hidden="true"></i>*!/*/}
-                        {/*</button>*/}
-                        {/*</div>*/}
+                       {/* <div className={classes.Columns_content + " " + classes.newColumn}>
+                        <button className={classes.circleBtn + " " + classes.newColumn}>
+                        <span>+</span>
+                        // <i className="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        </div>*/}
                         <Form
                           classNameWrapper="Columns_content"
                           classNameBtn="AddColumnBtnCircle"
@@ -285,26 +285,6 @@ class ColumnsList extends Component {
 
     render() {
         // console.log("ColumnsList() ", this.props);
-
-        /*return (
-          // проверка на существование данных boards
-          // если их нет, то отображать заглушку
-          /!*!this.props.boardsById.loading
-            ? (
-              <Fragment>
-                  {/!*<TransitionGroup className="orders-list">*!/}
-                  {this.renderColumns()}
-                  {/!*</TransitionGroup> *!/}
-              </Fragment>
-            )
-            : (
-              //TODO: сделать спиннер вместо этого
-              <h4>данные не получены</h4>
-            )*!/
-          this.renderColumnsList()
-
-        );*/
-
         return (
           <Fragment>
               {/* // проверка на существование данных любой из 3 загружаемых массивов(boards, columns, cards)

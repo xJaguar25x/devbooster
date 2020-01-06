@@ -27,7 +27,7 @@ class Card extends Component {
     /* ~~~~~~~~~~~~~~~~~~ Обработчики событий UI ~~~~~~~~~~~~~~~~~~~~~~*/
     openCardEditor = card => {
         // console.log("cardId=%s CardTitle=%s", card._id, card.card_name );
-        this.setState({cardInEdit: card._id, editableCardTitle: card.card_name});
+        this.setState({cardInEdit: card._id, editableCardTitle: card.title});
     };
 
     handleCardEditorChange = (event) => {
@@ -51,7 +51,7 @@ class Card extends Component {
             // Или обновлять ее имя, если введено новое
             console.log("22cardTitle =%s cardId=%s ", editableCardTitle, cardInEdit);
             let newCard = this.state.currentCard;
-            newCard = {...newCard, card_name: editableCardTitle};
+            newCard = {...newCard, title: editableCardTitle};
             this.changeCard(newCard);
             // this.changeCard(cardInEdit, editableCardTitle);
             // dispatch(editCardTitle(editableCardTitle, cardInEdit, column, boardId));
@@ -76,7 +76,7 @@ class Card extends Component {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     render() {
-        // console.log("Card.props", this.props);
+        console.log("Card.props", this.props);
         // console.log("Card.state", this.state);
 
         const stateList = this.state;
@@ -106,7 +106,7 @@ class Card extends Component {
                   data-react-beautiful-dnd-drag-handle="0"
                 >
                     <NavLink
-                      to={`/p${this.props.projectId}/b${this.props.boardId}/c${currentCard._id}`}
+                      to={`/p${this.props.projectId}/b${this.props.boardId}/col${this.props.column._id}/c${currentCard._id}`}
                       className={classes.CardLink}
                     >
                         <div className={classes.Cards_header}>
@@ -114,7 +114,7 @@ class Card extends Component {
                             <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
                         </div>
                         <div className={classes.Cards_title}>
-                            {currentCard.card_name}
+                            {currentCard.title}
                         </div>
                         {/* <div className={classes.Cards_groups}>
                             <div className={classes.groups_item__blue}>Sketching</div>

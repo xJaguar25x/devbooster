@@ -19,7 +19,8 @@ function convertCard(inputData) {
             ...outputData,
             [item._id]: {
                 _id: item._id,
-                card_name: item.name
+                title: item.name,
+                description: item.description
             }
         }
         // } else return;
@@ -58,7 +59,7 @@ const cardsReducer = (state = initialState, action) => {
                     ...state.cards,
                     [cardId]: {
                         _id: cardId,
-                        card_name: cardTitle
+                        title: cardTitle
                     }
                 }
             };
@@ -109,7 +110,7 @@ const cardsReducer = (state = initialState, action) => {
                     ...state.cards,
                     [cardId]: {
                         ...state.cards[cardId],
-                        card_name: cardTitle
+                        title: cardTitle
                     }
                 }
             };

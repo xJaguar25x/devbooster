@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Board, Home, Versions, LoginForm, UserPreview} from "../../Containers";
-import {Projects} from "../../Containers/index";
+import {Board, Home, Versions, LoginForm, UserPreview, Projects} from "../../Containers";
 import {
     BrowserRouter as Router,
     Switch,
@@ -10,7 +9,6 @@ import {
     useHistory,
     useLocation
 } from "react-router-dom";
-import {Project} from "../index";
 import {PreloaderWrapper} from "../../hoc";
 // import {PrivateRoute} from "../index";
 
@@ -79,7 +77,7 @@ export default class App extends Component {
                       {/* TODO: поставить exact для пути "/" после того,
                             как добавлю список проектов в Project*/}
                       <Route exact path="/" component={Projects}/>
-                      <Route path="/p:projectId" component={Project}/>
+                      <Route path="/p:projectId" component={Home}/>
 
                      {/* <Route path="/p:projectId"
                              render={ (props) => (

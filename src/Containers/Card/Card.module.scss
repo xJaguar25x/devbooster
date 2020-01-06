@@ -41,6 +41,8 @@
 
 .CardLink {
     text-decoration: none;
+    color: inherit;
+
     &:visited, &:active {
         color: inherit;
     }
