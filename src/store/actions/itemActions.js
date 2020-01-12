@@ -6,7 +6,7 @@ import {
     GET_CARDS,
     ADD_CARD,
     DELETE_CARD,
-    EDIT_CARD_TITLE,
+    EDIT_CARD,
     REORDER_COLUMN,
     REORDER_BOARD,
     GET_BOARDS,
@@ -538,17 +538,20 @@ export const deleteCard = (column, cardId) => dispatch => {
 };
 export const editCard = (card) => dispatch => {
     const cardId = card._id;
-    const cardTitle = card.card_name;
+    const cardTitle = card.title;
+    const cardDescription = card.description;
+    // console.log("newCard= ",  card);
     // console.log("cardTitle =%s cardId=%s", cardTitle, cardId);
+    //TODO: изменить данные для отправки, при добавлении коментов, описания и даты
     //преобразуем к виду для сервера
-    const newCard = {"description": "null", "name": cardTitle, "comment_ids": []};
+    const newCard = {"description": cardDescription, "name": cardTitle, "comment_ids": []};
     axios
       .put(`/api/cards/${cardId}`, newCard)
       .then((res) => {
           console.log("res ", res);
           dispatch({
-              type: EDIT_CARD_TITLE,
-              payload: {cardId, cardTitle}
+              type: EDIT_CARD,
+              payload: {card}
           })
       })
       .catch((err) => {

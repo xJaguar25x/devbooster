@@ -1,7 +1,7 @@
 import {
     GET_CARDS,
     ADD_CARD,
-    DELETE_CARD, DELETE_COLUMN, EDIT_CARD_TITLE, GET_ALL, ITEMS_LOADING
+    DELETE_CARD, DELETE_COLUMN, EDIT_CARD, GET_ALL, ITEMS_LOADING
 } from '../actions/types';
 // import State from "./initialState";
 
@@ -102,15 +102,16 @@ const cardsReducer = (state = initialState, action) => {
                 }
             };
         }
-        case EDIT_CARD_TITLE: {
-            const {cardId, cardTitle} = action.payload;
+        case EDIT_CARD: {
+            const {card} = action.payload;
+            // console.log("card ", card);
             return {
                 ...state,
                 cards: {
                     ...state.cards,
-                    [cardId]: {
-                        ...state.cards[cardId],
-                        title: cardTitle
+                    [card._id]: {
+                        ...state.cards[card._id],
+                        ...card._id
                     }
                 }
             };

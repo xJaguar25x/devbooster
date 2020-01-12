@@ -17,7 +17,7 @@ export const REORDER_COLUMN = 'REORDER_COLUMN';
 export const GET_CARDS = 'GET_CARDS';
 export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
-export const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE';
+export const EDIT_CARD = 'EDIT_CARD';
 
 // системные
 // get ver. backend API
