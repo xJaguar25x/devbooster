@@ -20,7 +20,8 @@ function convertCard(inputData) {
             [item._id]: {
                 _id: item._id,
                 title: item.name,
-                description: item.description
+                description: item.description,
+                date: item.posted_at
             }
         }
         // } else return;

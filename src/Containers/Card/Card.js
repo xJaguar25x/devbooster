@@ -42,7 +42,7 @@ class Card extends Component {
                       className={classes.CardLink}
                     >
                         <div className={classes.Cards_header}>
-                            <div>21 dec</div>
+                            <div>{ new Date(currentCard.date * 1000).toLocaleDateString()}</div>
                             <div className={classes.Cards_header + " " + classes.avatar}>ava</div>
                         </div>
                         <div className={classes.Cards_title}>
